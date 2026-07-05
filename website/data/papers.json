@@ -1,0 +1,65 @@
+[
+  {
+    "slug": "foundations-representation-stack",
+    "title": "Foundations: The Representation Stack and the Realization Pipeline",
+    "part": "Part I",
+    "abstract": "We initiate a seven-part modular program that formalizes each mathematical domain as a physical-representation module. This first part supplies the common substrate: a disciplined, domain-indexed formalism for translating mathematical structure into physical representation.",
+    "pages": 25,
+    "hasCode": true,
+    "category": "math.CT"
+  },
+  {
+    "slug": "motives-periods-amplitudes",
+    "title": "Motives, Periods, and Amplitudes: The Coalgebraic Anatomy of Physical Representation",
+    "part": "Part II",
+    "abstract": "Part II of the modular series A Math→Physics Representation Library. Physical quantities are realized from structured mathematical information along an explicit pipeline. We formalize motives as functional essence, realization channels as cohomological functors, and the period map as observable.",
+    "pages": 26,
+    "hasCode": true,
+    "category": "math-ph"
+  },
+  {
+    "slug": "algebraic-geometry-physical-possibility",
+    "title": "Algebraic Geometry: Spaces of Physical Possibility",
+    "part": "Part III",
+    "abstract": "Part III of the modular series. We supply the geometric stage on which motives and periods live and vary: schemes, moduli spaces and stacks, variations of Hodge structure, and positive geometries — the geometry of physical possibility.",
+    "pages": 27,
+    "hasCode": true,
+    "category": "math.AG"
+  },
+  {
+    "slug": "algebraic-topology-conserved-information",
+    "title": "Algebraic Topology: Conserved Global Information",
+    "part": "Part IV",
+    "abstract": "Part IV of the modular series. Algebraic topology is the grammar of conserved global information: (co)homology as deformation-stable observables, characteristic classes as quantized topological data, and TQFT as a rigorous realization functor.",
+    "pages": 24,
+    "hasCode": true,
+    "category": "math.AT"
+  },
+  {
+    "slug": "category-theory-hott-composition",
+    "title": "Category Theory and Homotopy Type Theory: Composition and Identity",
+    "part": "Part V",
+    "abstract": "Part V of the modular series. Category theory supplies the grammar of composition and identity; homotopy type theory supplies identity proper. Univalence turns the Equivalence axiom of Part I into a theorem, recovering the gauge-information principle.",
+    "pages": 24,
+    "hasCode": true,
+    "category": "math.CT"
+  },
+  {
+    "slug": "sheaves-stacks-gauge-quantum-ha",
+    "title": "Sheaves, Stacks, Gauge Redundancy, and Quantum High-Availability",
+    "part": "Part VI",
+    "abstract": "Part VI, the capstone module. Sheaves, stacks, gauge redundancy, and quantum high-availability are one construction viewed through four lenses: many local representatives, one invariant logical content, plus explicit redundancy data.",
+    "pages": 23,
+    "hasCode": true,
+    "category": "math.CT"
+  },
+  {
+    "slug": "synthesis",
+    "title": "A Modular Representation Synthesis: Composing Six Mathematical Faculties into Physical Representation",
+    "part": "Synthesis",
+    "abstract": "The capstone synthesis recomposes the six modular papers into one coherent account of physical representation, proving the Closure Theorem: the representation stack posited in Part I is recovered exactly as the descent-theoretic stackification of Parts II–VI.",
+    "pages": 24,
+    "hasCode": false,
+    "category": "math.CT/hep-th"
+  }
+]

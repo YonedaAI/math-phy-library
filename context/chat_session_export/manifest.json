@@ -1,0 +1,61 @@
+{
+  "generated_on": "2026-07-04",
+  "scope": "Visible content from current chat thread plus previously generated artifacts available in /mnt/data.",
+  "files": [
+    {
+      "path": "README.md",
+      "size_bytes": 1854,
+      "sha256": "386bb6230864dd59492a65ff9457f5b367e0e101487c61c32c35da9ad1dfc160"
+    },
+    {
+      "path": "artifacts/math_to_physics_representation_library.pdf",
+      "size_bytes": 494912,
+      "sha256": "d38a8f3853901efaa126c32422018f9678194ef3d59cb6dbf6e363e741692ff3"
+    },
+    {
+      "path": "artifacts/math_to_physics_representation_library.tex",
+      "size_bytes": 65762,
+      "sha256": "409d9713fa21a21347d0aea4ea6b59266205024c87421b61c7ab4ea0467db915"
+    },
+    {
+      "path": "artifacts/math_to_physics_representation_library_source.zip",
+      "size_bytes": 501608,
+      "sha256": "12d890c23d0c426b9b28c7e3c94862b13399113179ffa58d70a5018abae96687"
+    },
+    {
+      "path": "sessions/00_full_visible_chat_transcript.md",
+      "size_bytes": 76375,
+      "sha256": "045fdab10df5004f6aaf52f7899cfa47903b1d9203dc94b3bb5e33be357f777c"
+    },
+    {
+      "path": "sessions/01_goncharov_lie_coalgebra.md",
+      "size_bytes": 1978,
+      "sha256": "035fd2a94890d0ea4f7d541f566a2afbb2e13d8637d1c7c9744d7049a39f9bed"
+    },
+    {
+      "path": "sessions/02_motive_and_functions_of.md",
+      "size_bytes": 10276,
+      "sha256": "9bdbd83d9696b39e8d44ce8cc6ac5d0cd6a091788a1c3d845ddd1377979480c8"
+    },
+    {
+      "path": "sessions/03_math_to_physics_representation_library.md",
+      "size_bytes": 43466,
+      "sha256": "63612f6374d8489af96279a27f4052223f33ae0d7fe26ab11fca8c170627b2e3"
+    },
+    {
+      "path": "sessions/04_gauge_redundancy_quantum_high_availability.md",
+      "size_bytes": 11867,
+      "sha256": "b26321c3df8fb23d4be3aa30b9a39ac61e8a9d4fabbc48f2c0e8e00f83db1596"
+    },
+    {
+      "path": "sessions/05_arxiv_paper_generation.md",
+      "size_bytes": 2013,
+      "sha256": "c9712c68ad1d8c19b79b6153e602a1fde4a43ec161793f0a2f0a5b9602c0374a"
+    },
+    {
+      "path": "sessions/06_math_code_proof_physics.md",
+      "size_bytes": 6103,
+      "sha256": "00448396899fe4291762a1fd81c6fc8947dcf1494c382d640ab2c51137dd3e23"
+    }
+  ]
+}

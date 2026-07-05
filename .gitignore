@@ -1,0 +1,36 @@
+# Node / Next.js
+node_modules/
+website/node_modules/
+website/.next/
+website/out/
+.vercel/
+
+# LaTeX build artifacts
+papers/latex/*.aux
+papers/latex/*.log
+papers/latex/*.out
+papers/latex/*.toc
+papers/latex/*.synctex.gz
+papers/latex/*.fls
+papers/latex/*.fdb_latexmk
+papers/latex/*.bbl
+papers/latex/*.blg
+papers/latex/*.nav
+papers/latex/*.snm
+papers/latex/*.vrb
+
+# Haskell build artifacts
+src/**/*.o
+src/**/*.hi
+src/**/test
+src/**/props
+
+# Lean build artifacts
+lean/**/.lake/
+lean/**/build/
+lean/**/lake-packages/
+
+# OS / tmp / agent scratch
+.DS_Store
+/tmp/
+tmp/

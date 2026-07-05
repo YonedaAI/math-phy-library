@@ -1,0 +1,823 @@
+<h1 data-number="1" id="sec:intro"><span class="header-section-number">1</span> Introduction</h1>
+<h2 data-number="1.1" id="motivation"><span class="header-section-number">1.1</span> Motivation</h2>
+<p>A recurring experience in mathematical physics is that a physical quantity is not merely <em>described by</em> some piece of mathematics but is literally <em>obtained</em> from it by a structured act of realization. A scattering amplitude is obtained as a period integral of an algebraic form over a chain; a partition function is obtained as a trace; a topological quantum field theory (TQFT) assigns a vector space to a manifold and a linear map to a cobordism; a logical qubit is obtained by encoding into a larger physical Hilbert space. In each case a mathematical object <span class="math inline">\(M\)</span> is passed through a pipeline <span class="math display">\[\begin{aligned}
+  M &amp;\xrightarrow{\ \Phi\ } \text{abstract physical information}
+     \xrightarrow{\ \mathrm{Real}_\alpha\ } \text{physical representation}\\
+    &amp;\xrightarrow{\ \mathrm{Obs}\ } \text{measurement data,}
+\end{aligned}\]</span> and what we call an “observable” is the endpoint of this pipeline. The guiding slogan of the entire program is compressed as <span class="math display">\[\boxed{\ \text{observable} \;=\; \mathrm{Real}(\text{abstract structure}).\ }\]</span></p>
+<p>This paper does <em>not</em> claim that all of physics is a functor out of all of mathematics. Such a single universal functor is almost certainly not well-defined. Instead we take the opposite, deliberately modest stance: the translation is <em>local</em> and <em>domain-indexed</em>, and every translation carries an explicit <em>epistemic status label</em> recording whether it is a standard mathematical fact, a strong heuristic, or a speculative ontological proposal. The status label is part of the formalism, not decoration. It is the device by which the framework remains honest about what it has actually established versus what it merely suggests.</p>
+<h2 data-number="1.2" id="the-modular-series"><span class="header-section-number">1.2</span> The modular series</h2>
+<p>This is Part I of a seven-part modular series, <em>A Math<span class="math inline">\(\to\)</span>Physics Representation Library</em>. We stress the word <em>modular</em>: this is not a single monolithic theory but a ladder of standalone modules, each readable and defensible on its own, whose composition is exhibited as an explicit hierarchical building process rather than asserted as an already-unified whole. The ladder is summarized in <a href="#tab:ladder" data-reference-type="ref+Label" data-reference="tab:ladder">1</a>.</p>
+<table id="tab:ladder">
+<caption>The modular composition ladder. Each part introduces new structure and adds an emergent property that the composition makes available.</caption>
+<thead>
+<tr>
+<th style="text-align: center;"><strong>Part</strong></th>
+<th style="text-align: left;"><strong>Topic</strong></th>
+<th style="text-align: left;"><strong>Structure introduced / emergent property</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;">I</td>
+<td style="text-align: left;">Foundations (this paper)</td>
+<td style="text-align: left;"><span class="math inline">\(\mathsf{Dom},\mathsf{Math}_d,\mathsf{Phys}\)</span>; representation entries <span class="math inline">\((M,P,\tau,\sigma)\)</span>; prestack/stack; realization pipeline <span class="math inline">\(\mathrm{Obs}\circ\mathrm{Real}_\alpha\circ\Phi\)</span>; status system <span class="math inline">\(\mathsf{S}/\mathsf{H}/\mathsf{P}\)</span>. <em>Disciplined translation as data.</em></td>
+</tr>
+<tr>
+<td style="text-align: center;">II</td>
+<td style="text-align: left;">Motives, periods, amplitudes</td>
+<td style="text-align: left;">Motives <span class="math inline">\(\mathrm{Mot}(X)\)</span>, period data <span class="math inline">\(\Pi=(X,D,\omega,\Gamma)\)</span>, motivic amplitude objects <span class="math inline">\(\mathcal{A}^{\mathfrak m}\)</span>, coproduct <span class="math inline">\(\Delta\)</span>, cobracket <span class="math inline">\(\delta\)</span>. <em><span class="math inline">\(\mathrm{Real}_\alpha\)</span> made concrete and numeric.</em></td>
+</tr>
+<tr>
+<td style="text-align: center;">III</td>
+<td style="text-align: left;">Algebraic geometry</td>
+<td style="text-align: left;">Schemes, moduli stacks, positive geometries, Hodge structures, Gauss–Manin. <em>Possibility spaces as geometry.</em></td>
+</tr>
+<tr>
+<td style="text-align: center;">IV</td>
+<td style="text-align: left;">Algebraic topology</td>
+<td style="text-align: left;">(Co)homology, characteristic classes, bordism, TQFT as <span class="math inline">\(\mathsf{Bord}_n \to \mathsf{Vect}\)</span>. <em>Functorial realization; conserved global data.</em></td>
+</tr>
+<tr>
+<td style="text-align: center;">V</td>
+<td style="text-align: left;">Category theory &amp; HoTT</td>
+<td style="text-align: left;">Categories, functors, monoidal/dagger-compact structure, univalence. <em>The universal grammar; equivalence becomes identity.</em></td>
+</tr>
+<tr>
+<td style="text-align: center;">VI</td>
+<td style="text-align: left;">Sheaves, stacks, gauge, quantum HA</td>
+<td style="text-align: left;">Stacks as pseudofunctors, gauge redundancy <span class="math inline">\([X/G]\)</span>, quantum high-availability codes, Hopf-algebraic renormalization. <em>Many representatives, one logical content.</em></td>
+</tr>
+<tr>
+<td style="text-align: center;">Synth.</td>
+<td style="text-align: left;">Recomposition</td>
+<td style="text-align: left;">Reassembly of I–VI into one conjectural ontology plus limitations. <em>The ladder closes on Part I.</em></td>
+</tr>
+</tbody>
+</table>
+<p>A structural fact worth stating at the outset: the ladder is <em>circular</em>. Part I <em>posits</em> that representation entries behave like a stack—local data gluing not on the nose but up to equivalence. Part VI <em>proves</em> what a stack actually is (a fibered category satisfying descent) and shows that <span class="math inline">\(\mathrm{Rep}_{\mathrm{phys}}\)</span> is stack-like exactly when compatible local entries glue up to gauge equivalence. Thus Part VI supplies the rigorous foundation for Part I’s opening formalism; the synthesis Part records this as a “closure theorem.” We therefore write Part I with explicit forward references, flagging every promissory note that a later module discharges.</p>
+<h2 data-number="1.3" id="contributions"><span class="header-section-number">1.3</span> Contributions</h2>
+<p>The concrete contributions of this paper are:</p>
+<ol>
+<li><p>A precise definition of the objects <span class="math inline">\(\mathsf{Dom}\)</span>, <span class="math inline">\(\mathsf{Math}_d\)</span>, <span class="math inline">\(\mathsf{Phys}\)</span> and the bracket notation <span class="math inline">\(\llbracket M \rrbracket_{\mathrm{phys}}\)</span> for the physical representation of <span class="math inline">\(M\)</span> (<a href="#sec:framework" data-reference-type="ref+Label" data-reference="sec:framework">2</a>).</p></li>
+<li><p>The four core definitions of the representation-stack formalism: <em>representation entry</em>, <em>representation library</em>, <em>representation prestack</em>, and <em>representation stack</em> (<a href="#sec:stack" data-reference-type="ref+Label" data-reference="sec:stack">3</a>), together with the master diagram (<a href="#fig:master" data-reference-type="ref+Label" data-reference="fig:master">1</a>).</p></li>
+<li><p>The <em>realization pipeline</em> <span class="math inline">\(\mathrm{Obs}_\alpha = \mathrm{Obs}\circ\mathrm{Real}_\alpha\circ\Phi\)</span> and its four governing axioms (<a href="#sec:pipeline" data-reference-type="ref+Label" data-reference="sec:pipeline">4</a>), plus the parallel six-axiom <em>ontology</em> presentation and its central conjecture (<a href="#sec:ontology" data-reference-type="ref+Label" data-reference="sec:ontology">5</a>).</p></li>
+<li><p>Four results with proofs: functoriality of the pipeline (<a href="#thm:functorial" data-reference-type="ref+Label" data-reference="thm:functorial">19</a>, a proposition), the descent characterization of stackhood (<a href="#thm:descent" data-reference-type="ref+Label" data-reference="thm:descent">21</a>), the status calculus (<a href="#thm:status" data-reference-type="ref+Label" data-reference="thm:status">23</a>), and the coarse-quotient obstruction (<a href="#thm:coarse" data-reference-type="ref+Label" data-reference="thm:coarse">26</a>), collected in <a href="#sec:results" data-reference-type="ref+Label" data-reference="sec:results">6</a>.</p></li>
+<li><p>The core translation library and two cross-cutting tables (operations <span class="math inline">\(\leftrightarrow\)</span> physical interpretation; domains <span class="math inline">\(\leftrightarrow\)</span> physical faculties) that every later module reuses (<a href="#sec:library" data-reference-type="ref+Label" data-reference="sec:library">7</a>).</p></li>
+<li><p>A runnable Haskell encoding and an idiomatic Lean sketch of the stack and pipeline (<a href="#sec:code" data-reference-type="ref+Label" data-reference="sec:code">9</a>).</p></li>
+</ol>
+<h2 data-number="1.4" id="sec:status-intro"><span class="header-section-number">1.4</span> Epistemic status system</h2>
+<p>Throughout, every dictionary entry and every proposed correspondence carries one of three labels, used <em>verbatim</em> across all seven parts.</p>
+<div class="center">
+<table>
+<thead>
+<tr>
+<th style="text-align: center;"><strong>Label</strong></th>
+<th style="text-align: left;"><strong>Meaning</strong></th>
+<th style="text-align: left;"><strong>Canonical example</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;"><span class="math inline">\(\mathsf{S}\)</span></td>
+<td style="text-align: left;">standard use in mathematics or mathematical physics</td>
+<td style="text-align: left;">TQFT as a functor <span class="math inline">\(\mathsf{Bord}_n \to \mathsf{Vect}\)</span></td>
+</tr>
+<tr>
+<td style="text-align: center;"><span class="math inline">\(\mathsf{H}\)</span></td>
+<td style="text-align: left;">strong heuristic representation-dictionary entry</td>
+<td style="text-align: left;">motive as “functional essence”</td>
+</tr>
+<tr>
+<td style="text-align: center;"><span class="math inline">\(\mathsf{P}\)</span></td>
+<td style="text-align: left;">speculative philosophical ontology</td>
+<td style="text-align: left;">reality as motivic-categorical realization</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Composite labels (<span class="math inline">\(\mathsf{S}/\mathsf{H}\)</span>, <span class="math inline">\(\mathsf{H}/\mathsf{P}\)</span>) appear where an entry is standard as pure mathematics but heuristic or speculative in its physical reading; we preserve these composites verbatim. <a href="#thm:status" data-reference-type="ref+Label" data-reference="thm:status">23</a> promotes this informal system to a genuine algebraic calculus.</p>
+<h2 data-number="1.5" id="outline"><span class="header-section-number">1.5</span> Outline</h2>
+<p><a href="#sec:framework" data-reference-type="ref+Label" data-reference="sec:framework">2</a> fixes the categorical framework. <a href="#sec:stack" data-reference-type="ref+Label" data-reference="sec:stack">3</a> defines the representation stack. <a href="#sec:pipeline" data-reference-type="ref+Label" data-reference="sec:pipeline">4</a> defines the realization pipeline and its axioms. <a href="#sec:ontology" data-reference-type="ref+Label" data-reference="sec:ontology">5</a> presents the ontology axioms and the closure conjecture. <a href="#sec:results" data-reference-type="ref+Label" data-reference="sec:results">6</a> proves the four main theorems. <a href="#sec:library" data-reference-type="ref+Label" data-reference="sec:library">7</a> reproduces the core translation library. <a href="#sec:parts" data-reference-type="ref+Label" data-reference="sec:parts">8</a> sets up Parts II–VI as concrete instantiations. <a href="#sec:code" data-reference-type="ref+Label" data-reference="sec:code">9</a> presents the Haskell and Lean formalizations. <a href="#sec:discussion" data-reference-type="ref+Label" data-reference="sec:discussion">10</a> discusses limitations, and <a href="#sec:conclusion" data-reference-type="ref+Label" data-reference="sec:conclusion">11</a> concludes with the four slogans of the program.</p>
+<h1 data-number="2" id="sec:framework"><span class="header-section-number">2</span> Mathematical Framework</h1>
+<p>We work throughout with (possibly higher) categories. For definiteness a reader may take all categories to be ordinary <span class="math inline">\(1\)</span>-categories on first reading and reinterpret <span class="math inline">\(\mathsf{Gpd}\)</span>, <span class="math inline">\(\mathsf{Cat}\)</span> as <span class="math inline">\((2,1)\)</span>- and <span class="math inline">\(2\)</span>-categories where the text says “pseudofunctor” or “up to coherent isomorphism.” Part V makes the higher structure precise; here we need only the following ingredients.</p>
+<h2 data-number="2.1" id="domains-structures-and-physical-targets"><span class="header-section-number">2.1</span> Domains, structures, and physical targets</h2>
+<div id="def:dom" class="definition">
+<p><strong>Definition 1</strong> (Domain category).  The <em>domain category</em> <span class="math inline">\(\mathsf{Dom}\)</span> has as objects mathematical domains— algebraic topology, algebraic geometry, category theory, homotopy type theory, sheaf/stack theory, motivic period theory, and so on—and as morphisms <span class="math inline">\(u : e \to d\)</span> the <em>refinements</em>: inclusions of a subdomain, restrictions of scope, or specialization functors that express “<span class="math inline">\(e\)</span> is a more local or more special context inside <span class="math inline">\(d\)</span>.” Composition is composition of refinements and each domain has an identity refinement.</p>
+</div>
+<div id="def:mathd" class="definition">
+<p><strong>Definition 2</strong> (Structures in a domain).  For each <span class="math inline">\(d \in \mathsf{Dom}\)</span> let <span class="math inline">\(\mathsf{Math}_d\)</span> be a category (or higher category) whose objects are the mathematical structures native to <span class="math inline">\(d\)</span> and whose morphisms are the structure-preserving maps of <span class="math inline">\(d\)</span>. A refinement <span class="math inline">\(u : e \to d\)</span> induces a <em>restriction functor</em> <span class="math inline">\(u^\ast : \mathsf{Math}_d \to \mathsf{Math}_e\)</span> (read: view a <span class="math inline">\(d\)</span>-structure through the more special context <span class="math inline">\(e\)</span>). We do not require the <span class="math inline">\(\mathsf{Math}_d\)</span> to be glued into a single category; the whole point of modularity is that they are indexed by <span class="math inline">\(\mathsf{Dom}\)</span> and related only by the refinement functors.</p>
+</div>
+<div id="def:phys" class="definition">
+<p><strong>Definition 3</strong> (Physical target category).  <span class="math inline">\(\mathsf{Phys}\)</span> is a category (in general a bicategory or <span class="math inline">\(\infty\)</span>-category) of <em>physical representation targets</em>. Representative objects include: state spaces (Hilbert spaces, phase spaces), observable algebras (<span class="math inline">\(C^\ast\)</span>- or von Neumann algebras), process categories (categories of histories or channels), gauge moduli (quotient stacks of field configurations), quantum code spaces (logical subsystems of a physical Hilbert space), and measurement-outcome sets. Morphisms are the physically meaningful maps between such targets: isometries, <span class="math inline">\(\ast\)</span>-homomorphisms, completely positive maps, gauge-equivariant maps, and so on.</p>
+</div>
+<div id="def:bracket" class="definition">
+<p><strong>Definition 4</strong> (Physical-representation bracket).  Given a chosen interpretation, we write <span class="math display">\[\llbracket M \rrbracket_{\mathrm{phys}} \in \mathsf{Phys}\]</span> for the physical representation assigned to a mathematical structure <span class="math inline">\(M \in \mathsf{Math}_d\)</span>. The bracket is a partial, interpretation-dependent operation: <span class="math inline">\(\llbracket M \rrbracket_{\mathrm{phys}}\)</span> is defined only when an entry supplying it has been declared, and its epistemic reliability is exactly the status of that entry.</p>
+</div>
+<h2 data-number="2.2" id="realization-channels"><span class="header-section-number">2.2</span> Realization channels</h2>
+<p>The passage from abstract information to a concrete physical representation is not unique: the same abstract object can be realized through different <em>channels</em>. We index channels by a symbol <span class="math inline">\(\alpha\)</span>.</p>
+<div id="def:channel" class="definition">
+<p><strong>Definition 5</strong> (Realization channel).  A <em>realization channel</em> is an index <span class="math inline">\(\alpha\)</span> drawn from <span class="math display">\[\begin{aligned}
+  \mathsf{Chan} = \{\,&amp;\text{Betti},\ \text{de Rham},\ \text{Hodge},\ \text{\&#39;etale},\ p\text{-adic},\ \text{quantum},\\
+  &amp;\text{thermodynamic},\ \text{computational},\ \text{experimental},\ \text{operational}\,\},
+\end{aligned}\]</span> together with a functor <span class="math inline">\(\mathrm{Real}_\alpha : \mathsf{Info}_d \to \mathsf{Rep}_d\)</span> from a category of abstract-information objects to a category of physical representations. Different <span class="math inline">\(\alpha\)</span> realize the same abstract object into different but comparable physical data; comparison morphisms between channels are the <em>comparison isomorphisms</em> (e.g. the period pairing relating Betti and de Rham channels in Part II).</p>
+</div>
+<h2 data-number="2.3" id="the-groupoid-valued-assignment"><span class="header-section-number">2.3</span> The groupoid-valued assignment</h2>
+<div id="def:gpd-entries" class="definition">
+<p><strong>Definition 6</strong> (Groupoid of entries).  For <span class="math inline">\(d \in \mathsf{Dom}\)</span>, let <span class="math inline">\(\mathrm{Rep}_{\mathrm{phys}}(d)\)</span> be the <em>groupoid</em> whose objects are the representation entries native to <span class="math inline">\(d\)</span> (<a href="#def:entry" data-reference-type="ref+Label" data-reference="def:entry">8</a> below) and whose morphisms are the <em>equivalences</em> of entries—isomorphisms of the underlying mathematical structures that are compatible with the translation data and that represent physically irrelevant changes (dualities, gauge changes, code stabilizers, changes of coordinates). We take a groupoid rather than a category because, at the level of representation <em>content</em>, only invertible identifications are physically meaningful; non-invertible processes live in <span class="math inline">\(\mathsf{Phys}\)</span>, not among the entries.</p>
+</div>
+<p>The assignment <span class="math inline">\(d \mapsto \mathrm{Rep}_{\mathrm{phys}}(d)\)</span>, together with the restriction functors induced by refinements, is the pseudofunctor <span class="math inline">\(\mathrm{Rep}_{\mathrm{phys}}: \mathsf{Dom}^{\mathrm{op}} \to \mathsf{Gpd}\)</span> that we make precise in <a href="#sec:stack" data-reference-type="ref+Label" data-reference="sec:stack">3</a>. The final ingredient we shall need is a notion of covering.</p>
+<div id="def:coverage" class="definition">
+<p><strong>Definition 7</strong> (Coverage on <span class="math inline">\(\mathsf{Dom}\)</span>).  A <em>Grothendieck topology</em> (or coverage) <span class="math inline">\(J\)</span> on <span class="math inline">\(\mathsf{Dom}\)</span> assigns to each domain <span class="math inline">\(d\)</span> a collection of <em>covering families</em> <span class="math inline">\(\{u_i : e_i \to d\}_{i \in I}\)</span> of refinements, closed under composition, base change, and containing all isomorphisms, and interpreted physically as: “the local contexts <span class="math inline">\(e_i\)</span> jointly exhaust the content of <span class="math inline">\(d\)</span>.” We call the pair <span class="math inline">\((\mathsf{Dom}, J)\)</span> a <em>site of domains</em>. Coverage encodes “contextual coverage”: a family of special or local mathematical viewpoints that together determine the global one.</p>
+</div>
+<h1 data-number="3" id="sec:stack"><span class="header-section-number">3</span> The Representation Stack</h1>
+<p>We now give the four definitions at the heart of the formalism. They are stated so as to be independent of the higher-categorical subtleties; <a href="#sec:results" data-reference-type="ref+Label" data-reference="sec:results">6</a> supplies the theorems that make them useful, and Part VI supplies the full descent-theoretic underpinning.</p>
+<div id="def:entry" class="definition">
+<p><strong>Definition 8</strong> (Representation entry).  A <em>representation entry</em> is a quadruple <span class="math display">\[E = (M, P, \tau, \sigma),\]</span> where <span class="math inline">\(M \in \mathsf{Math}_d\)</span> is a mathematical structure, <span class="math inline">\(P \in \mathsf{Phys}\)</span> is a proposed physical representation, <span class="math inline">\(\tau\)</span> is a <em>semantic translation datum</em>, and <span class="math inline">\(\sigma \in \{\mathsf{S}, \mathsf{H}, \mathsf{P}\}\)</span> is the epistemic status label. The translation datum <span class="math inline">\(\tau\)</span> may be a functor <span class="math inline">\(\mathsf{Math}_d \to \mathsf{Phys}\)</span>, a natural transformation between such, an equivalence class of models, a physical interpretation map, or a weaker relation; the strength of <span class="math inline">\(\tau\)</span> is exactly what <span class="math inline">\(\sigma\)</span> records.</p>
+</div>
+<p>We formalize the graded strength of <span class="math inline">\(\tau\)</span> explicitly, because it is what the status calculus (<a href="#thm:status" data-reference-type="ref+Label" data-reference="thm:status">23</a>) tracks.</p>
+<div id="def:transl" class="definition">
+<p><strong>Definition 9</strong> (Translation strength).  A translation datum <span class="math inline">\(\tau\)</span> from <span class="math inline">\(M \in \mathsf{Math}_d\)</span> to <span class="math inline">\(P \in \mathsf{Phys}\)</span> is one of the following, listed in decreasing strength:</p>
+<ol>
+<li><p>a <em>functorial translation</em>: an actual functor <span class="math inline">\(F : \mathsf{Math}_d \to \mathsf{Phys}\)</span> with <span class="math inline">\(F(M) \cong P\)</span> (candidate status <span class="math inline">\(\mathsf{S}\)</span>);</p></li>
+<li><p>a <em>natural translation</em>: a natural transformation between declared functors witnessing <span class="math inline">\(M \rightsquigarrow P\)</span> (candidate status <span class="math inline">\(\mathsf{S}/\mathsf{H}\)</span>);</p></li>
+<li><p>an <em>interpretive rule</em>: a partial assignment <span class="math inline">\(M \mapsto P\)</span> justified by analogy or dictionary (candidate status <span class="math inline">\(\mathsf{H}\)</span>);</p></li>
+<li><p>a <em>speculative map</em>: a proposed but unconstructed assignment (candidate status <span class="math inline">\(\mathsf{P}\)</span>).</p></li>
+</ol>
+<p>The word “candidate” is deliberate: the actual label <span class="math inline">\(\sigma\)</span> of an entry is assigned by the author and may be weaker than the nominal strength of <span class="math inline">\(\tau\)</span> (e.g. a genuine functor whose <em>physical interpretation</em> is only heuristic carries a composite label <span class="math inline">\(\mathsf{S}/\mathsf{H}\)</span>).</p>
+</div>
+<div id="def:library" class="definition">
+<p><strong>Definition 10</strong> (Representation library).  A <em>mathematics-to-physics representation library</em> is a collection <span class="math inline">\(\mathcal{L}\)</span> of representation entries that is closed, whenever the operations are defined, under:</p>
+<ol>
+<li><p><em>restriction</em> to subdomains along refinements <span class="math inline">\(u : e \to d\)</span>;</p></li>
+<li><p><em>transport</em> along equivalences of mathematical structures;</p></li>
+<li><p><em>composition</em> of compatible translations;</p></li>
+<li><p><em>decomposition</em> through boundary, coproduct, or localization operations;</p></li>
+<li><p><em>realization</em> into observables via the pipeline of <a href="#sec:pipeline" data-reference-type="ref+Label" data-reference="sec:pipeline">4</a>.</p></li>
+</ol>
+</div>
+<div id="def:prestack" class="definition">
+<p><strong>Definition 11</strong> (Representation prestack).  A <em>representation prestack</em> is a pseudofunctor <span class="math display">\[\mathrm{Rep}_{\mathrm{phys}}: \mathsf{Dom}^{\mathrm{op}} \longrightarrow \mathsf{Gpd}\]</span> assigning to each domain <span class="math inline">\(d\)</span> the groupoid <span class="math inline">\(\mathrm{Rep}_{\mathrm{phys}}(d)\)</span> of representation entries (<a href="#def:gpd-entries" data-reference-type="ref+Label" data-reference="def:gpd-entries">6</a>) and to each refinement <span class="math inline">\(u : e \to d\)</span> a restriction functor <span class="math inline">\(u^\ast : \mathrm{Rep}_{\mathrm{phys}}(d) \to \mathrm{Rep}_{\mathrm{phys}}(e)\)</span>, together with coherent composition isomorphisms <span class="math inline">\(\gamma_{u,v} : (u v)^\ast \Rightarrow v^\ast u^\ast\)</span> satisfying the pseudofunctor cocycle conditions.</p>
+</div>
+<div id="def:stack" class="definition">
+<p><strong>Definition 12</strong> (Representation stack).  Let <span class="math inline">\((\mathsf{Dom}, J)\)</span> be a site of domains. A representation prestack <span class="math inline">\(\mathrm{Rep}_{\mathrm{phys}}\)</span> is a <em>representation stack</em> if, for every covering family <span class="math inline">\(\{u_i : e_i \to d\}_{i \in I} \in J(d)\)</span>, compatible families of local representation entries glue to a global entry uniquely up to coherent isomorphism; equivalently (<a href="#thm:descent" data-reference-type="ref+Label" data-reference="thm:descent">21</a>), the comparison functor from <span class="math inline">\(\mathrm{Rep}_{\mathrm{phys}}(d)\)</span> to the groupoid of <span class="math inline">\(J\)</span>-descent data is an equivalence.</p>
+</div>
+<div id="rem:stack-broad" class="remark">
+<p><em>Remark 13</em>.  The word “stack” is used broadly. The groupoids <span class="math inline">\(\mathrm{Rep}_{\mathrm{phys}}(d)\)</span> record physically irrelevant equivalences: gauge changes, duality transformations, code stabilizers, or changes of coordinates. Part I <em>posits</em> this stack-like behavior by analogy; Part VI supplies its rigorous descent-theoretic meaning. The reader should treat <a href="#def:stack" data-reference-type="ref+Label" data-reference="def:stack">12</a> as a promissory note whose payment is scheduled for Part VI, and <a href="#thm:descent" data-reference-type="ref+Label" data-reference="thm:descent">21</a> as the interface contract between them.</p>
+</div>
+<h2 data-number="3.1" id="the-master-diagram"><span class="header-section-number">3.1</span> The master diagram</h2>
+<p>The canonical picture of the entire program is the following five-node pipeline, with a feedback loop expressing that gauge/equivalence/duality-related structures enter the pipeline as the <em>same</em> abstract information.</p>
+<figure id="fig:master" data-latex-placement="htbp">
+
+<figcaption>The master diagram of the realization pipeline. A mathematical structure <span class="math inline">\(M\)</span> is sent by <span class="math inline">\(\Phi\)</span> to abstract physical information, realized through a channel <span class="math inline">\(\mathrm{Real}_\alpha\)</span> into a physical representation, from which <span class="math inline">\(\mathrm{Obs}\)</span> extracts measurement data. The dashed feedback expresses the Equivalence axiom: structures related by gauge, equivalence, or duality feed identical abstract information into the pipeline.</figcaption>
+</figure>
+<p>The same pipeline can be drawn as a commuting diagram of categories, which is the form used in <a href="#thm:functorial" data-reference-type="ref+Label" data-reference="thm:functorial">19</a>: <span class="math display">\[\begin{tikzcd}[column sep=large]
+\mathsf{Math}_d \arrow[r, &quot;\Phi&quot;] \arrow[rrr, bend right=22, &quot;\mathrm{Obs}_\alpha&quot;&#39;] &amp;
+\mathsf{Info}_d \arrow[r, &quot;\mathrm{Real}_\alpha&quot;] &amp;
+\mathsf{Rep}_d \arrow[r, &quot;\mathrm{Obs}&quot;] &amp;
+\mathsf{Meas}_d
+\end{tikzcd}\]</span></p>
+<h1 data-number="4" id="sec:pipeline"><span class="header-section-number">4</span> The Realization Pipeline</h1>
+<div id="def:pipeline" class="definition">
+<p><strong>Definition 14</strong> (Realization pipeline).  Fix a domain <span class="math inline">\(d\)</span> and a channel <span class="math inline">\(\alpha\)</span>. The <em>realization pipeline</em> is the composite <span class="math display">\[\mathrm{Obs}_\alpha \;=\; \mathrm{Obs}\circ \mathrm{Real}_\alpha \circ \Phi \;:\;
+  \mathsf{Math}_d \xrightarrow{\ \Phi\ } \mathsf{Info}_d \xrightarrow{\ \mathrm{Real}_\alpha\ }
+  \mathsf{Rep}_d \xrightarrow{\ \mathrm{Obs}\ } \mathsf{Meas}_d,\]</span> where <span class="math inline">\(\Phi\)</span> extracts the abstract physical-information content of a structure, <span class="math inline">\(\mathrm{Real}_\alpha\)</span> realizes it into a physical representation through channel <span class="math inline">\(\alpha\)</span>, and <span class="math inline">\(\mathrm{Obs}\)</span> extracts measurement data. On objects, <span class="math display">\[\mathrm{Obs}_\alpha(M) \;=\; \mathrm{Obs}\bigl(\mathrm{Real}_\alpha(\Phi(M))\bigr).\]</span></p>
+</div>
+<p>The pipeline is governed by four axioms. These are the axioms every later module instantiates concretely.</p>
+<div id="ax:real" class="axiom">
+<p><strong>Axiom 1</strong> (Realization).  Every observable is the output of the pipeline: <span class="math inline">\(\text{observable} = \mathrm{Obs}\circ \mathrm{Real}_\alpha(\text{abstract structure})\)</span>. There is no observable content except through a declared channel <span class="math inline">\(\alpha\)</span>.</p>
+</div>
+<div id="ax:equiv" class="axiom">
+<p><strong>Axiom 2</strong> (Equivalence).  Mathematical descriptions related by an equivalence lying in the automorphism/gauge groupoid of a representation entry determine the <em>same</em> physical content at the chosen observational level. Formally, if <span class="math inline">\(g : M \xrightarrow{\sim} M&#39;\)</span> is a morphism in the groupoid <span class="math inline">\(\mathrm{Rep}_{\mathrm{phys}}(d)\)</span> then there is a canonical isomorphism <span class="math inline">\(\mathrm{Obs}_\alpha(M) \cong \mathrm{Obs}_\alpha(M&#39;)\)</span> in <span class="math inline">\(\mathsf{Meas}_d\)</span>; when <span class="math inline">\(\mathsf{Meas}_d\)</span> is skeletal (e.g. a bare set of numerical measurement outcomes) this canonical isomorphism is a genuine equality <span class="math inline">\(\mathrm{Obs}_\alpha(M) = \mathrm{Obs}_\alpha(M&#39;)\)</span>.</p>
+</div>
+<div id="ax:local" class="axiom">
+<p><strong>Axiom 3</strong> (Locality / descent).  Physical representations must be locally assignable and globally coherent: for a covering <span class="math inline">\(\{e_i \to d\}\)</span>, a global representation is determined by compatible local ones. Failure of descent is not a defect of the formalism but a physical phenomenon—an obstruction, anomaly, or missing boundary datum.</p>
+</div>
+<div id="ax:decomp" class="axiom">
+<p><strong>Axiom 4</strong> (Decomposition).  Compositional or period-like observables admit a decomposition operation (boundary <span class="math inline">\(\partial\)</span>, coproduct <span class="math inline">\(\Delta\)</span>, coaction, spectral sequence, or factorization) revealing lower-level informational pieces. The decomposition is functorial: it commutes with compatible realization channels.</p>
+</div>
+<div id="ex:tqft" class="example">
+<p><strong>Example 15</strong> (TQFT as a status-<span class="math inline">\(\mathsf{S}\)</span> pipeline).  Let <span class="math inline">\(d\)</span> be algebraic topology and take <span class="math inline">\(\Phi\)</span> to send an <span class="math inline">\(n\)</span>-manifold to its bordism data, <span class="math inline">\(\mathrm{Real}_\alpha\)</span> to be a fixed TQFT functor <span class="math inline">\(Z : \mathsf{Bord}_n \to \mathsf{Vect}\)</span>, and <span class="math inline">\(\mathrm{Obs}\)</span> to read off partition functions and correlation numbers. Then <span class="math inline">\(\mathrm{Obs}_\alpha\)</span> is an honest functor and the entry carries status <span class="math inline">\(\mathsf{S}\)</span>: the realization is an actually-constructed functor. This is the paradigm the other modules aim to emulate. It is developed fully in Part IV.</p>
+</div>
+<div id="ex:motive" class="example">
+<p><strong>Example 16</strong> (A status-<span class="math inline">\(\mathsf{H}\)</span> pipeline).  Let <span class="math inline">\(d\)</span> be motivic period theory, <span class="math inline">\(\Phi\)</span> send a variety <span class="math inline">\(X\)</span> to its motive <span class="math inline">\(\mathrm{Mot}(X)\)</span> read as “functional essence,” <span class="math inline">\(\mathrm{Real}_\alpha\)</span> be a period realization, and <span class="math inline">\(\mathrm{Obs}\)</span> take numerical periods. The mathematics of realization functors on motives is standard (status <span class="math inline">\(\mathsf{S}\)</span> <em>as mathematics</em>), but the reading of the motive as the physical “functional essence” of <span class="math inline">\(X\)</span> is heuristic, so the <em>entry</em> carries the composite label <span class="math inline">\(\mathsf{S}/\mathsf{H}\)</span>. This is developed in Part II, where the caution that a motive is not literally “the functions of” <span class="math inline">\(X\)</span> is stated prominently.</p>
+</div>
+<h1 data-number="5" id="sec:ontology"><span class="header-section-number">5</span> Axioms for a Representation Ontology</h1>
+<p>The four pipeline axioms of <a href="#sec:pipeline" data-reference-type="ref+Label" data-reference="sec:pipeline">4</a> are operational. The source program also presents a parallel, more philosophical set of six <em>ontology</em> axioms, which we reproduce because the synthesis Part treats them as the target statement the whole ladder discharges. We then note their relationship to the pipeline axioms.</p>
+<div id="ax:syntax" class="ontaxiom">
+<p><strong>Ontology Axiom 1</strong> (Syntax).  Mathematics is the syntax of physical representation: physical systems, states, and processes are carried by mathematical structures <span class="math inline">\(M \in \mathsf{Math}_d\)</span>.</p>
+</div>
+<div id="ax:semantics" class="ontaxiom">
+<p><strong>Ontology Axiom 2</strong> (Semantics).  The functional essence of a structure—its invariant pre-numerical content—is its semantics; in Part II this is made precise as a motive.</p>
+</div>
+<div id="ax:real-ont" class="ontaxiom">
+<p><strong>Ontology Axiom 3</strong> (Realization (ontological)).  Observables arise by realizing semantic content through a channel: <span class="math inline">\(\mathrm{Obs}_\alpha(M) = \mathrm{Obs}(\mathrm{Real}_\alpha(\Phi(M)))\)</span>. This is <a href="#ax:real" data-reference-type="ref+Label" data-reference="ax:real">1</a> read ontologically.</p>
+</div>
+<div id="ax:equiv-ont" class="ontaxiom">
+<p><strong>Ontology Axiom 4</strong> (Equivalence / gauge).  Descriptions differing by gauge, equivalence, or duality determine the same physical content; this is <a href="#ax:equiv" data-reference-type="ref+Label" data-reference="ax:equiv">2</a> read ontologically and is discharged type-theoretically (univalence, Part V) and geometrically (descent, Part VI).</p>
+</div>
+<div id="ax:decomp-ont" class="ontaxiom">
+<p><strong>Ontology Axiom 5</strong> (Decomposition (ontological)).  Observable content decomposes into primitive informational pieces via a coalgebraic operation; this is <a href="#ax:decomp" data-reference-type="ref+Label" data-reference="ax:decomp">4</a> read ontologically and is made concrete by the Goncharov coproduct (Part II) and Connes–Kreimer coproduct (Part VI).</p>
+</div>
+<div id="ax:motivic" class="ontaxiom">
+<p><strong>Ontology Axiom 6</strong> (Motivic pre-numericality).  Numbers extracted from physics are realizations of pre-numerical motivic data: <span class="math inline">\(\mathcal{A} = \mathrm{per}(\mathcal{A}^{\mathfrak m})\)</span>. This is the amplitude-level refinement of <a href="#ax:real" data-reference-type="ref+Label" data-reference="ax:real">1</a>; it drives Part II.</p>
+</div>
+<div id="conj:closure" class="conjecture">
+<p><strong>Conjecture 17</strong> (Motivic-categorical information ontology).  A sufficiently broad class of physical theories admits a representation-stack description in which states, processes, observables, amplitudes, gauge redundancies, and measurement values arise as realizations of structured categorical, homotopical, geometric, and motivic information. Equivalently, for such theories the prestack <span class="math inline">\(\mathrm{Rep}_{\mathrm{phys}}\)</span> built from the modules of Parts II–VI is a representation stack in the sense of <a href="#def:stack" data-reference-type="ref+Label" data-reference="def:stack">12</a>.</p>
+</div>
+<div class="remark">
+<p><em>Remark 18</em> (Relationship of the two axiom sets).  The pipeline axioms (<a href="#ax:real" data-reference-type="ref+Label" data-reference="ax:real">1</a>–<a href="#ax:decomp" data-reference-type="ref+Label" data-reference="ax:decomp">4</a>) are what one <em>uses</em> to build entries; the ontology axioms (<a href="#ax:syntax" data-reference-type="ref+Label" data-reference="ax:syntax">1</a>–<a href="#ax:motivic" data-reference-type="ref+Label" data-reference="ax:motivic">6</a>) are what one <em>claims</em> the entries collectively mean. <a href="#ax:real" data-reference-type="ref+Label" data-reference="ax:real">1</a> and <a href="#ax:real-ont" data-reference-type="ref+Label" data-reference="ax:real-ont">3</a> coincide; <a href="#ax:equiv" data-reference-type="ref+Label" data-reference="ax:equiv">2</a> and <a href="#ax:equiv-ont" data-reference-type="ref+Label" data-reference="ax:equiv-ont">4</a> coincide; <a href="#ax:decomp" data-reference-type="ref+Label" data-reference="ax:decomp">4</a> and <a href="#ax:decomp-ont" data-reference-type="ref+Label" data-reference="ax:decomp-ont">5</a> coincide; the Locality axiom (<a href="#ax:local" data-reference-type="ref+Label" data-reference="ax:local">3</a>) is the operational shadow of <a href="#conj:closure" data-reference-type="ref+Label" data-reference="conj:closure">17</a>’s demand that <span class="math inline">\(\mathrm{Rep}_{\mathrm{phys}}\)</span> be a <em>stack</em>, i.e. that descent hold. <a href="#ax:syntax" data-reference-type="ref+Label" data-reference="ax:syntax">1</a>, <a href="#ax:semantics" data-reference-type="ref+Label" data-reference="ax:semantics">2</a>, and <a href="#ax:motivic" data-reference-type="ref+Label" data-reference="ax:motivic">6</a> have no operational counterpart in <a href="#sec:pipeline" data-reference-type="ref+Label" data-reference="sec:pipeline">4</a>; they are the semantic layer Part II supplies.</p>
+</div>
+<h1 data-number="6" id="sec:results"><span class="header-section-number">6</span> Results</h1>
+<p>We prove the four main results. <a href="#thm:functorial" data-reference-type="ref+Label" data-reference="thm:functorial">19</a> and <a href="#thm:descent" data-reference-type="ref+Label" data-reference="thm:descent">21</a> concern the pipeline and the stack; <a href="#thm:status" data-reference-type="ref+Label" data-reference="thm:status">23</a> turns the status system into a calculus; <a href="#thm:coarse" data-reference-type="ref+Label" data-reference="thm:coarse">26</a> is the first appearance of the “stacks retain gauge information” phenomenon that recurs across the whole series.</p>
+<h2 data-number="6.1" id="functoriality-of-the-realization-pipeline"><span class="header-section-number">6.1</span> Functoriality of the realization pipeline</h2>
+<div id="thm:functorial" class="proposition">
+<p><strong>Proposition 19</strong> (Functoriality of the realization pipeline).  <em>Fix a domain <span class="math inline">\(d\)</span> and a channel <span class="math inline">\(\alpha\)</span>. Suppose the three stages <span class="math display">\[\Phi : \mathsf{Math}_d \to \mathsf{Info}_d, \qquad
+  \mathrm{Real}_\alpha : \mathsf{Info}_d \to \mathsf{Rep}_d, \qquad
+  \mathrm{Obs}: \mathsf{Rep}_d \to \mathsf{Meas}_d\]</span> are each functors. Then the assignment <span class="math inline">\(M \mapsto \mathrm{Obs}_\alpha(M) = \mathrm{Obs}(\mathrm{Real}_\alpha(\Phi(M)))\)</span> extends to a functor <span class="math inline">\(\mathrm{Obs}_\alpha : \mathsf{Math}_d \to \mathsf{Meas}_d\)</span>. Moreover the assignment <span class="math inline">\(\alpha \mapsto \mathrm{Obs}_\alpha\)</span> is functorial in the channel: a comparison morphism <span class="math inline">\(\theta : \alpha \Rightarrow \beta\)</span> (a natural transformation <span class="math inline">\(\mathrm{Real}_\alpha \Rightarrow \mathrm{Real}_\beta\)</span>) induces a natural transformation <span class="math inline">\(\mathrm{Obs}_\alpha \Rightarrow \mathrm{Obs}_\beta\)</span>.</em></p>
+</div>
+<div class="proof">
+<p><em>Proof.</em> The composite of functors is a functor: on objects, <span class="math inline">\((\mathrm{Obs}\circ \mathrm{Real}_\alpha \circ \Phi)(M)\)</span> is defined as above; on a morphism <span class="math inline">\(f : M \to M&#39;\)</span> set <span class="math inline">\(\mathrm{Obs}_\alpha(f) = \mathrm{Obs}(\mathrm{Real}_\alpha(\Phi(f)))\)</span>. Functoriality is inherited stagewise. Identities: <span class="math inline">\(\mathrm{Obs}_\alpha(\mathrm{id}_M) = \mathrm{Obs}(\mathrm{Real}_\alpha(\Phi(\mathrm{id}_M))) =
+\mathrm{Obs}(\mathrm{Real}_\alpha(\mathrm{id}_{\Phi M})) = \mathrm{Obs}(\mathrm{id}_{\mathrm{Real}_\alpha\Phi M}) =
+\mathrm{id}_{\mathrm{Obs}_\alpha M}\)</span>, using that each stage preserves identities. Composition: for <span class="math inline">\(f : M \to M&#39;\)</span>, <span class="math inline">\(g : M&#39; \to M&#39;&#39;\)</span>, <span class="math display">\[\begin{aligned}
+  \mathrm{Obs}_\alpha(g \circ f)
+  &amp;= \mathrm{Obs}\mathrm{Real}_\alpha\Phi(g \circ f)
+   = \mathrm{Obs}\mathrm{Real}_\alpha\bigl(\Phi(g)\circ\Phi(f)\bigr)\\
+  &amp;= \mathrm{Obs}\bigl(\mathrm{Real}_\alpha\Phi(g) \circ \mathrm{Real}_\alpha\Phi(f)\bigr)
+   = \mathrm{Obs}_\alpha(g)\circ\mathrm{Obs}_\alpha(f),
+\end{aligned}\]</span> again stagewise. Hence <span class="math inline">\(\mathrm{Obs}_\alpha\)</span> is a functor. For the second claim, let <span class="math inline">\(\theta : \mathrm{Real}_\alpha \Rightarrow \mathrm{Real}_\beta\)</span> be natural. Define <span class="math inline">\(\Theta_M := \mathrm{Obs}(\theta_{\Phi M}) : \mathrm{Obs}_\alpha(M) \to \mathrm{Obs}_\beta(M)\)</span>. For <span class="math inline">\(f : M \to M&#39;\)</span> naturality of <span class="math inline">\(\theta\)</span> at <span class="math inline">\(\Phi(f)\)</span> gives <span class="math inline">\(\theta_{\Phi M&#39;} \circ \mathrm{Real}_\alpha\Phi(f) = \mathrm{Real}_\beta\Phi(f) \circ
+\theta_{\Phi M}\)</span>; applying the functor <span class="math inline">\(\mathrm{Obs}\)</span> and using its functoriality yields <span class="math inline">\(\Theta_{M&#39;} \circ \mathrm{Obs}_\alpha(f) = \mathrm{Obs}_\beta(f) \circ \Theta_M\)</span>, i.e. <span class="math inline">\(\Theta\)</span> is natural. Concretely <span class="math inline">\(\Theta = \mathrm{Obs}\ast \theta \ast \Phi\)</span> is the horizontal composition (whiskering / Godement product) of <span class="math inline">\(\theta\)</span> with the functors <span class="math inline">\(\mathrm{Obs}\)</span> and <span class="math inline">\(\Phi\)</span>, so its naturality is the standard <span class="math inline">\(2\)</span>-categorical fact that whiskering a natural transformation by functors yields a natural transformation. This is exactly the naturality that Part II’s period comparison (Betti vs. de Rham) instantiates. ◻</p>
+</div>
+<div id="rem:status-bite" class="remark">
+<p><em>Remark 20</em> (Where the status labels bite).  <a href="#thm:functorial" data-reference-type="ref+Label" data-reference="thm:functorial">19</a> is a triviality about functor composition; its <em>force</em> is entirely in the hypothesis that each stage is a functor. An entry earns status <span class="math inline">\(\mathsf{S}\)</span> precisely when this hypothesis is discharged by an actual construction (as in <a href="#ex:tqft" data-reference-type="ref+Label" data-reference="ex:tqft">15</a>). An <span class="math inline">\(\mathsf{H}\)</span>- or <span class="math inline">\(\mathsf{P}\)</span>-entry only posits the stages, so the same formula holds <em>formally</em> but is not backed by a construction. The theorem thus makes explicit that “<span class="math inline">\(\mathrm{Obs}_\alpha\)</span> is a functor” is a claim whose reliability equals the status of its weakest stage—which is precisely what <a href="#thm:status" data-reference-type="ref+Label" data-reference="thm:status">23</a> quantifies.</p>
+</div>
+<h2 data-number="6.2" id="when-is-the-prestack-a-stack"><span class="header-section-number">6.2</span> When is the prestack a stack?</h2>
+<div id="thm:descent" class="theorem">
+<p><strong>Theorem 21</strong> (Descent characterization of stackhood).  <em>Let <span class="math inline">\((\mathsf{Dom}, J)\)</span> be a site of domains and <span class="math inline">\(\mathrm{Rep}_{\mathrm{phys}}: \mathsf{Dom}^{\mathrm{op}} \to \mathsf{Gpd}\)</span> a representation prestack. Then <span class="math inline">\(\mathrm{Rep}_{\mathrm{phys}}\)</span> is a representation stack (<a href="#def:stack" data-reference-type="ref+Label" data-reference="def:stack">12</a>) if and only if for every <span class="math inline">\(d \in \mathsf{Dom}\)</span> and every covering family <span class="math inline">\(\{u_i : e_i \to d\}_{i \in I} \in J(d)\)</span> the natural comparison functor <span class="math display">\[\Lambda_d : \mathrm{Rep}_{\mathrm{phys}}(d) \longrightarrow \mathrm{Desc}\bigl(J; \{u_i\}; \mathrm{Rep}_{\mathrm{phys}}\bigr)\]</span> into the groupoid of <span class="math inline">\(J\)</span>-descent data is an equivalence of groupoids. Here a descent datum is a family <span class="math inline">\((E_i)_{i}\)</span> with <span class="math inline">\(E_i \in \mathrm{Rep}_{\mathrm{phys}}(e_i)\)</span> together with gluing isomorphisms <span class="math inline">\(\phi_{ij} : \mathrm{pr}_i^\ast E_i \xrightarrow{\sim}
+\mathrm{pr}_j^\ast E_j\)</span> on the pairwise overlaps satisfying the cocycle condition <span class="math inline">\(\phi_{jk}\circ\phi_{ij} = \phi_{ik}\)</span> on triple overlaps (suppressing, as is standard, the pullbacks of each <span class="math inline">\(\phi\)</span> to the common triple fiber product <span class="math inline">\(e_i \times_d e_j \times_d e_k\)</span> along the evident projections). Here <span class="math inline">\(\mathrm{pr}_i : e_i \times_d e_j \to e_i\)</span> and <span class="math inline">\(\mathrm{pr}_j : e_i \times_d e_j \to e_j\)</span> are the two projections out of the fiber product (intersection) <span class="math inline">\(e_i \times_d e_j\)</span>, which exists by the base-change closure of the coverage (<a href="#def:coverage" data-reference-type="ref+Label" data-reference="def:coverage">7</a>); we use projection subscripts (not transition-map subscripts) throughout, so <span class="math inline">\(\phi_{ij}\)</span> merely indexes the ordered overlap <span class="math inline">\((i,j)\)</span>. The triple overlaps are the fiber products <span class="math inline">\(e_i \times_d e_j \times_d e_k\)</span>.</em></p>
+</div>
+<div class="proof">
+<p><em>Proof.</em> <span class="math inline">\((\Rightarrow)\)</span> Suppose <span class="math inline">\(\mathrm{Rep}_{\mathrm{phys}}\)</span> is a stack. By <a href="#def:stack" data-reference-type="ref+Label" data-reference="def:stack">12</a>, compatible families of local entries glue to a global entry uniquely up to coherent isomorphism. “Compatible family” is exactly a descent datum; “glues to a global entry” says <span class="math inline">\(\Lambda_d\)</span> is essentially surjective; “uniquely up to coherent isomorphism” says <span class="math inline">\(\Lambda_d\)</span> is fully faithful. Hence <span class="math inline">\(\Lambda_d\)</span> is an equivalence.</p>
+<p><span class="math inline">\((\Leftarrow)\)</span> Suppose each <span class="math inline">\(\Lambda_d\)</span> is an equivalence. Essential surjectivity gives existence of a gluing (every descent datum comes from a global entry); fullness and faithfulness give uniqueness up to unique compatible isomorphism. This is <a href="#def:stack" data-reference-type="ref+Label" data-reference="def:stack">12</a>.</p>
+<p>We record that the equivalence, when it fails, fails by a controlled amount: the prestack always admits a <em>stackification</em> <span class="math inline">\(\mathrm{Rep}_{\mathrm{phys}}\to \mathrm{Rep}_{\mathrm{phys}}^{+}\)</span>, the universal map to a stack, obtained by the plus-construction that formally adjoins gluings of descent data. <span class="math inline">\(\mathrm{Rep}_{\mathrm{phys}}\)</span> is already a stack iff the unit <span class="math inline">\(\mathrm{Rep}_{\mathrm{phys}}\to \mathrm{Rep}_{\mathrm{phys}}^{+}\)</span> is an equivalence, iff each <span class="math inline">\(\Lambda_d\)</span> is an equivalence. The construction of <span class="math inline">\(\mathrm{Rep}_{\mathrm{phys}}^{+}\)</span> and the verification that it is a stack are exactly the descent-theoretic content discharged rigorously in Part VI; here we use only its universal property, which is what makes the “if and only if” meaningful without circularity. ◻</p>
+</div>
+<div class="remark">
+<p><em>Remark 22</em> (Forward reference to Part VI).  <a href="#thm:descent" data-reference-type="ref+Label" data-reference="thm:descent">21</a> is stated as an interface. Its right-hand side—the groupoid <span class="math inline">\(\mathrm{Desc}(J;\{u_i\};\mathrm{Rep}_{\mathrm{phys}})\)</span> and the stackification <span class="math inline">\(\mathrm{Rep}_{\mathrm{phys}}^+\)</span>—is constructed in full in Part VI, where descent for a Grothendieck topology is developed properly (following Giraud and Vistoli). Part I is entitled to <em>state</em> the criterion and to reason with it, because both directions are formal once “descent datum” and “stackification” are granted their standard meanings. This is the precise sense in which Part VI “pays” Part I’s promissory note.</p>
+</div>
+<h2 data-number="6.3" id="the-status-calculus"><span class="header-section-number">6.3</span> The status calculus</h2>
+<p>We now promote the informal <span class="math inline">\(\mathsf{S}/\mathsf{H}/\mathsf{P}\)</span> system to an algebraic structure, so that the status of a <em>composite</em> translation is computed, not guessed. Order the labels by reliability, <span class="math display">\[\mathsf{S}\preceq\mathsf{H}\preceq\mathsf{P},\]</span> read “<span class="math inline">\(\mathsf{S}\)</span> is at least as reliable as <span class="math inline">\(\mathsf{H}\)</span>, which is at least as reliable as <span class="math inline">\(\mathsf{P}\)</span>.”</p>
+<div id="thm:status" class="theorem">
+<p><strong>Theorem 23</strong> (Status calculus).  <em>Let <span class="math inline">\(\Sigma = \{\mathsf{S}, \mathsf{H}, \mathsf{P}\}\)</span> with the total order <span class="math inline">\(\mathsf{S}\preceq\mathsf{H}\preceq\mathsf{P}\)</span>.</em></p>
+<ol>
+<li><p><em><span class="math inline">\((\Sigma, \vee, \mathsf{S})\)</span> is a commutative idempotent monoid, where <span class="math inline">\(a \vee b := \max_{\preceq}(a,b)\)</span> is the <em>less reliable</em> of the two labels — their <em>join</em> (supremum) in the reliability order — and <span class="math inline">\(\mathsf{S}\)</span>, the <span class="math inline">\(\preceq\)</span>-least (most reliable) element, is the unit.</em></p></li>
+<li><p><em>If representation entries <span class="math inline">\(E_1 = (M_1,P_1,\tau_1,\sigma_1)\)</span> and <span class="math inline">\(E_2 = (M_2,P_2,\tau_2,\sigma_2)\)</span> compose (i.e. <span class="math inline">\(\tau_2 \circ \tau_1\)</span> is defined, so <span class="math inline">\(P_1 = M_2\)</span> in the evident sense), then the composite entry <span class="math inline">\(E_2 \circ E_1\)</span> has status <span class="math display">\[\sigma(E_2 \circ E_1) \;=\; \sigma_1 \vee \sigma_2.\]</span> In particular the status <em>value</em> is <em>monotone non-decreasing</em> under composition in the <span class="math inline">\(\preceq\)</span> order—equivalently, <em>reliability</em> is monotone non-increasing: <span class="math inline">\(\sigma(E_2\circ E_1) \preceq\sigma_i\)</span> fails in general, while <span class="math inline">\(\sigma_i \preceq\sigma(E_2\circ E_1)\)</span> always holds—a chain of translations is only as reliable as its weakest link.</em></p></li>
+<li><p><em>Regard a representation library <span class="math inline">\(\mathcal{L}\)</span> as a category whose objects are <em>all</em> the carriers appearing in its entries—the union <span class="math inline">\(\mathsf{Math}_d \cup \mathsf{Info}_d \cup \mathsf{Rep}_d \cup \mathsf{Phys}\cup \mathsf{Meas}_d\)</span> of mathematical, informational, and physical targets—and whose morphisms are entries under composition (so a pipeline stage <span class="math inline">\(\mathsf{Math}_d \to \mathsf{Info}_d\)</span> and an entry <span class="math inline">\(\mathsf{Info}_d \to \mathsf{Rep}_d\)</span> compose as morphisms with matching object types), and let <span class="math inline">\(B(\Sigma,\vee)\)</span> be the one-object category obtained by delooping the status monoid (its unique hom-monoid is <span class="math inline">\((\Sigma,\vee)\)</span>). Then the assignment <span class="math inline">\(\sigma : \mathcal{L} \to B(\Sigma,\vee)\)</span> sending each entry to its status label is a <em>functor</em>; it is the universal composition-respecting, <span class="math inline">\(\mathsf{S}\)</span>-normalized status invariant.</em></p></li>
+</ol>
+</div>
+<div class="proof">
+<p><em>Proof.</em> (1) <span class="math inline">\(\vee = \max_{\preceq}\)</span> on a totally ordered set is associative, commutative, and idempotent, and the <span class="math inline">\(\preceq\)</span>-least element <span class="math inline">\(\mathsf{S}\)</span> is its identity: <span class="math inline">\(\mathsf{S}\vee a = \max_{\preceq}(\mathsf{S}, a) = a\)</span>. Hence <span class="math inline">\((\Sigma,\vee,\mathsf{S})\)</span> is a commutative idempotent monoid (a bounded join-semilattice with bottom <span class="math inline">\(\mathsf{S}\)</span> and top <span class="math inline">\(\mathsf{P}\)</span>).</p>
+<p>(2) By the intended semantics of the labels (<a href="#sec:status-intro" data-reference-type="ref+Label" data-reference="sec:status-intro">1.4</a>): <span class="math inline">\(\mathsf{S}\)</span> asserts that an actual functorial/natural construction exists; <span class="math inline">\(\mathsf{H}\)</span> asserts a heuristic interpretive rule; <span class="math inline">\(\mathsf{P}\)</span> asserts a speculative claim. A composite <span class="math inline">\(\tau_2\circ\tau_1\)</span> inherits the constructions of <em>both</em> factors, so it can be no more reliable than the less reliable factor: if either <span class="math inline">\(\tau_i\)</span> is merely speculative, the composite passes through a speculative step and is speculative; if the weaker of the two is heuristic and the other standard, the composite is heuristic; only if both are standard is the composite standard. This is exactly <span class="math inline">\(\sigma_1 \vee \sigma_2 = \max_{\preceq}(\sigma_1,\sigma_2)\)</span>. Monotonicity is then <span class="math inline">\(\sigma_i \preceq\max_{\preceq}(\sigma_1,\sigma_2)\)</span>, which holds by definition of <span class="math inline">\(\max\)</span>.</p>
+<p>(3) Composition of entries is associative with units the identity entries <span class="math inline">\((M,M,\mathrm{id},\mathsf{S})\)</span>, so <span class="math inline">\(\mathcal{L}\)</span> is a category. Delooping the commutative monoid <span class="math inline">\((\Sigma,\vee,\mathsf{S})\)</span> yields the one-object category <span class="math inline">\(B(\Sigma,\vee)\)</span> whose single hom-set is <span class="math inline">\(\Sigma\)</span> with composition <span class="math inline">\(\vee\)</span> and identity <span class="math inline">\(\mathsf{S}\)</span>. The assignment <span class="math inline">\(\sigma\)</span> sends every object of <span class="math inline">\(\mathcal{L}\)</span> to the unique object of <span class="math inline">\(B(\Sigma,\vee)\)</span> and every entry to its label; it preserves identities, <span class="math inline">\(\sigma(\mathrm{id}) = \mathsf{S}\)</span>, and composition, <span class="math inline">\(\sigma(E_2\circ E_1) = \sigma(E_2)\vee\sigma(E_1)\)</span> by (2). Hence <span class="math inline">\(\sigma\)</span> is a functor <span class="math inline">\(\mathcal{L} \to B(\Sigma,\vee)\)</span>. (We emphasize that <span class="math inline">\(\mathcal{L}\)</span> is a genuine category, not a monoid, so the target is the <em>delooping</em> <span class="math inline">\(B(\Sigma,\vee)\)</span> and no monoidal structure on <span class="math inline">\(\mathcal{L}\)</span> is assumed or needed.) Universality: any composition-respecting, identity-normalized invariant valued in a totally ordered monoid factors through <span class="math inline">\(\sigma\)</span>, because <span class="math inline">\(\sigma\)</span> is determined on generators (single entries) and extended by <span class="math inline">\(\vee\)</span>, which is forced by (2). ◻</p>
+</div>
+<div id="cor:pipeline-status" class="corollary">
+<p><strong>Corollary 24</strong> (Reliability of a pipeline).  <em>The status of a realization pipeline <span class="math inline">\(\mathrm{Obs}_\alpha = \mathrm{Obs}\circ\mathrm{Real}_\alpha\circ\Phi\)</span> viewed as a composite of three entries is <span class="math inline">\(\sigma(\Phi)\vee\sigma(\mathrm{Real}_\alpha)\vee\sigma(\mathrm{Obs})\)</span>. Consequently an <span class="math inline">\(\mathsf{S}\)</span>-labeled pipeline requires <em>all three</em> stages to be <span class="math inline">\(\mathsf{S}\)</span>; a single heuristic stage downgrades the whole pipeline to <span class="math inline">\(\mathsf{H}\)</span>.</em></p>
+</div>
+<div class="proof">
+<p><em>Proof.</em> Immediate from <a href="#thm:status" data-reference-type="ref+Label" data-reference="thm:status">23</a>(2) applied twice and associativity of <span class="math inline">\(\vee\)</span>. This is the formal content of <a href="#rem:status-bite" data-reference-type="ref+Label" data-reference="rem:status-bite">20</a>. ◻</p>
+</div>
+<div class="remark">
+<p><em>Remark 25</em>.  <a href="#thm:status" data-reference-type="ref+Label" data-reference="thm:status">23</a> is original to this program: it operationalizes the paper’s status system into a checkable calculus, valuable for automated (Lean-checked) status propagation. The Haskell and Lean encodings of <a href="#sec:code" data-reference-type="ref+Label" data-reference="sec:code">9</a> implement <span class="math inline">\(\vee\)</span> directly, so that composing entries <em>computes</em> the composite status rather than requiring the author to assign it by hand.</p>
+</div>
+<h2 data-number="6.4" id="coarse-quotients-lose-gauge-information"><span class="header-section-number">6.4</span> Coarse quotients lose gauge information</h2>
+<p>The last theorem is the Part I shadow of a phenomenon that recurs, at increasing rigor, throughout the series: quotienting away automorphisms destroys descent.</p>
+<div id="thm:coarse" class="theorem">
+<p><strong>Theorem 26</strong> (Coarse-quotient obstruction).  <em>Suppose <span class="math inline">\(\mathrm{Rep}_{\mathrm{phys}}\)</span> is a representation stack and let <span class="math inline">\(\pi(d) :=
+\pi_0(\mathrm{Rep}_{\mathrm{phys}}(d))\)</span> be the set of isomorphism classes of entries (the “coarse” representation library, obtained by quotienting each groupoid by its gauge equivalences). Then <span class="math inline">\(d \mapsto \pi(d)\)</span> is a presheaf of sets, but in general it <em>can fail</em> to be a sheaf. Concretely, suppose some entry <span class="math inline">\(E \in \mathrm{Rep}_{\mathrm{phys}}(d)\)</span> has a nontrivial automorphism group <span class="math inline">\(\mathrm{Aut}(E) \neq 1\)</span> and the site is rich enough to admit a covering <span class="math inline">\(\{e_i \to d\}\)</span> supporting a nontrivial <span class="math inline">\(\mathrm{Aut}(E)\)</span>-torsor (equivalently, a nontrivial Čech <span class="math inline">\(1\)</span>-cocycle class valued in <span class="math inline">\(\mathrm{Aut}(E)\)</span>, so that <span class="math inline">\(\check{H}^1(\{e_i\}; \mathrm{Aut}(E)) \neq 0\)</span>). Then there is a covering on which local classes agree on overlaps yet fail to glue to a unique global class, so <span class="math inline">\(\pi\)</span> is not a sheaf.</em></p>
+</div>
+<div class="proof">
+<p><em>Proof.</em> Presheaf: <span class="math inline">\(\pi_0\)</span> is functorial (a functor of groupoids induces a map on isomorphism-class sets), and restriction functors <span class="math inline">\(u^\ast\)</span> induce restriction maps <span class="math inline">\(\pi(d) \to \pi(e)\)</span>; the pseudofunctor coherence of <span class="math inline">\(\mathrm{Rep}_{\mathrm{phys}}\)</span> makes these strictly functorial after passing to <span class="math inline">\(\pi_0\)</span> (all <span class="math inline">\(2\)</span>-cells become identities on <span class="math inline">\(\pi_0\)</span>). Hence <span class="math inline">\(\pi\)</span> is a presheaf.</p>
+<p>Failure of the sheaf condition: pick <span class="math inline">\(E \in \mathrm{Rep}_{\mathrm{phys}}(d)\)</span> with a nontrivial automorphism <span class="math inline">\(g \in \mathrm{Aut}(E)\)</span>, and choose a covering <span class="math inline">\(\{u_i : e_i \to d\}\)</span> that is “fine enough” that <span class="math inline">\(g\)</span> becomes locally trivializable, i.e. each restriction <span class="math inline">\(u_i^\ast g\)</span> is isotopic to the identity in <span class="math inline">\(\mathrm{Rep}_{\mathrm{phys}}(e_i)\)</span> while <span class="math inline">\(g\)</span> itself is not the identity globally. (Such a covering exists whenever the automorphism is supported by the gluing data—this is the generic situation for gauge automorphisms; in Part VI this is realized concretely for <span class="math inline">\([X/G]\)</span>-type stacks with <span class="math inline">\(G\)</span> acting with stabilizers.) Let <span class="math inline">\(E^{g}\)</span> be the distinct global entry obtained by regluing the <em>same</em> local data <span class="math inline">\((u_i^\ast E)_i\)</span> along the descent datum twisted by the nontrivial <span class="math inline">\(1\)</span>-cocycle valued in <span class="math inline">\(\mathrm{Aut}(E)\)</span> determined by <span class="math inline">\(g\)</span> (a “twisted sector”). Then <span class="math inline">\(E\)</span> and <span class="math inline">\(E^{g}\)</span> have equal restrictions to every <span class="math inline">\(e_i\)</span> and equal overlap comparisons in <span class="math inline">\(\pi_0\)</span>, hence define the <em>same</em> element of the sheaf of local sections of <span class="math inline">\(\pi\)</span>; but <span class="math inline">\(E \not\cong E^{g}\)</span> as global entries, since the nontrivial cocycle class obstructs a global identification when <span class="math inline">\(g \neq \mathrm{id}\)</span>. Thus the section over <span class="math inline">\(\{e_i\}\)</span> has (at least) two preimages in <span class="math inline">\(\pi(d)\)</span>, violating the uniqueness half of the sheaf axiom. Existence can fail dually. Therefore <span class="math inline">\(\pi\)</span> is not a sheaf. ◻</p>
+</div>
+<div id="cor:stack-informative" class="corollary">
+<p><strong>Corollary 27</strong>.  <em>The stack <span class="math inline">\(\mathrm{Rep}_{\mathrm{phys}}\)</span> is strictly more informative than its coarse library <span class="math inline">\(\pi\)</span>: passing to <span class="math inline">\(\pi\)</span> forgets exactly the automorphism (gauge/stabilizer) data, and this data is what descent requires. Retaining it is the entire reason the formalism is built on groupoid-valued (stack) rather than set-valued (sheaf) assignments.</em></p>
+</div>
+<div class="proof">
+<p><em>Proof.</em> By <a href="#thm:coarse" data-reference-type="ref+Label" data-reference="thm:coarse">26</a>, <span class="math inline">\(\pi\)</span> fails descent exactly where <span class="math inline">\(\mathrm{Rep}_{\mathrm{phys}}\)</span> has nontrivial automorphisms; since <span class="math inline">\(\mathrm{Rep}_{\mathrm{phys}}\)</span> satisfies descent by hypothesis, the difference between them is precisely the retained automorphism data. This is the Part I statement of the recurring theorem “stacks retain gauge information,” proved algebro-geometrically in Part III, type-theoretically in Part V, and descent-theoretically in Part VI. ◻</p>
+</div>
+<h1 data-number="7" id="sec:library"><span class="header-section-number">7</span> The Core Translation Library</h1>
+<p>We reproduce the foundational dictionary that Parts II–VI extend. Every row carries a status label per <a href="#sec:status-intro" data-reference-type="ref+Label" data-reference="sec:status-intro">1.4</a>. The library is presented as three tables: the core translation grammar (<a href="#tab:core" data-reference-type="ref+Label" data-reference="tab:core">2</a>), the operations dictionary (<a href="#tab:ops" data-reference-type="ref+Label" data-reference="tab:ops">3</a>), and the domains-as-faculties dictionary (<a href="#tab:faculties" data-reference-type="ref+Label" data-reference="tab:faculties">4</a>). These are shared across all seven parts; later modules cite them rather than restating them.</p>
+<table id="tab:core">
+<caption>Core translation library (foundations grammar).</caption>
+<thead>
+<tr>
+<th style="text-align: left;"><strong>Mathematics</strong></th>
+<th style="text-align: left;"><strong>Physical representation</strong></th>
+<th style="text-align: left;"><strong>Semantic interpretation</strong></th>
+<th style="text-align: center;"><strong>Status</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: center;"></td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Mathematics</strong></td>
+<td style="text-align: left;"><strong>Physical representation</strong></td>
+<td style="text-align: left;"><strong>Semantic interpretation</strong></td>
+<td style="text-align: center;"><strong>Status</strong></td>
+</tr>
+<tr>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: center;"></td>
+</tr>
+<tr>
+<td style="text-align: left;">Object <span class="math inline">\(X\)</span></td>
+<td style="text-align: left;">Physical system or world-structure</td>
+<td style="text-align: left;">Structured carrier of physical information</td>
+<td style="text-align: center;"><span class="math inline">\(\mathsf{H}\)</span></td>
+</tr>
+<tr>
+<td style="text-align: left;">Representation <span class="math inline">\(\rho:X\to\mathrm{End}(V)\)</span></td>
+<td style="text-align: left;">Physical realization on states</td>
+<td style="text-align: left;">How structure acts on observables/states</td>
+<td style="text-align: center;"><span class="math inline">\(\mathsf{S}\)</span></td>
+</tr>
+<tr>
+<td style="text-align: left;">Realization functor</td>
+<td style="text-align: left;">Translation into measurable form</td>
+<td style="text-align: left;">Abstract information to readable data</td>
+<td style="text-align: center;"><span class="math inline">\(\mathsf{S}/\mathsf{H}\)</span></td>
+</tr>
+<tr>
+<td style="text-align: left;">Invariant</td>
+<td style="text-align: left;">Conservation law / observable</td>
+<td style="text-align: left;">What is stable under allowed transformations</td>
+<td style="text-align: center;"><span class="math inline">\(\mathsf{S}\)</span></td>
+</tr>
+<tr>
+<td style="text-align: left;">Equivalence</td>
+<td style="text-align: left;">Same physics, different coordinates</td>
+<td style="text-align: left;">Dual descriptions, gauge equivalence</td>
+<td style="text-align: center;"><span class="math inline">\(\mathsf{S}\)</span></td>
+</tr>
+<tr>
+<td style="text-align: left;">Symmetry</td>
+<td style="text-align: left;">Redundancy or physical transformation</td>
+<td style="text-align: left;">Law-preserving structure</td>
+<td style="text-align: center;"><span class="math inline">\(\mathsf{S}\)</span></td>
+</tr>
+<tr>
+<td style="text-align: left;">Duality</td>
+<td style="text-align: left;">Two theories, same content</td>
+<td style="text-align: left;">Equivalence of representation languages</td>
+<td style="text-align: center;"><span class="math inline">\(\mathsf{S}\)</span></td>
+</tr>
+<tr>
+<td style="text-align: left;">Moduli space</td>
+<td style="text-align: left;">Space of distinct configurations</td>
+<td style="text-align: left;">Parameter space of possible structures</td>
+<td style="text-align: center;"><span class="math inline">\(\mathsf{S}\)</span></td>
+</tr>
+<tr>
+<td style="text-align: left;">Quotient</td>
+<td style="text-align: left;">Identification of redundant descriptions</td>
+<td style="text-align: left;">Gauge reduction or physical state space</td>
+<td style="text-align: center;"><span class="math inline">\(\mathsf{S}\)</span></td>
+</tr>
+<tr>
+<td style="text-align: left;">Boundary</td>
+<td style="text-align: left;">Physical interface / asymptotic region</td>
+<td style="text-align: left;">Where factorization/measurement appears</td>
+<td style="text-align: center;"><span class="math inline">\(\mathsf{S}/\mathsf{H}\)</span></td>
+</tr>
+<tr>
+<td style="text-align: left;">Singularity</td>
+<td style="text-align: left;">Threshold / phase transition</td>
+<td style="text-align: left;">Breakdown or special physical regime</td>
+<td style="text-align: center;"><span class="math inline">\(\mathsf{S}/\mathsf{H}\)</span></td>
+</tr>
+<tr>
+<td style="text-align: left;">Decomposition</td>
+<td style="text-align: left;">Factorization, cut, measurement split</td>
+<td style="text-align: left;">Observable broken into primitive pieces</td>
+<td style="text-align: center;"><span class="math inline">\(\mathsf{S}\)</span></td>
+</tr>
+<tr>
+<td style="text-align: left;">Primitive</td>
+<td style="text-align: left;">Irreducible informational unit</td>
+<td style="text-align: left;">Indecomposable in the chosen grammar</td>
+<td style="text-align: center;"><span class="math inline">\(\mathsf{H}\)</span></td>
+</tr>
+<tr>
+<td style="text-align: left;">Functor</td>
+<td style="text-align: left;">Physical theory as translation</td>
+<td style="text-align: left;">States to spaces, processes to histories</td>
+<td style="text-align: center;"><span class="math inline">\(\mathsf{S}\)</span></td>
+</tr>
+<tr>
+<td style="text-align: left;">Natural transformation</td>
+<td style="text-align: left;">Equivalence/deformation of theories</td>
+<td style="text-align: left;">Consistent translation between descriptions</td>
+<td style="text-align: center;"><span class="math inline">\(\mathsf{S}/\mathsf{H}\)</span></td>
+</tr>
+<tr>
+<td style="text-align: left;">Category</td>
+<td style="text-align: left;">Universe of systems and processes</td>
+<td style="text-align: left;">Objects are systems; morphisms are transitions</td>
+<td style="text-align: center;"><span class="math inline">\(\mathsf{S}/\mathsf{H}\)</span></td>
+</tr>
+</tbody>
+</table>
+<table id="tab:ops">
+<caption>Operations <span class="math inline">\(\leftrightarrow\)</span> physical interpretation (shared appendix).</caption>
+<thead>
+<tr>
+<th style="text-align: left;"><strong>Operation</strong></th>
+<th style="text-align: left;"><strong>Physical interpretation</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Operation</strong></td>
+<td style="text-align: left;"><strong>Physical interpretation</strong></td>
+</tr>
+<tr>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr>
+<td style="text-align: left;">Boundary <span class="math inline">\(\partial\)</span></td>
+<td style="text-align: left;">Edge / flux / factorization channel</td>
+</tr>
+<tr>
+<td style="text-align: left;">Differential <span class="math inline">\(d\)</span></td>
+<td style="text-align: left;">Infinitesimal change</td>
+</tr>
+<tr>
+<td style="text-align: left;">Coboundary <span class="math inline">\(d^\ast\)</span></td>
+<td style="text-align: left;">Gauge / exact shift</td>
+</tr>
+<tr>
+<td style="text-align: left;">Cobracket <span class="math inline">\(\delta\)</span></td>
+<td style="text-align: left;">Primitive antisymmetric split</td>
+</tr>
+<tr>
+<td style="text-align: left;">Coproduct <span class="math inline">\(\Delta\)</span></td>
+<td style="text-align: left;">Full decomposition split</td>
+</tr>
+<tr>
+<td style="text-align: left;">Residue</td>
+<td style="text-align: left;">Pole / singular channel</td>
+</tr>
+<tr>
+<td style="text-align: left;">Monodromy</td>
+<td style="text-align: left;">Analytic continuation</td>
+</tr>
+<tr>
+<td style="text-align: left;">Filtration</td>
+<td style="text-align: left;">Scale hierarchy</td>
+</tr>
+<tr>
+<td style="text-align: left;">Grading</td>
+<td style="text-align: left;">Charge / degree / loop / weight</td>
+</tr>
+<tr>
+<td style="text-align: left;">Spectral sequence</td>
+<td style="text-align: left;">Multi-scale obstruction</td>
+</tr>
+<tr>
+<td style="text-align: left;">Localization</td>
+<td style="text-align: left;">Effective physics at a scale</td>
+</tr>
+<tr>
+<td style="text-align: left;">Completion</td>
+<td style="text-align: left;">Perturbation expansion</td>
+</tr>
+<tr>
+<td style="text-align: left;">Blowup</td>
+<td style="text-align: left;">Regularize a divergence</td>
+</tr>
+<tr>
+<td style="text-align: left;">Quotient</td>
+<td style="text-align: left;">Gauge reduction</td>
+</tr>
+<tr>
+<td style="text-align: left;">Pullback</td>
+<td style="text-align: left;">Constraint matching</td>
+</tr>
+<tr>
+<td style="text-align: left;">Pushout</td>
+<td style="text-align: left;">Couple systems</td>
+</tr>
+<tr>
+<td style="text-align: left;">Trace</td>
+<td style="text-align: left;">Partition function / loop amplitude</td>
+</tr>
+<tr>
+<td style="text-align: left;">Dual</td>
+<td style="text-align: left;">Measurement / conjugate</td>
+</tr>
+<tr>
+<td style="text-align: left;">Tensor product <span class="math inline">\(\otimes\)</span></td>
+<td style="text-align: left;">Parallel composition</td>
+</tr>
+<tr>
+<td style="text-align: left;">Direct sum <span class="math inline">\(\oplus\)</span></td>
+<td style="text-align: left;">Superselection</td>
+</tr>
+<tr>
+<td style="text-align: left;"><span class="math inline">\(\mathrm{Hom}\)</span></td>
+<td style="text-align: left;">Space of processes</td>
+</tr>
+<tr>
+<td style="text-align: left;"><span class="math inline">\(\mathrm{Ext}\)</span></td>
+<td style="text-align: left;">Bound state / anomaly / deformation</td>
+</tr>
+<tr>
+<td style="text-align: left;"><span class="math inline">\(\mathrm{Tor}\)</span></td>
+<td style="text-align: left;">Hidden compatibility failure</td>
+</tr>
+</tbody>
+</table>
+<table id="tab:faculties">
+<caption>Mathematical domains as physical faculties (shared appendix).</caption>
+<thead>
+<tr>
+<th style="text-align: left;"><strong>Domain</strong></th>
+<th style="text-align: left;"><strong>Physical faculty</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Domain</strong></td>
+<td style="text-align: left;"><strong>Physical faculty</strong></td>
+</tr>
+<tr>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr>
+<td style="text-align: left;">Algebra</td>
+<td style="text-align: left;">Composition of observables / transformations</td>
+</tr>
+<tr>
+<td style="text-align: left;">Coalgebra</td>
+<td style="text-align: left;">Decomposition of observables / processes</td>
+</tr>
+<tr>
+<td style="text-align: left;">Topology</td>
+<td style="text-align: left;">Global invariants under deformation</td>
+</tr>
+<tr>
+<td style="text-align: left;">Algebraic topology</td>
+<td style="text-align: left;">Conserved charges / defects / anomalies / sectors</td>
+</tr>
+<tr>
+<td style="text-align: left;">Differential geometry</td>
+<td style="text-align: left;">Smooth fields / curvature / spacetime dynamics</td>
+</tr>
+<tr>
+<td style="text-align: left;">Algebraic geometry</td>
+<td style="text-align: left;">Solution spaces / moduli / singularities / periods</td>
+</tr>
+<tr>
+<td style="text-align: left;">Arithmetic geometry</td>
+<td style="text-align: left;">Hidden number-theoretic structure</td>
+</tr>
+<tr>
+<td style="text-align: left;">Category theory</td>
+<td style="text-align: left;">Composition / translation / systems / processes</td>
+</tr>
+<tr>
+<td style="text-align: left;">Higher category theory</td>
+<td style="text-align: left;">Defects / interfaces / higher processes</td>
+</tr>
+<tr>
+<td style="text-align: left;">Homotopy type theory</td>
+<td style="text-align: left;">Internal logic of spaces / equivalences</td>
+</tr>
+<tr>
+<td style="text-align: left;">Sheaf theory</td>
+<td style="text-align: left;">Local-to-global information</td>
+</tr>
+<tr>
+<td style="text-align: left;">Stack theory</td>
+<td style="text-align: left;">Gauge-correct local-to-global information</td>
+</tr>
+<tr>
+<td style="text-align: left;">Motive theory</td>
+<td style="text-align: left;">Universal functional essence</td>
+</tr>
+<tr>
+<td style="text-align: left;">Homological algebra</td>
+<td style="text-align: left;">Obstructions / resolutions / derived consistency</td>
+</tr>
+<tr>
+<td style="text-align: left;"><span class="math inline">\(K\)</span>-theory</td>
+<td style="text-align: left;">Stable charge / vector-bundle classification</td>
+</tr>
+<tr>
+<td style="text-align: left;">Operator algebra</td>
+<td style="text-align: left;">Quantum observables / noncommutative spaces</td>
+</tr>
+<tr>
+<td style="text-align: left;">Representation theory</td>
+<td style="text-align: left;">Symmetry becomes physical action</td>
+</tr>
+<tr>
+<td style="text-align: left;">Symplectic geometry</td>
+<td style="text-align: left;">Classical phase space</td>
+</tr>
+<tr>
+<td style="text-align: left;">Poisson geometry</td>
+<td style="text-align: left;">Bracket structure of observables</td>
+</tr>
+<tr>
+<td style="text-align: left;">Noncommutative geometry</td>
+<td style="text-align: left;">Geometry from noncommuting observables</td>
+</tr>
+<tr>
+<td style="text-align: left;">Tropical geometry</td>
+<td style="text-align: left;">Degeneration / asymptotics</td>
+</tr>
+<tr>
+<td style="text-align: left;">Cluster algebra</td>
+<td style="text-align: left;">Mutating amplitude coordinates</td>
+</tr>
+<tr>
+<td style="text-align: left;">Operad theory</td>
+<td style="text-align: left;">Interaction vertices / compositional laws</td>
+</tr>
+</tbody>
+</table>
+<h1 data-number="8" id="sec:parts"><span class="header-section-number">8</span> Setting up Parts II–VI</h1>
+<p>The foundational payoff of Part I is that Parts II–VI are, formally, successive concrete instantiations of the <em>same</em> three slots: the domain-indexed structure category <span class="math inline">\(\mathsf{Math}_d\)</span>, the realization channel <span class="math inline">\(\mathrm{Real}_\alpha\)</span>, and the decomposition operation of <a href="#ax:decomp" data-reference-type="ref+Label" data-reference="ax:decomp">4</a>. We record the instantiations explicitly so that each later module can open by citing this section.</p>
+<div class="description">
+<p>Here <span class="math inline">\(d\)</span> is motivic period theory; <span class="math inline">\(\mathsf{Math}_d\)</span> is the category of motives <span class="math inline">\(\mathrm{Mot}(X)\)</span> and motivic amplitude objects <span class="math inline">\(\mathcal{A}^{\mathfrak m}\)</span>; the channels <span class="math inline">\(\alpha \in
+  \{\text{Betti}, \text{de Rham}, \text{Hodge}, \text{\&#39;etale}\}\)</span> become concrete realizations <span class="math inline">\(H_\alpha(X) \simeq \mathrm{Real}_\alpha(\mathrm{Mot}(X))\)</span>; the decomposition operation is the Goncharov coproduct <span class="math inline">\(\Delta\)</span> and cobracket <span class="math inline">\(\delta\)</span>. <a href="#ax:motivic" data-reference-type="ref+Label" data-reference="ax:motivic">6</a> (<span class="math inline">\(\mathcal{A} = \mathrm{per}(\mathcal{A}^{\mathfrak m})\)</span>) is the running formula. This is where Part I’s abstract <span class="math inline">\(\mathrm{Real}_\alpha\)</span> first acquires numerically checkable content.</p>
+<p>Here <span class="math inline">\(\mathsf{Math}_d\)</span> is schemes, moduli spaces/stacks, and variations of Hodge structure; Part II’s motives and periods are now understood as living over and varying across geometric moduli, with the Gauss–Manin connection as the family version of <span class="math inline">\(\mathrm{Real}_\alpha\)</span>. The decomposition operation is the residue/boundary structure of positive geometries. <a href="#thm:coarse" data-reference-type="ref+Label" data-reference="thm:coarse">26</a> is upgraded here to the moduli-stack versus coarse-moduli distinction.</p>
+<p>Here <span class="math inline">\(\mathsf{Math}_d\)</span> is (co)homology, characteristic classes, and bordism; <span class="math inline">\(\mathrm{Real}_\alpha\)</span> becomes the honest functor <span class="math inline">\(Z : \mathsf{Bord}_n \to \mathsf{Vect}\)</span> of <a href="#ex:tqft" data-reference-type="ref+Label" data-reference="ex:tqft">15</a>. This is the first fully rigorous, status-<span class="math inline">\(\mathsf{S}\)</span> instantiation of the entire pipeline, and the first appearance of functoriality as the ambient grammar. The decomposition operation is the boundary <span class="math inline">\(\partial\)</span> and the long exact sequences it generates.</p>
+<p>Here the implicit functoriality of Part IV is made the explicit universal grammar: <span class="math inline">\(\mathsf{Math}_d\)</span> is categories, functors, natural transformations, and monoidal/dagger-compact structure, with HoTT’s univalence formalizing <a href="#ax:equiv" data-reference-type="ref+Label" data-reference="ax:equiv">2</a>. Part V discharges the Equivalence axiom type-theoretically: equivalent representations <em>are</em> identified, not merely related, which is the univalent reading of <a href="#cor:stack-informative" data-reference-type="ref+Label" data-reference="cor:stack-informative">27</a>.</p>
+<p>Here <span class="math inline">\(\mathsf{Math}_d\)</span> is presheaves/sheaves/stacks as pseudofunctors <span class="math inline">\(\mathsf{Dom}^{\mathrm{op}} \to \mathsf{Gpd}\)</span> (built from Part V’s categories), gauge redundancy <span class="math inline">\([X/G]\)</span>, and quantum high-availability codes. Part VI proves <a href="#thm:descent" data-reference-type="ref+Label" data-reference="thm:descent">21</a>’s right-hand side rigorously, constructs the stackification <span class="math inline">\(\mathrm{Rep}_{\mathrm{phys}}^+\)</span>, and thereby discharges Part I’s central promissory note: <span class="math inline">\(\mathrm{Rep}_{\mathrm{phys}}\)</span> <em>is</em> a stack exactly when local entries glue up to gauge equivalence. The recurring identity <span class="math display">\[\mathrm{Aut}_{[X/G]}(x) \simeq \mathrm{Stab}_G(x)\]</span> and the high-availability decomposition <span class="math display">\[H_{\text{phys}} \simeq H_{\text{logical}} \otimes H_{\text{gauge}}
+      \oplus H_{\text{error}}\]</span> live here.</p>
+</div>
+<div id="rem:closure" class="remark">
+<p><em>Remark 28</em> (The closure of the ladder).  The dependency is genuinely circular and this is a feature, not a bug. Part I <em>posits</em> <a href="#def:stack" data-reference-type="ref+Label" data-reference="def:stack">12</a> and states <a href="#thm:descent" data-reference-type="ref+Label" data-reference="thm:descent">21</a> as an interface; Part VI <em>constructs</em> the descent groupoid and stackification that make <a href="#thm:descent" data-reference-type="ref+Label" data-reference="thm:descent">21</a> a theorem with a full proof; the synthesis Part then records that Parts II–VI assemble a concrete <span class="math inline">\(\mathrm{Rep}_{\mathrm{phys}}\)</span> satisfying <a href="#def:stack" data-reference-type="ref+Label" data-reference="def:stack">12</a>, thereby turning <a href="#conj:closure" data-reference-type="ref+Label" data-reference="conj:closure">17</a> into a proved statement for the class of theories the modules cover. <a href="#fig:ladder" data-reference-type="ref+Label" data-reference="fig:ladder">2</a> depicts the closure.</p>
+</div>
+<figure id="fig:ladder" data-latex-placement="htbp">
+
+<figcaption>The modular ladder closes: Part I posits the stack; Parts II–VI instantiate it; Part VI discharges Part I’s descent promissory note; the synthesis Part recomposes I–VI and verifies <a href="#conj:closure" data-reference-type="ref+Label" data-reference="conj:closure">17</a>.</figcaption>
+</figure>
+<h1 data-number="9" id="sec:code"><span class="header-section-number">9</span> Formalization: Haskell and Lean</h1>
+<p>To honor the “math is code, code is math” bridge (Curry–Howard–Lambek), we provide machine-readable encodings of the core structures. The complete, compiling sources accompany this paper; we display the load-bearing fragments.</p>
+<p>Throughout we adopt a <em>type-theoretic</em> encoding: a category is represented by a type of objects, an object by a term of that type, and a functor/translation by a function between such types. This is why a localized entry for a structure <span class="math inline">\(M\)</span> carries a function <code>m -&gt; p</code>: the field holds the local restriction of a translation functor, and <span class="math inline">\(M\)</span> itself is supplied separately as the term <code>mathStruct</code>. A classical <span class="math inline">\(1\)</span>-category theorist may read <code>m</code>, <code>p</code> as the object-types of the source and target categories and <code>translation</code> as (the object-map of) the functor; this propositions-as-types style deliberately anticipates the HoTT perspective of Part V (objects as terms, functors as functions, equivalences as identities).</p>
+<h2 data-number="9.1" id="haskell-encoding"><span class="header-section-number">9.1</span> Haskell encoding</h2>
+<p>The status monoid of <a href="#thm:status" data-reference-type="ref+Label" data-reference="thm:status">23</a>, the representation entry of <a href="#def:entry" data-reference-type="ref+Label" data-reference="def:entry">8</a>, and the pipeline of <a href="#def:pipeline" data-reference-type="ref+Label" data-reference="def:pipeline">14</a> are encoded directly. The key point is that composing entries <em>computes</em> the composite status via <span class="math inline">\(\vee\)</span>, realizing <a href="#cor:pipeline-status" data-reference-type="ref+Label" data-reference="cor:pipeline-status">24</a> at the type level.</p>
+<pre><code>-- Epistemic status, ordered S &lt; H &lt; P  (Theorem: status calculus)
+data Status = Std | Heur | Spec deriving (Eq, Ord, Show, Enum, Bounded)
+
+-- Composite status: the LESS reliable of two labels (the monoid join \/),
+-- i.e. the supremum in the reliability order Std &lt; Heur &lt; Spec.
+joinStatus :: Status -&gt; Status -&gt; Status
+joinStatus = max          -- max under Std &lt; Heur &lt; Spec
+
+instance Semigroup Status where (&lt;&gt;) = joinStatus
+instance Monoid    Status where mempty = Std   -- Std (bottom) is the unit
+
+-- Graded translation witnesses (Definition: translation strength)
+data Translation m p
+  = FunctorialTranslation (m -&gt; p)      -- candidate S
+  | NaturalTranslation    (m -&gt; p)      -- candidate S/H
+  | InterpretiveRule      (m -&gt; Maybe p)-- candidate H
+  | SpeculativeMap        (m -&gt; p)      -- candidate P
+
+-- A representation entry E = (M, P, tau, sigma)
+data RepEntry m p = RepEntry
+  { mathStruct  :: m
+  , physRep     :: p
+  , translation :: Translation m p
+  , status      :: Status }
+
+-- Realization pipeline  Obs_alpha = Obs . Real_alpha . Phi
+data Channel = Betti | DeRham | Hodge | Etale | PAdic | Quantum
+             | Thermodynamic | Computational | Experimental | Operational
+  deriving (Eq, Show)
+
+realizationPipeline
+  :: (i -&gt; r) -&gt; (r -&gt; o)      -- Real_alpha, Obs
+  -&gt; (m -&gt; i)                  -- Phi
+  -&gt; m -&gt; o
+realizationPipeline realA obs phi = obs . realA . phi</code></pre>
+<p>The composition of entries computes the composite status by <code>status e2 &lt;&gt; status e1</code>, which is the join of <a href="#thm:status" data-reference-type="ref+Label" data-reference="thm:status">23</a>(2). The accompanying <code>Main.hs</code> demonstrates: (i) that composing an <span class="math inline">\(\mathsf{S}\)</span> entry with an <span class="math inline">\(\mathsf{H}\)</span> entry yields <span class="math inline">\(\mathsf{H}\)</span>; (ii) that the pipeline of <a href="#ex:tqft" data-reference-type="ref+Label" data-reference="ex:tqft">15</a> composes to <span class="math inline">\(\mathsf{S}\)</span>; and (iii) that a single speculative stage collapses a pipeline to <span class="math inline">\(\mathsf{P}\)</span>, exactly <a href="#cor:pipeline-status" data-reference-type="ref+Label" data-reference="cor:pipeline-status">24</a>.</p>
+<h2 data-number="9.2" id="lean-sketch"><span class="header-section-number">9.2</span> Lean sketch</h2>
+<p>The Lean file records the core types, definition-signatures, and a small composition lemma. It is an idiomatic best-effort sketch that elaborates standalone against a recent Lean 4 toolchain (no Mathlib dependency); its purpose is to fix the intended formal statements for later mechanization.</p>
+<pre><code>-- Derived Ord orders by declaration order: std &lt; heur &lt; spec.
+inductive Status where
+  | std | heur | spec
+  deriving DecidableEq, Repr, Ord
+
+-- composite status = the LESS reliable label = the join (greater) in that order
+def Status.join (a b : Status) : Status :=
+  match compare a b with
+  | .lt =&gt; b
+  | _   =&gt; a
+
+-- Graded translation witnesses, mirroring the Haskell sum type so that the
+-- Lean sketch preserves the same semantic nuance (Definition: translation
+-- strength).
+inductive Translation (M P : Type) where
+  | functorial   : (M -&gt; P) -&gt; Translation M P        -- candidate S
+  | natural      : (M -&gt; P) -&gt; Translation M P        -- candidate S/H
+  | interpretive : (M -&gt; Option P) -&gt; Translation M P -- candidate H
+  | speculative  : (M -&gt; P) -&gt; Translation M P        -- candidate P
+
+structure RepEntry (M P : Type) where
+  mathStruct  : M
+  physRep     : P
+  translation : Translation M P   -- tau, graded by strength (not a bare map)
+  status      : Status
+
+-- Translation.comp (full 16-case definition in the accompanying source)
+-- composes the underlying maps and degrades strength to the weaker leg, so the
+-- composite&#39;s candidate strength is never stronger than either factor.
+-- Composition of entries joins their statuses (Theorem: status calculus, 2):
+-- the composite is only as reliable as its weakest link.
+def RepEntry.comp {A B C : Type}
+    (e2 : RepEntry B C) (e1 : RepEntry A B) : RepEntry A C :=
+  { mathStruct  := e1.mathStruct
+  , physRep     := e2.physRep
+  , translation := Translation.comp e2.translation e1.translation
+  , status      := Status.join e1.status e2.status }
+
+-- The composite of two standard entries is standard.
+theorem RepEntry.comp_std {A B C : Type}
+    (e2 : RepEntry B C) (e1 : RepEntry A B)
+    (h1 : e1.status = Status.std) (h2 : e2.status = Status.std) :
+    (RepEntry.comp e2 e1).status = Status.std := by
+  have hstat : (RepEntry.comp e2 e1).status
+      = Status.join e1.status e2.status := rfl
+  rw [hstat, h1, h2]; decide
+
+-- Realization pipeline as a composite of three maps
+structure RealizationPipeline (M I R O : Type) where
+  phi   : M -&gt; I
+  realA : I -&gt; R
+  obs   : R -&gt; O
+
+def RealizationPipeline.run {M I R O}
+    (P : RealizationPipeline M I R O) : M -&gt; O :=
+  fun m =&gt; P.obs (P.realA (P.phi m))</code></pre>
+<p>Part V and Part VI develop the categorical and descent-theoretic Lean structures (pseudofunctors, Grothendieck topologies, descent data) that a full mechanization of <a href="#thm:descent" data-reference-type="ref+Label" data-reference="thm:descent">21</a> would require.</p>
+<h1 data-number="10" id="sec:discussion"><span class="header-section-number">10</span> Discussion</h1>
+<h2 data-number="10.1" id="limitations"><span class="header-section-number">10.1</span> Limitations</h2>
+<p>We reproduce, and commit every later module to respecting, the five explicit limitations of the program.</p>
+<ol>
+<li><p><em>Not every analogy is a theory.</em> Status labels are part of the formalism, not decoration; an <span class="math inline">\(\mathsf{H}\)</span> or <span class="math inline">\(\mathsf{P}\)</span> entry is a proposal, not a result. <a href="#thm:status" data-reference-type="ref+Label" data-reference="thm:status">23</a> makes this quantitative: reliability cannot be manufactured by composing analogies.</p></li>
+<li><p><em>Motives are not literally “the functions of” an object.</em> The functional-essence reading is this program’s proposed semantic layer (status <span class="math inline">\(\mathsf{H}\)</span>), to be flagged wherever used. Part II states this prominently.</p></li>
+<li><p><em>No single universal functor.</em> A functor from all of mathematics to all of physics is unlikely to be well-defined; the formalism is deliberately local and domain-indexed (<span class="math inline">\(\mathsf{Dom}\)</span>-fibered), which is exactly why we work with a prestack rather than a single functor.</p></li>
+<li><p><em>Not every observable is a period.</em> Some amplitudes require elliptic, modular, or non-Tate structures; this constrains Part II.</p></li>
+<li><p><em>Gauge redundancy is not physical symmetry.</em> Gauge identifies descriptions of the same content; physical symmetry maps a state to a genuinely different one. <a href="#thm:coarse" data-reference-type="ref+Label" data-reference="thm:coarse">26</a> and <a href="#cor:stack-informative" data-reference-type="ref+Label" data-reference="cor:stack-informative">27</a> formalize the first half; Part VI treats the distinction in full.</p></li>
+</ol>
+<h2 data-number="10.2" id="connections"><span class="header-section-number">10.2</span> Connections</h2>
+<p>The formalism is a bookkeeping discipline first and a mathematical object second. Its value is that it makes three things explicit that are usually left implicit: (i) <em>which</em> channel <span class="math inline">\(\alpha\)</span> a numerical prediction came through (<a href="#def:channel" data-reference-type="ref+Label" data-reference="def:channel">5</a>); (ii) <em>how reliable</em> a chain of translations is (<a href="#thm:status" data-reference-type="ref+Label" data-reference="thm:status">23</a>); and (iii) <em>what is lost</em> when one passes to a coarse, gauge-fixed description (<a href="#thm:coarse" data-reference-type="ref+Label" data-reference="thm:coarse">26</a>). Each later module supplies a genuine mathematical object where Part I supplies only a slot, and the synthesis Part verifies that the slots compose.</p>
+<h2 data-number="10.3" id="relation-to-prior-frameworks"><span class="header-section-number">10.3</span> Relation to prior frameworks</h2>
+<p>The realization-as-functor viewpoint is the Atiyah–Segal axiomatics of TQFT generalized: <a href="#ex:tqft" data-reference-type="ref+Label" data-reference="ex:tqft">15</a> is literally Atiyah’s definition, and Lurie’s cobordism-hypothesis program is the paradigm for “realization is a functor.” The prestack/stack language follows Giraud and Vistoli; the descent criterion of <a href="#thm:descent" data-reference-type="ref+Label" data-reference="thm:descent">21</a> is their stackification theorem specialized to <span class="math inline">\(\mathrm{Rep}_{\mathrm{phys}}\)</span>. The Curry–Howard–Lambek correspondence underwrites the Haskell/Lean bridge of <a href="#sec:code" data-reference-type="ref+Label" data-reference="sec:code">9</a>. What is new here is not any single one of these ingredients but their organization into a status-labeled, domain-indexed prestack with an explicit realization pipeline—and the status calculus of <a href="#thm:status" data-reference-type="ref+Label" data-reference="thm:status">23</a>, which is original to this program.</p>
+<h1 data-number="11" id="sec:conclusion"><span class="header-section-number">11</span> Conclusion</h1>
+<p>We have built the foundational layer of a seven-part modular program. The layer consists of: the category <span class="math inline">\(\mathsf{Dom}\)</span> of domains and its fibered structure categories <span class="math inline">\(\mathsf{Math}_d\)</span>; the physical target category <span class="math inline">\(\mathsf{Phys}\)</span> and the bracket <span class="math inline">\(\llbracket M \rrbracket_{\mathrm{phys}}\)</span>; the four definitions of the representation-stack formalism (entry, library, prestack, stack); the realization pipeline <span class="math inline">\(\mathrm{Obs}_\alpha = \mathrm{Obs}\circ\mathrm{Real}_\alpha\circ\Phi\)</span> with its four axioms; and the <span class="math inline">\(\mathsf{S}/\mathsf{H}/\mathsf{P}\)</span> status discipline promoted to a genuine calculus. We proved functoriality of the pipeline (<a href="#thm:functorial" data-reference-type="ref+Label" data-reference="thm:functorial">19</a>), the descent characterization of stackhood (<a href="#thm:descent" data-reference-type="ref+Label" data-reference="thm:descent">21</a>), the status calculus (<a href="#thm:status" data-reference-type="ref+Label" data-reference="thm:status">23</a>), and the coarse-quotient obstruction (<a href="#thm:coarse" data-reference-type="ref+Label" data-reference="thm:coarse">26</a>). Parts II–VI instantiate the three open slots <span class="math inline">\(\mathsf{Math}_d\)</span>, <span class="math inline">\(\mathrm{Real}_\alpha\)</span>, and the decomposition operation; Part VI discharges the descent promissory note; the synthesis Part closes the loop.</p>
+<p>We close, as the program does, with its four compressed slogans, each of which a later module makes precise: <span class="math display">\[\boxed{
+\begin{aligned}
+&amp;\text{mathematics is the syntax of physical representation;}\\
+&amp;\text{motives are functional semantics;}\\
+&amp;\text{periods are numerical measurements;}\\
+&amp;\text{coalgebras are decomposition laws.}
+\end{aligned}}\]</span> Part I has made the first slogan precise: the syntax is <span class="math inline">\(\mathsf{Math}_d\)</span>, the semantics is realized through <span class="math inline">\(\mathrm{Real}_\alpha\)</span>, the measurement is <span class="math inline">\(\mathrm{Obs}\)</span>, and the honesty is the status label <span class="math inline">\(\sigma\)</span>. The remaining three slogans are the subject of Parts II and beyond.</p>
+<div class="thebibliography">
+<p id="ref-1"><span class="ref-number">[1]</span> M. F. Atiyah, <em>Topological quantum field theories</em>, Publications Mathématiques de l’IHÉS <strong>68</strong> (1988), 175–186.</p>
+<p id="ref-2"><span class="ref-number">[2]</span> J. Lurie, <em>On the classification of topological field theories</em>, arXiv:0905.0465 (2009); in <em>Current Developments in Mathematics 2008</em>, Int. Press, 129–280.</p>
+<p id="ref-3"><span class="ref-number">[3]</span> J. C. Baez and M. Stay, <em>Physics, topology, logic and computation: a Rosetta stone</em>, arXiv:0903.0340 (2009); <em>Lecture Notes in Physics</em> <strong>813</strong> (2010), 95–172.</p>
+<p id="ref-4"><span class="ref-number">[4]</span> S. Abramsky and B. Coecke, <em>A categorical semantics of quantum protocols</em>, arXiv:quant-ph/0402130 (2004).</p>
+<p id="ref-5"><span class="ref-number">[5]</span> The Univalent Foundations Program, <em>Homotopy Type Theory: Univalent Foundations of Mathematics</em>, Institute for Advanced Study, 2013.</p>
+<p id="ref-6"><span class="ref-number">[6]</span> U. Schreiber, <em>Differential cohomology in a cohesive <span class="math inline">\(\infty\)</span>-topos</em>, arXiv:1310.7930 (2013).</p>
+<p id="ref-7"><span class="ref-number">[7]</span> J. Lambek and P. J. Scott, <em>Introduction to Higher Order Categorical Logic</em>, Cambridge Studies in Advanced Mathematics <strong>7</strong>, Cambridge University Press, 1986.</p>
+<p id="ref-8"><span class="ref-number">[8]</span> A. Vistoli, <em>Notes on Grothendieck topologies, fibered categories and descent theory</em>, arXiv:math/0412512 (2004).</p>
+<p id="ref-9"><span class="ref-number">[9]</span> J. Giraud, <em>Cohomologie non abélienne</em>, Grundlehren der mathematischen Wissenschaften <strong>179</strong>, Springer, 1971.</p>
+<p id="ref-10"><span class="ref-number">[10]</span> M. Kontsevich and D. Zagier, <em>Periods</em>, in <em>Mathematics Unlimited — 2001 and Beyond</em>, Springer, 2001, 771–808.</p>
+<p id="ref-11"><span class="ref-number">[11]</span> A. B. Goncharov, <em>Multiple polylogarithms and mixed Tate motives</em>, arXiv:math/0103059 (2001).</p>
+<p id="ref-12"><span class="ref-number">[12]</span> A. Connes and D. Kreimer, <em>Renormalization in quantum field theory and the Riemann–Hilbert problem I</em>, arXiv:hep-th/9912092 (1999).</p>
+<p id="ref-13"><span class="ref-number">[13]</span> F. Brown, <em>Feynman amplitudes, coaction principle, and cosmic Galois group</em>, arXiv:1512.06409 (2015).</p>
+<p id="ref-14"><span class="ref-number">[14]</span> R. Dijkgraaf and E. Witten, <em>Topological gauge theories and group cohomology</em>, Comm. Math. Phys. <strong>129</strong> (1990), 393–429.</p>
+<p id="ref-15"><span class="ref-number">[15]</span> A. Yu. Kitaev, <em>Fault-tolerant quantum computation by anyons</em>, arXiv:quant-ph/9707021 (1997); Ann. Phys. <strong>303</strong> (2003), 2–30.</p>
+</div>

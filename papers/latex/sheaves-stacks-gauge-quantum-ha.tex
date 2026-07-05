@@ -1,0 +1,1435 @@
+\documentclass[12pt]{article}
+
+% ==================== Fonts (T1 + Latin Modern: full bold/sc typewriter shapes) ====================
+\usepackage{lmodern}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+
+% ==================== Core math ====================
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{mathtools}
+
+% ==================== Diagrams ====================
+\usepackage{tikz}
+\usepackage{tikz-cd}
+\usetikzlibrary{arrows.meta, positioning, decorations.pathmorphing}
+
+% ==================== Page layout ====================
+\usepackage[margin=1in]{geometry}
+
+% Breakable typewriter paths (\path) and ragged table/paragraph columns
+\usepackage{url}
+\usepackage{array}
+\usepackage{placeins}
+% Absorb the last few points of over-long lines cleanly (standard arxiv practice)
+\setlength{\emergencystretch}{3em}
+
+% ==================== References (hyperref BEFORE cleveref) ====================
+\usepackage{graphicx}
+\usepackage[colorlinks=true, linkcolor=blue!55!black, citecolor=green!45!black,
+            urlcolor=blue!60!black]{hyperref}
+\usepackage{cleveref}
+
+% ==================== GrokRxiv sidebar deps ====================
+% eso-pic (actively maintained) replaces the deprecated everypage package for
+% the page-1 background sidebar.
+\usepackage{eso-pic}
+\usepackage{textcomp}
+\usepackage{xcolor}
+
+% ==================== Theorem environments ====================
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{principle}[theorem]{Principle}
+
+% ==================== Macros ====================
+\newcommand{\cat}[1]{\mathcal{#1}}
+\newcommand{\Dom}{\mathsf{Dom}}
+\newcommand{\Math}{\mathsf{Math}}
+\newcommand{\Phys}{\mathsf{Phys}}
+\newcommand{\Gpd}{\mathsf{Gpd}}
+\newcommand{\Grpd}{\mathbf{Grpd}}
+\newcommand{\Set}{\mathbf{Set}}
+\newcommand{\Cat}{\mathbf{Cat}}
+\newcommand{\Vect}{\mathbf{Vect}}
+\newcommand{\Ho}{\mathcal{H}}
+\newcommand{\Hphys}{\Ho_{\mathrm{phys}}}
+\newcommand{\Hlog}{\Ho_{\mathrm{log}}}
+\newcommand{\Hgauge}{\Ho_{\mathrm{gauge}}}
+\newcommand{\Herr}{\Ho_{\mathrm{err}}}
+\newcommand{\Real}{\mathrm{Real}}
+\newcommand{\Obs}{\mathrm{Obs}}
+\newcommand{\Repp}{\mathsf{Rep}_{\mathrm{phys}}}
+\newcommand{\Aut}{\operatorname{Aut}}
+\newcommand{\Stab}{\operatorname{Stab}}
+\newcommand{\Orb}{\operatorname{Orb}}
+\newcommand{\Hom}{\operatorname{Hom}}
+\newcommand{\iHom}{\underline{\operatorname{Hom}}}
+\newcommand{\id}{\mathrm{id}}
+\newcommand{\op}{\mathrm{op}}
+\newcommand{\Spec}{\operatorname{Spec}}
+\newcommand{\quot}[2]{[#1/#2]}
+\newcommand{\BG}{\mathrm{B}G}
+\newcommand{\Pauli}{\mathcal{P}}
+\newcommand{\ZZ}{\mathbb{Z}}
+\newcommand{\CC}{\mathbb{C}}
+\newcommand{\RR}{\mathbb{R}}
+\newcommand{\QQ}{\mathbb{Q}}
+\newcommand{\FF}{\mathbb{F}}
+\newcommand{\antipode}{\mathrm{S}}
+\newcommand{\cop}{\Delta}
+\newcommand{\MtoP}{Math\textrightarrow{}Physics}
+\newcommand{\Ss}{\textsf{S}}
+\newcommand{\Hh}{\textsf{H}}
+\newcommand{\Pp}{\textsf{P}}
+\DeclareMathOperator{\Sheaves}{Sh}
+\DeclareMathOperator{\PSh}{PSh}
+\DeclareMathOperator{\coker}{coker}
+\DeclareMathOperator{\im}{im}
+
+% ==================== GrokRxiv DOI sidebar ====================
+\definecolor{grokgray}{RGB}{110,110,110}
+\AddToShipoutPictureBG{%
+  \ifnum\value{page}=1
+    \begin{tikzpicture}[remember picture, overlay]
+      \node[
+        rotate=90,
+        anchor=south,
+        font=\Large\sffamily\bfseries\color{grokgray},
+        inner sep=0pt
+      ] at ([xshift=38pt, yshift=0.52\paperheight]current page.south west)
+      {GrokRxiv:2026.07.sheaves-stacks-gauge-quantum-ha\quad
+       [\,math.CT\,]\quad
+       04 Jul 2026};
+    \end{tikzpicture}
+  \fi
+}
+
+% ==================== Title ====================
+\title{\textbf{Sheaves, Stacks, Gauge Redundancy, and\\
+Quantum High-Availability}\\[0.4em]
+\large Part VI of \emph{A \MtoP{} Representation Library}:\\
+The Capstone Module --- Descent, Isotropy, and Fault-Tolerant Encoding}
+
+\author{Matthew Long \\
+\textit{The YonedaAI Collaboration} \\
+\textit{YonedaAI Research Collective} \\
+Chicago, IL \\
+\texttt{research@yonedaai.com} $\cdot$ \url{https://yonedaai.com}}
+
+\date{04 July 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+This is Part VI --- the capstone module --- of the seven-part modular series
+\emph{A \MtoP{} Representation Library}. We formalize four intertwined
+mathematical domains as physical-representation modules: (i) \textbf{sheaves} as the
+theory of compatible local data glued along a Grothendieck topology; (ii)
+\textbf{stacks} as fibered categories in groupoids satisfying descent, the objects
+that remember not only local data and gluing but also the redundancy symmetries
+(automorphisms) of that data; (iii) \textbf{gauge redundancy}, the physical
+phenomenon in which many mathematical descriptions represent one physical content,
+realized mathematically as a quotient stack $\quot{X}{G}$; and (iv) \textbf{quantum
+high-availability}, the fault-tolerant encoding of logical information across
+redundant physical degrees of freedom. Our central structural thesis is that these
+four are one construction viewed through four lenses: \emph{many local
+representatives, one invariant logical content, plus explicit data recording the
+redundancy}. We give rigorous definitions and prove four principal results. Theorem
+(T1) shows that the quotient stack retains isotropy, $\Aut_{\quot{X}{G}}(x)\simeq
+\Stab_G(x)$, and is therefore a strictly more faithful representation object than the
+coarse quotient $X/G$ whenever automorphism-counting observables are present. Theorem
+(T2), a stackification/descent theorem, discharges the forward reference left open in
+Part I: the informally posited ``representation stack'' is literally recovered as the
+descent-theoretic stackification of the representation prestack, closing the ladder.
+Theorem (T3) proves that surface-code logical operators are the nontrivial homology
+classes $H_1(\Sigma;\ZZ_2)$ of the code surface, giving a literal (status \Ss) instance
+of ``gauge redundancy $\leftrightarrow$ quantum high-availability'' and reusing Part
+IV's homology dictionary verbatim. Theorem (T4) identifies the Connes--Kreimer
+antipode with the BPHZ counterterm via Birkhoff decomposition, exhibiting
+renormalization as Hopf-algebraic decomposition and reusing Part II's coalgebraic
+backbone. We then survey the holographic quantum-error-correction bridge
+(Almheiri--Dong--Harlow; Pastawski--Yoshida--Harlow--Preskill; Harlow) as a more
+rigorous, operator-algebraic strengthening of the heuristic slogan ``gauge redundancy
+is to physics what fault-tolerant encoding is to quantum information.'' Throughout we
+preserve the series' three-level epistemic status system (\Ss/\Hh/\Pp) and reproduce
+the series limitations, in particular the distinction between gauge redundancy and
+physical symmetry. Accompanying Haskell and Lean formalizations encode the
+sheaf/stack/stabilizer-code structures.
+\end{abstract}
+
+\tableofcontents
+
+% =====================================================================
+\section{Introduction}
+\label{sec:intro}
+
+\subsection{The modular series and where Part VI sits}
+
+The series \emph{A \MtoP{} Representation Library} advances a single
+organizing thesis: many physical quantities are not merely \emph{described by}
+mathematics but are \emph{obtained as realizations} of structured mathematical
+information. The program is deliberately \textbf{modular}: rather than assert a single
+grand functor $\Math\to\Phys$, it builds a hierarchy of six standalone, formally
+verifiable modules, each introducing one mathematical domain as a
+physical-representation faculty and composing on the previous ones, followed by a
+seventh synthesis paper. The ladder is
+\begin{center}
+\resizebox{0.98\linewidth}{!}{$\displaystyle
+\underbrace{\text{I}}_{\substack{\text{repr.}\\\text{stack}}}
+\to
+\underbrace{\text{II}}_{\substack{\text{motives,}\\\text{periods}}}
+\to
+\underbrace{\text{III}}_{\substack{\text{alg.}\\\text{geometry}}}
+\to
+\underbrace{\text{IV}}_{\substack{\text{alg.}\\\text{topology}}}
+\to
+\underbrace{\text{V}}_{\substack{\text{cat.\ theory,}\\\text{HoTT}}}
+\to
+\underbrace{\text{VI}}_{\substack{\text{sheaves, stacks,}\\\text{gauge, quantum HA}}}
+\to
+\underbrace{\text{Synth.}}_{\text{recomp.}}
+$}
+\end{center}
+The present paper is \textbf{Part VI}, the capstone before synthesis. Its job is
+threefold. First, it introduces the mathematics of \emph{descent}: presheaves,
+sheaves, fibered categories, and stacks. Second, it uses that machinery to make
+rigorous the two constructions that the whole series has been circling --- the
+\emph{quotient stack} $\quot{X}{G}$ as the mathematical home of gauge redundancy, and
+the \emph{stackification} that converts a prestack into a stack. Third, it exhibits
+the deepest cross-module bridge in the series: gauge redundancy in physics and
+fault-tolerant encoding in quantum information are two readings of one structure ---
+\emph{many physical representatives, one logical/observable content, with explicit
+data recording the redundancy}.
+
+\subsection{The circular closure of the ladder}
+
+A structural fact drives the design. Part I \emph{posits}, by analogy, that
+representation entries should glue ``not by equality but by equivalence,'' i.e. that
+the assignment of physical representations to mathematical domains behaves like a
+\emph{stack}. But Part I does not define a stack; it defers to a forward reference.
+Part VI \emph{is} that forward reference resolved: here we define fibered categories,
+descent, and stackification, and prove (\Cref{thm:stackification}, T2) that the
+representation prestack of Part I admits a universal stackification, satisfying Part
+I's informal ``representation stack'' definition exactly. The ladder is therefore
+\emph{literally circular}: Part VI supplies the rigorous foundation for Part I's
+opening formalism. We flag this as the candidate ``closure theorem'' for the synthesis
+paper (Part VII).
+
+\subsection{Contributions}
+
+\begin{enumerate}
+\item A self-contained, arxiv-style formalization of sheaves and stacks over a site
+(\Cref{sec:sheaves,sec:stacks}), with the physical-representation dictionary of the
+series attached to each construction and carrying \Ss/\Hh/\Pp\ status labels.
+
+\item \textbf{T1} (\Cref{prop:stacks-retain}, \Cref{thm:aut-stab}): the quotient stack
+retains isotropy, $\Aut_{\quot{X}{G}}(x)\simeq\Stab_G(x)$, and is strictly more
+faithful than the coarse quotient for any automorphism-counting observable (orbifold
+Euler characteristic, $1/|\Stab|$ path-integral weights).
+
+\item \textbf{T2} (\Cref{thm:stackification}): a descent/stackification theorem that
+discharges Part I's forward reference, closing the ladder.
+
+\item \textbf{T3} (\Cref{thm:surface-code}): surface-code logical operators are the
+classes of $H_1(\Sigma;\ZZ_2)$; the code space of a genus-$g$ surface code is
+$(\CC^2)^{\otimes 2g}$. This is a status-\Ss\ bridge unifying Part IV (homology), Part
+VI (stacks/gauge), and quantum information.
+
+\item \textbf{T4} (\Cref{thm:connes-kreimer}): the Connes--Kreimer antipode computes
+the BPHZ counterterm and renormalization is the Birkhoff decomposition of the
+Feynman-rules character, reusing Part II's Hopf-algebraic decomposition backbone.
+
+\item A survey (\Cref{sec:holographic}) of holographic/operator-algebra quantum error
+correction as a rigorous strengthening of the series' central heuristic (status
+\Hh$\to$ partially \Ss), with the epistemic status clearly labeled.
+
+\item Companion Haskell (\path{src/sheaves-stacks-gauge-quantum-ha/}) and
+Lean (\path{lean/sheaves-stacks-gauge-quantum-ha/}) formalizations.
+\end{enumerate}
+
+\subsection{Notation and standing conventions}
+\label{subsec:notation}
+
+We work with categories, functors, and (2-)groupoids as developed in Part V. $\Set$ is
+the category of sets, $\Grpd$ the (2-)category of groupoids, $\Cat$ that of
+(small) categories, $\Vect$ that of vector spaces over a fixed field. For a category
+$\cat C$ and object $c$, $\Aut_{\cat C}(c)$ is the automorphism group of $c$. For a
+group $G$ acting on a set/space $X$ we write $\Stab_G(x)=\{g\in G: g\cdot x = x\}$ for
+the stabilizer, $\Orb_G(x)=\{g\cdot x : g\in G\}$ for the orbit, $X/G$ for the coarse
+orbit set, and $\quot{X}{G}$ for the \emph{quotient stack} (\Cref{def:quotient-stack}).
+Hilbert spaces are finite-dimensional unless stated otherwise; $\Pauli_n$ is the
+$n$-qubit Pauli group. We reserve $\simeq$ for equivalence of groupoids/categories and
+$\cong$ for isomorphism of objects.
+
+% =====================================================================
+\section{Mathematical framework: the representation stack recalled}
+\label{sec:framework}
+
+We briefly recall the load-bearing structures of Parts I--V that Part VI builds on and
+discharges; this makes the paper self-contained while fixing notation for the closure
+theorem.
+
+\subsection{The realization pipeline and the master formulas}
+
+\begin{definition}[Realization pipeline, after Part I]
+\label{def:pipeline}
+Let $\Dom$ be a category of \emph{mathematical domains}, $\Phys$ a category of
+\emph{physical representations}. For a domain object $M$, the \emph{realization
+pipeline} is the composite
+\begin{equation}
+\Obs_\alpha(M)\;=\;\Obs\bigl(\Real_\alpha(\Phi(M))\bigr),
+\label{eq:pipeline}
+\end{equation}
+where $\Phi(M)$ is the abstract informational content of $M$, $\Real_\alpha$ is a
+choice of realization channel (indexed by $\alpha$), and $\Obs$ extracts an
+observable. The compressed slogan is $\text{observable}=\Real(\text{abstract
+structure})$.
+\end{definition}
+
+Part VI instantiates \eqref{eq:pipeline} with $\Real_\alpha$ the \emph{quantum
+encoding} $\iota:\Hlog\hookrightarrow\Hphys$ and with $\Obs$ the logical measurement
+invariant under the equivalence groupoid of physical variations. The four master
+formulas of the series that recur here are
+\begin{align}
+\Aut_{\quot{X}{G}}(x)&\simeq\Stab_G(x) && \text{(stacks retain isotropy)},
+\label{eq:master-aut}\\
+\Hphys&\simeq (\Hlog\otimes\Hgauge)\;\oplus\;\Herr &&
+\text{(high-availability decomposition)},
+\label{eq:master-ha}\\
+\cop(\mathcal{A}^{\mathfrak m})&=\textstyle\sum_i
+\mathcal{A}^{\mathfrak m}_{i,1}\otimes\mathcal{A}^{\mathfrak m}_{i,2} &&
+\text{(coaction / decomposition)},
+\label{eq:master-coaction}\\
+\delta&:\mathcal{L}\to\textstyle\bigwedge^2\mathcal{L} && \text{(cobracket)}.
+\label{eq:master-cobracket}
+\end{align}
+Equations \eqref{eq:master-aut}--\eqref{eq:master-ha} are proved in
+\Cref{sec:stacks,sec:qha}; \eqref{eq:master-coaction}--\eqref{eq:master-cobracket} are
+instantiated by the Connes--Kreimer coproduct in \Cref{sec:hopf}.
+
+\subsection{The three-level epistemic status system}
+
+The series' epistemic-honesty device, preserved verbatim, is a three-level status
+label attached to every dictionary entry.
+
+\begin{definition}[Status labels \Ss/\Hh/\Pp]
+\label{def:status}
+An entry of the representation dictionary carries a label:
+\begin{itemize}
+\item[\Ss] \emph{standard} use in mathematics or mathematical physics (e.g. TQFT as a
+functor $\mathrm{Bord}_n\to\Vect$; surface-code logical operators as $H_1(\Sigma;\ZZ_2)$);
+\item[\Hh] a strong \emph{heuristic} representation-dictionary entry (e.g. ``gauge
+redundancy is fault-tolerant encoding'' as a general slogan);
+\item[\Pp] a \emph{speculative} philosophical ontology (e.g. physical reality \emph{as}
+motivic-categorical realization).
+\end{itemize}
+Composite labels \Ss/\Hh\ and \Hh/\Pp\ mark entries standard as pure mathematics but
+heuristic/speculative in their physical reading.
+\end{definition}
+
+\begin{remark}[Limitation: gauge redundancy is not physical symmetry]
+\label{rem:limitation-gauge}
+We reproduce the series' governing limitation that is most relevant to Part VI: a
+\emph{gauge redundancy} identifies different descriptions of the \emph{same} physical
+content, whereas a \emph{physical symmetry} maps one physical state to a
+\emph{genuinely different} one. The mathematics of both is a group(oid) action; the
+distinction is which action one declares to be ``pure description.'' All status-\Ss\
+claims below concern the redundancy reading; the physical-symmetry reading is a
+separate modeling choice. This distinction is exactly what the \emph{stack} (versus the
+coarse quotient) is built to keep track of.
+\end{remark}
+
+% =====================================================================
+\section{Sheaves: compatible local data}
+\label{sec:sheaves}
+
+\subsection{Sites and presheaves}
+
+\begin{definition}[Grothendieck topology, site]
+\label{def:site}
+A \emph{Grothendieck topology} $J$ on a small category $\cat C$ assigns to each object
+$U\in\cat C$ a collection $J(U)$ of \emph{covering sieves} (equivalently, for the
+concrete presentations we use, covering families $\{U_i\to U\}_{i\in I}$), subject to:
+\begin{enumerate}
+\item (isomorphism) any isomorphism $\{V\xrightarrow{\sim}U\}$ covers $U$;
+\item (stability) if $\{U_i\to U\}$ covers and $V\to U$ is any morphism, then the
+pullbacks $\{U_i\times_U V\to V\}$ cover $V$;
+\item (transitivity) if $\{U_i\to U\}$ covers and each $\{U_{ij}\to U_i\}$ covers, then
+$\{U_{ij}\to U\}$ covers.
+\end{enumerate}
+The pair $(\cat C, J)$ is a \emph{site}. Strictly, the family-level axioms
+(isomorphism, stability, transitivity) above present a Grothendieck
+\emph{pretopology}; the induced sieve-generated Grothendieck \emph{topology}
+(maximality, stability, local character) yields the identical sheaf theory, and we use
+the two interchangeably, working throughout with the concrete covering families.
+\end{definition}
+
+\begin{example}[The topological site]
+\label{ex:top-site}
+For a topological space $Y$, let $\mathrm{Op}(Y)$ be the poset of open sets with
+inclusions, and let $\{U_i\hookrightarrow U\}$ cover iff $\bigcup_i U_i = U$. This is the
+motivating site; ``domains'' $U$ are regions, and a presheaf assigns data to each
+region.
+\end{example}
+
+\begin{definition}[Presheaf]
+\label{def:presheaf}
+A \emph{presheaf} on $\cat C$ valued in $\Set$ is a functor
+$F:\cat C^{\op}\to\Set$. For $V\to U$ the induced map $F(U)\to F(V)$ is
+\emph{restriction}, written $s\mapsto s|_V$. We write $\PSh(\cat C)$ for the category
+of presheaves.
+\end{definition}
+
+Physically (status \Ss), a presheaf is a \emph{local observable assignment}: to each
+region of spacetime, or each patch of a code's interaction hypergraph, it assigns the set of
+admissible local configurations, with restriction the operation of forgetting to a
+smaller region.
+
+\subsection{The sheaf condition}
+
+\begin{definition}[Sheaf]
+\label{def:sheaf}
+A presheaf $F$ on a site $(\cat C, J)$ is a \emph{sheaf} if for every covering family
+$\{U_i\to U\}\in J(U)$ the diagram
+\begin{equation}
+\begin{tikzcd}[column sep=large]
+F(U) \arrow[r, "e"] &
+\displaystyle\prod_i F(U_i)
+\arrow[r, shift left=1.1ex, "p"]
+\arrow[r, shift right=1.1ex, swap, "q"] &
+\displaystyle\prod_{i,j} F(U_i\times_U U_j)
+\end{tikzcd}
+\label{eq:equalizer}
+\end{equation}
+is an equalizer, where $e(s)=(s|_{U_i})_i$, $p(s_i)_{ij}=(s_i|_{U_i\times_U U_j})$ and
+$q(s_i)_{ij}=(s_j|_{U_i\times_U U_j})$. Concretely: (\emph{separated}) two global
+sections agreeing on a cover are equal; (\emph{gluing}) any family of local sections
+$s_i\in F(U_i)$ that is \emph{compatible} ($s_i|_{U_{ij}}=s_j|_{U_{ij}}$) descends to a
+unique global $s\in F(U)$ with $s|_{U_i}=s_i$.
+\end{definition}
+
+\begin{definition}[Stalk, obstruction]
+\label{def:stalk}
+On the topological site, the \emph{stalk} of $F$ at a point $y$ is the filtered
+colimit $F_y=\varinjlim_{U\ni y}F(U)$; it is the germ of local data at the event $y$
+(status \Ss). For a sheaf the equalizer \eqref{eq:equalizer} guarantees that compatible
+local sections always glue in degree $0$; genuine \emph{obstructions} live in higher
+sheaf cohomology $H^{n\ge 1}(U,F)$ --- the failure of a globally defined section to lift
+along a surjection of sheaves, or of an abelian-group-valued \v{C}ech $1$-cocycle to be
+a coboundary. Such a nonvanishing class represents an anomaly or topological obstruction
+(status \Ss/\Hh).
+\end{definition}
+
+\begin{proposition}[Sheafification]
+\label{prop:sheafification}
+The inclusion $\Sheaves(\cat C, J)\hookrightarrow\PSh(\cat C)$ of sheaves into
+presheaves admits a left adjoint $(-)^{+\!+}$, the \emph{sheafification}, and the unit
+$\eta_F: F\to F^{+\!+}$ is universal among maps from $F$ to sheaves. Sheafification is
+obtained by iterating the \emph{plus construction}
+$F^+(U)=\varinjlim_{R\in J(U)}\Hom_{\PSh}(R,F)$ twice.
+\end{proposition}
+
+\begin{proof}[Proof sketch]
+The plus construction $F^+$ is separated for any $F$ and is a sheaf when $F$ is already
+separated; hence $F^{+\!+}$ is a sheaf. For any sheaf $G$ and map $f:F\to G$, the
+matching-family description of $F^+$ shows $f$ factors uniquely through $\eta$, giving
+the adjunction $\Hom_{\Sheaves}(F^{+\!+},G)\cong\Hom_{\PSh}(F,G)$. This is the standard
+Grothendieck plus-construction; see Kashiwara--Schapira~\cite{KashiwaraSchapira} and
+Vistoli~\cite{Vistoli}. We upgrade it to
+groupoid coefficients in \Cref{thm:stackification}.
+\end{proof}
+
+The physical content of \Cref{prop:sheafification}: \emph{descent} --- reconstructing a
+coordinate-independent global field from compatible local measurements --- is the
+universal solution to the gluing problem. This is the set-valued shadow of the
+stack-valued statement we need for gauge fields, to which we now turn.
+
+% =====================================================================
+\section{Stacks and gauge redundancy}
+\label{sec:stacks}
+
+A sheaf glues compatible local \emph{data}. But a gauge field's local descriptions are
+related not by \emph{equality} on overlaps but by \emph{gauge transformations}: on
+$U_{ij}$ the two restrictions differ by an element of the gauge group, and these
+transition data must satisfy a cocycle condition on triple overlaps. Recording this
+requires upgrading from set-valued to groupoid-valued data --- a \emph{stack}.
+
+\subsection{Fibered categories and descent}
+
+\begin{definition}[Category fibered in groupoids]
+\label{def:cfg}
+A functor $\pi:\cat F\to\cat C$ is a \emph{category fibered in groupoids} (CFG) if
+(i) for every morphism $f:V\to U$ in $\cat C$ and object $\xi$ over $U$ there is a
+\emph{cartesian} arrow $f^*\xi\to\xi$ over $f$, and (ii) every arrow of $\cat F$ is
+cartesian. Then each fiber $\cat F(U)=\pi^{-1}(U)$ is a groupoid, and each $f:V\to U$
+induces a pullback functor $f^*:\cat F(U)\to\cat F(V)$, functorial up to coherent
+natural isomorphism. We write $\cat F(U)$ for the groupoid of objects over $U$.
+\end{definition}
+
+Physically, $\cat F(U)$ is the groupoid of local field configurations over the region
+$U$, with morphisms the gauge transformations between them (status \Ss).
+
+\begin{definition}[Descent datum, stack]
+\label{def:stack}
+Let $(\cat C, J)$ be a site and $\pi:\cat F\to\cat C$ a CFG. For a cover
+$\{U_i\to U\}$, a \emph{descent datum} is a family $(\xi_i)_i$ with $\xi_i\in\cat F(U_i)$
+together with isomorphisms $\varphi_{ij}: \xi_j|_{U_{ij}}\xrightarrow{\sim}
+\xi_i|_{U_{ij}}$ satisfying the \emph{cocycle condition}
+$\varphi_{ik}=\varphi_{ij}\circ\varphi_{jk}$ on triple overlaps $U_{ijk}$. Descent
+data and their morphisms form a groupoid $\mathrm{Desc}(\{U_i\to U\})$. The CFG $\cat F$
+is a \emph{stack} if for every cover the natural comparison functor
+\begin{equation}
+\cat F(U)\;\xrightarrow{\ \simeq\ }\;\mathrm{Desc}(\{U_i\to U\})
+\label{eq:descent-equiv}
+\end{equation}
+is an \emph{equivalence of groupoids} (every descent datum is effective, and this
+essentially uniquely). A CFG that satisfies \eqref{eq:descent-equiv} only as a fully
+faithful embedding (compatible local objects that glue are unique up to unique iso, but
+may fail to exist) is a \emph{prestack}.
+\end{definition}
+
+The comparison \eqref{eq:descent-equiv} is precisely the groupoid-valued upgrade of the
+sheaf equalizer \eqref{eq:equalizer}: where the sheaf demanded a \emph{unique} glued
+section, the stack demands a glued object \emph{unique up to unique isomorphism}, and
+in addition demands that the isomorphisms themselves glue.
+
+\begin{center}
+\begin{tikzcd}[row sep=large, column sep=huge]
+\text{presheaf }F:\cat C^\op\to\Set
+  \arrow[r, "\text{coefficients}"]
+  \arrow[d, "\text{descent}"']
+& \text{CFG }\pi:\cat F\to\cat C
+  \arrow[d, "\text{descent}"]\\
+\text{sheaf (unique gluing)}
+  \arrow[r, "\text{coefficients}"']
+& \text{stack (gluing up to unique iso)}
+\end{tikzcd}
+\end{center}
+
+\subsection{The quotient stack and isotropy}
+
+\begin{definition}[Action groupoid and quotient stack]
+\label{def:quotient-stack}
+Let a group $G$ act on a space $X$. The \emph{action groupoid} $X/\!\!/G$ has objects
+the points of $X$ and morphisms $x\xrightarrow{g}g\cdot x$ for $g\in G$, with
+composition given by group multiplication. The \emph{quotient stack} $\quot{X}{G}$ is
+the stackification of the prestack $U\mapsto \{G\text{-torsors }P\to U \text{ with
+}G\text{-map } P\to X\}$; over a point it is the groupoid $X/\!\!/G$. The \emph{coarse
+quotient} $X/G$ is the set of orbits $\pi_0(X/\!\!/G)$.
+\end{definition}
+
+The two quotients are related by the coarse-space map $c:\quot{X}{G}\to X/G$, which is
+initial among maps from $\quot{X}{G}$ to sets/algebraic spaces. It is a bijection on
+isomorphism classes of points but collapses all automorphisms.
+
+\begin{proposition}[Stacks retain gauge information --- T1, qualitative]
+\label{prop:stacks-retain}
+If a physical configuration space is represented by descriptions $X$ modulo gauge
+transformations $G$, and if stabilizer groups influence observables (anomalies,
+quantization, path-integral weights), then $\quot{X}{G}$ is a strictly more faithful
+representation object than $X/G$.
+\end{proposition}
+
+\begin{proof}
+The coarse quotient records orbits but forgets automorphism groups of representatives:
+$c(x)=c(x')$ iff $\Orb_G(x)=\Orb_G(x')$, and $c$ carries no further data. The quotient
+stack records objects, isomorphisms (gauge transformations), and self-isomorphisms
+(residual/isotropy symmetry). By \Cref{thm:aut-stab} below, the self-isomorphisms at
+$x$ are exactly $\Stab_G(x)$. Any observable that is a function of the isotropy group
+--- e.g. an orbifold Euler characteristic $\chi_{\mathrm{orb}}=\sum_{[x]}
+1/|\Stab_G(x)|$ or a path-integral measure weighting each orbit by $1/|\Stab_G(x)|$ ---
+is therefore computable from $\quot{X}{G}$ but not from $X/G$, which has discarded the
+$|\Stab_G(x)|$ factors. Hence $\quot{X}{G}\to X/G$ is a genuine loss of information
+whenever some $\Stab_G(x)$ is nontrivial and enters an observable.
+\end{proof}
+
+\begin{theorem}[Isotropy of the quotient stack --- T1, quantitative]
+\label{thm:aut-stab}
+For a $G$-action on $X$ and any point $x\in X$, the automorphism group of $x$ regarded
+as an object of $\quot{X}{G}$ is naturally isomorphic to the stabilizer:
+\begin{equation}
+\Aut_{\quot{X}{G}}(x)\;\cong\;\Stab_G(x).
+\label{eq:aut-stab}
+\end{equation}
+Moreover the \emph{residual gerbe} of $\quot{X}{G}$ at $[x]$ --- the restriction of the
+stack to the orbit of $x$ --- is the classifying stack
+$\mathrm{B}\Stab_G(x)=\quot{\mathrm{pt}}{\Stab_G(x)}$. (The full \'etale-local model of
+$\quot{X}{G}$ near $[x]$ is the slice quotient $\quot{S_x}{\Stab_G(x)}$ for a
+$\Stab_G(x)$-invariant normal slice $S_x$ to the orbit, reducing to
+$\mathrm{B}\Stab_G(x)$ exactly when the orbit is open.)
+\end{theorem}
+
+\begin{proof}
+Work in the action groupoid $X/\!\!/G$, which computes the fiber of $\quot{X}{G}$ over a
+point (\Cref{def:quotient-stack}). By definition a morphism $x\to x'$ in $X/\!\!/G$ is an
+element $g\in G$ with $g\cdot x = x'$, and composition is group multiplication. An
+\emph{automorphism} of $x$ is a morphism $x\to x$, i.e. an element $g\in G$ with
+$g\cdot x = x$; this is exactly the condition $g\in\Stab_G(x)$. The bijection
+$\Aut_{X/\!\!/G}(x)=\{g\in G: g\cdot x=x\}=\Stab_G(x)$ is a group isomorphism because
+composition of automorphisms is group multiplication, matching the group law on
+$\Stab_G(x)$. This proves \eqref{eq:aut-stab}.
+
+For the residual gerbe: restrict the action groupoid to the single orbit of $x$. The
+orbit $\Orb_G(x)\cong G/\Stab_G(x)$ contributes no automorphisms (it is a free
+direction), while the residual symmetry is generated by $\Stab_G(x)$. The restricted
+groupoid is the transitive groupoid on $G/\Stab_G(x)$, which is equivalent as a groupoid
+to the one-object groupoid with automorphism group $\Stab_G(x)$, i.e. to
+$\mathrm{B}\Stab_G(x)$. Hence the restriction of $\quot{X}{G}$ to the orbit --- its
+residual gerbe at $[x]$ --- is $\mathrm{B}\Stab_G(x)$; the full \'etale-local model
+additionally records the normal slice as $\quot{S_x}{\Stab_G(x)}$.
+\end{proof}
+
+\begin{corollary}[Faithfulness gap is exactly the isotropy]
+\label{cor:faithfulness}
+The fibers of $c:\quot{X}{G}\to X/G$ over $[x]$ are the classifying stacks
+$\mathrm{B}\Stab_G(x)$; equivalently, the information lost by passing from the stack to
+the coarse quotient is precisely the groupoid cohomology
+$H^\bullet(\mathrm{B}\Stab_G(x))=H^\bullet_{\mathrm{grp}}(\Stab_G(x))$ of the isotropy
+groups. In particular $X/G$ is faithful iff the action is free.
+\end{corollary}
+
+\begin{proof}
+Immediate from \Cref{thm:aut-stab}: over the orbit $[x]$ the coarse map forgets exactly
+the one-object groupoid $\mathrm{B}\Stab_G(x)$, whose invariants are the group
+cohomology of $\Stab_G(x)$. Freeness means all $\Stab_G(x)$ are trivial, so $c$ is an
+equivalence.
+\end{proof}
+
+\begin{example}[Electromagnetism as gauge redundancy]
+\label{ex:em}
+Let $X$ be the space of $U(1)$ connections (gauge potentials $A$) on a manifold and
+$G$ the group of gauge transformations acting by $A\mapsto A+d\lambda$. The physical
+content is the curvature $F=dA$, and $d^2=0$ gives $F$ gauge invariance. The coarse
+quotient $X/G$ records the physical field strengths. The stack $\quot{X}{G}$ in
+addition records the automorphisms: for a generic connection the stabilizer is the
+constant gauge transformations $U(1)$, and this residual $U(1)$ isotropy is exactly the
+global symmetry that survives quantization and contributes the $1/\mathrm{vol}(G)$
+Faddeev--Popov factors to the path integral. This is the canonical status-\Ss\
+illustration of \Cref{prop:stacks-retain}.
+\end{example}
+
+\begin{remark}[Classifying stack $\mathrm{B}G$]
+\label{rem:BG}
+The special case $X=\mathrm{pt}$ gives $\quot{\mathrm{pt}}{G}=\mathrm{B}G$, the
+classifying stack, whose groupoid of points over any base is the groupoid of
+$G$-torsors. It classifies $G$-bundles (gauge fields), so the dictionary entry
+``classifying stack $\mathrm{B}G$ $\leftrightarrow$ universal $G$-bundle object / gauge
+field classifier'' (status \Ss) is literally the statement that
+$\Hom(-,\mathrm{B}G)$ is the groupoid of gauge fields.
+\end{remark}
+
+% =====================================================================
+\section{Stackification and the closure of the ladder}
+\label{sec:closure}
+
+We now discharge Part I's forward reference. Part I posited a \emph{representation
+prestack} $\Repp:\Dom^{\op}\to\Grpd$ assigning to each mathematical domain the
+groupoid of its physical representations, and asserted --- by analogy --- that this
+should be a \emph{stack} (local representations glue up to gauge equivalence). Part I
+did not prove this. Here we do, via stackification.
+
+\begin{theorem}[Stackification of the representation prestack --- T2]
+\label{thm:stackification}
+Let $(\Dom, J)$ be a site and $\Repp:\Dom^{\op}\to\Grpd$ the representation prestack of
+Part I (a CFG over $\Dom$). Then:
+\begin{enumerate}
+\item There exists a stack $\Repp^{J}$ on $(\Dom, J)$ and a morphism of CFGs
+$\eta:\Repp\to\Repp^{J}$ such that for every stack $\cat G$ on $(\Dom,J)$, precomposition
+\[
+\eta^*:\ \iHom_{\mathrm{Stack}}(\Repp^{J},\cat G)\ \xrightarrow{\ \simeq\ }\
+\iHom_{\mathrm{CFG}}(\Repp,\cat G)
+\]
+is an equivalence of groupoids. That is, $\Repp^{J}$ is the universal stack under
+$\Repp$ (\emph{stackification}).
+\item $\Repp$ is already a stack iff $\eta$ is an equivalence.
+\item Consequently, Part I's ``representation stack'' exists and is well-defined: it is
+$\Repp^{J}$. When the local representation data of Parts II--V (Betti/de Rham/Hodge
+realizations, cohomology, TQFT functors, HoTT identity data) are compatible on
+overlaps, they assemble into a global object of $\Repp^{J}$, exactly satisfying Part I's
+informal definition ``entries glue not by equality but by gauge equivalence.''
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+We adapt the plus construction of \Cref{prop:sheafification} from set-valued to
+groupoid-valued (equivalently, $(2,1)$-truncated) coefficients. Define, for
+$U\in\Dom$,
+\[
+\Repp^{+}(U)\;:=\;\varinjlim_{\{U_i\to U\}\in J(U)}\ \mathrm{Desc}\bigl(\{U_i\to
+U\},\Repp\bigr),
+\]
+the (pseudo-)colimit over covers of the descent groupoids of \Cref{def:stack}, with
+transition functors the refinement functors of covers. This colimit is filtered: any two
+covers of $U$ admit a common refinement (their pairwise pullbacks $\{U_i\times_U
+V_j\to U\}$), so the indexing category of covers is directed and the (pseudo-)colimit is
+well-behaved. Two applications, $\Repp^{J}:=
+\Repp^{+\!+}$, produce a stack:
+\emph{(a)} $\Repp^{+}$ is a prestack (fully faithful descent) for any CFG $\Repp$,
+because morphisms in a descent groupoid are already determined locally and the cocycle
+condition makes them glue; \emph{(b)} if $\Repp$ is a prestack then $\Repp^{+}$ is a
+stack, because effectivity of descent is achieved after one further plus step, exactly
+as in the $1$-categorical case but now tracking the coherence isomorphisms
+$\varphi_{ij}$ and their cocycle condition. Universality: given a stack $\cat G$ and a
+map $f:\Repp\to\cat G$, descent in $\cat G$ (\Cref{def:stack}) means every descent
+datum in $\cat G$ is effective, so $f$ extends over each plus step uniquely up to
+unique coherent isomorphism; this yields the essentially unique factorization through
+$\eta$, i.e. the claimed equivalence of $\Hom$-groupoids. Part (2) is immediate: if
+$\eta$ is an equivalence then $\Repp\simeq\Repp^{J}$ is a stack, and conversely a stack
+is $J$-local so the plus construction is idempotent on it. Part (3) is the application:
+the compatibility of the local realization data supplied by Parts II--V is exactly a
+descent datum for $\Repp$, hence an object of $\Repp^{J}(U)$; this is the content of Part
+I's informal gluing axiom, now a theorem. This is the general stackification theorem for
+fibered categories over a site (Giraud~\cite{Giraud}; Vistoli~\cite{Vistoli}),
+specialized to $\Repp$.
+\end{proof}
+
+\begin{center}
+\begin{tikzcd}[row sep=large, column sep=huge]
+\Repp \arrow[r, "\eta"] \arrow[dr, swap, "\forall f"'] &
+\Repp^{J} \arrow[d, dashed, "\exists! \bar f \text{ (up to iso)}"] \\
+& \cat G \ (\text{any stack})
+\end{tikzcd}
+\end{center}
+
+\begin{corollary}[Closure of the ladder]
+\label{cor:closure}
+The six modules I--VI are not merely an expository decomposition: \Cref{thm:stackification}
+shows that Part I's opening definition (the representation stack) is a theorem provable
+from Part VI's descent machinery applied to the concrete data of Parts II--V. The ladder
+$\text{I}\to\cdots\to\text{VI}$ therefore closes back onto Part I. We nominate this as the
+headline ``closure theorem'' for the synthesis paper (Part VII).
+\end{corollary}
+
+\begin{remark}[Status]
+\label{rem:t2-status}
+\Cref{thm:stackification}(1)--(2) is status \Ss\ (the stackification theorem is standard;
+Giraud~\cite{Giraud}, Vistoli~\cite{Vistoli}). Part (3), the identification of the
+specific descent datum with
+Part I's ``representation stack,'' is status \Ss/\Hh: the mathematics is standard but the
+claim that the physical realization data of Parts II--V \emph{is} a descent datum is the
+series' modeling hypothesis, and we flag it as such.
+\end{remark}
+
+% =====================================================================
+\section{Quantum high-availability encodings}
+\label{sec:qha}
+
+We now cross from geometry to quantum information. The same slogan --- many physical
+representatives, one logical content, plus explicit redundancy data --- becomes the
+theory of quantum error-correcting codes. We make the analogy precise and then, in
+\Cref{sec:surface}, exhibit a case where it is a literal (status \Ss) identity.
+
+\subsection{Codes as encodings with an equivalence groupoid}
+
+\begin{definition}[Quantum high-availability representation]
+\label{def:qha}
+A \emph{quantum high-availability (QHA) representation} is an isometric encoding
+$\iota:\Hlog\hookrightarrow\Hphys$ together with a groupoid $\mathcal E$ of
+\emph{physical variations} (channels acting on $\Hphys$) such that:
+\begin{enumerate}
+\item every logical observable $\overline{O}$ (an operator on $\iota(\Hlog)$) is
+\emph{invariant} under $\mathcal E$ in the sense that its induced action on the code
+space is unchanged by any variation in $\mathcal E$; and
+\item detectable/correctable errors move the system within controlled equivalence or
+syndrome sectors, from which a recovery channel returns it to $\iota(\Hlog)$.
+\end{enumerate}
+The redundancy $\dim\Hphys/\dim\Hlog$ is the ``availability'': logical information
+survives loss of any physical subsystem in the correctable set.
+\end{definition}
+
+This is the realization pipeline \eqref{eq:pipeline} with $\Real=\iota$ and $\Obs$ the
+logical measurement; $\mathcal E$ plays the role of the gauge groupoid of
+\Cref{sec:stacks}. The subsystem structure is the high-availability decomposition
+\eqref{eq:master-ha}:
+\begin{equation}
+\Hphys\ \simeq\ (\Hlog\otimes\Hgauge)\ \oplus\ \Herr,
+\label{eq:subsystem}
+\end{equation}
+where $\Hgauge$ carries \emph{gauge qubits} --- redundant degrees of freedom that may be
+changed freely without affecting logical content --- and $\Herr$ is the error sector
+detected by syndrome measurement. We stress the distinction between the two ways
+redundancy is realized. In a genuine \emph{subsystem} (Bacon--Shor--type) or
+operator-algebra code the gauge factor is nontrivial, $\dim\Hgauge>1$, and gauge
+operators act nontrivially within $\Hlog\otimes\Hgauge$. In a \emph{pure stabilizer}
+code the gauge factor degenerates, $\dim\Hgauge=1$: the stabilizers act as the identity
+on the code space and the redundancy is carried entirely by the orthogonal syndrome
+sectors $\Herr$, i.e. by the many ways the full kinematic space projects onto
+$\iota(\Hlog)$. The parallel with $\quot{X}{G}$ is then this: $\Hlog=$ logical/observable
+content (analogue of $X/G$), the redundancy the stack remembers ($\Stab$/isotropy)
+appears as $\Hgauge$ for subsystem codes and as the $\Herr$ syndrome grading for pure
+stabilizer codes, and in both cases the encoding $\iota$ is the faithful (stack-level)
+representative that the coarse logical content alone forgets.
+
+\subsection{Stabilizer and operator-algebra codes}
+
+\begin{definition}[Stabilizer code]
+\label{def:stabilizer}
+Let $\Pauli_n$ be the $n$-qubit Pauli group. A \emph{stabilizer code}~\cite{Gottesman} is
+specified by an abelian subgroup $S\subset\Pauli_n$ containing no nontrivial phases,
+$S\cap\{\pm I,\pm iI\}=\{I\}$ (in particular $-I\notin S$, so the code space is
+nonzero); the \emph{code space} is the simultaneous $+1$ eigenspace
+\begin{equation}
+\Hlog\ =\ \{\,|\psi\rangle\in(\CC^2)^{\otimes n}\ :\ s|\psi\rangle=|\psi\rangle\ \ \forall
+s\in S\,\}.
+\label{eq:code-space}
+\end{equation}
+If $S$ has $n-k$ independent generators then $\dim\Hlog=2^{k}$ (it encodes $k$ logical
+qubits). The \emph{logical operators} are elements of the normalizer
+$N(S)/S\subset\Pauli_n/S$: Pauli operators commuting with all of $S$ but not in $S$.
+\end{definition}
+
+\begin{lemma}[Knill--Laflamme conditions]
+\label{lem:knill-laflamme}
+Let $P$ be the projector onto a code space $\Hlog\subset\Hphys$ and $\{E_a\}$ a set of
+error operators. Then $\{E_a\}$ is correctable iff
+\begin{equation}
+P E_a^\dagger E_b P\ =\ c_{ab}\,P
+\label{eq:kl}
+\end{equation}
+for a Hermitian matrix $(c_{ab})$. In words: the environment learns nothing about the
+logical state from the errors (no logical information leaks into which-error data), so a
+recovery channel exists.
+\end{lemma}
+
+\begin{proof}[Proof sketch]
+Necessity: if a recovery channel $\mathcal R$ satisfies $\mathcal
+R(E_a\rho E_b^\dagger)\propto\rho$ for all code states $\rho=P\rho P$, tracing against
+$P$ forces \eqref{eq:kl}. Sufficiency: diagonalize $(c_{ab})=u\,d\,u^\dagger$; the
+combinations $F_\mu=\sum_a u_{a\mu}E_a$ satisfy $PF_\mu^\dagger F_\nu P=d_\mu
+\delta_{\mu\nu}P$, so the $F_\mu$ map $\Hlog$ to mutually orthogonal subspaces
+isometrically (up to normalization); measuring which subspace (the \emph{syndrome}) and
+inverting the corresponding isometry recovers the logical state. This is the standard
+Knill--Laflamme theorem~\cite{KnillLaflamme}.
+\end{proof}
+
+\begin{proposition}[Stabilizer syndromes form a sheaf; correction is the descent --- T3, part i]
+\label{prop:syndrome-presheaf}
+For a stabilizer code with interaction hypergraph $\Gamma$ (vertices = qubits,
+hyperedges = stabilizer supports, since a weight-$w$ generator such as a surface-code
+star or plaquette touches $w>2$ qubits; equivalently the bipartite Tanner graph with
+qubit- and check-nodes), the assignment
+\[
+U\ \longmapsto\ \{\text{syndrome outcomes } \sigma:S_U\to\{\pm1\}\text{ consistent with
+} S\},\qquad U\subseteq\Gamma,
+\]
+where $S_U$ are the stabilizer generators supported in $U$, is a sheaf on the poset
+of sub-hypergraphs, with restriction given by forgetting outcomes outside $U$. The
+substantive error-correction content is a \emph{second} descent, one level up: the map
+\[
+(\text{global syndrome } \sigma:S\to\{\pm1\})\ \longmapsto\ (\text{correctable global
+error class in }\Pauli_n/S),
+\]
+is well-defined precisely when the Knill--Laflamme conditions (\Cref{lem:knill-laflamme})
+hold on the correctable set.
+\end{proposition}
+
+\begin{proof}
+Restriction of syndrome outcomes to a sub-hypergraph is functorial and strictly
+compatible with further restriction, so the assignment is a presheaf
+(\Cref{def:presheaf}); moreover a family of local syndrome functions that agree on
+overlaps glues uniquely to a global syndrome function, since a syndrome is just an
+assignment of $\pm1$ to each generator --- so syndromes trivially form a \emph{sheaf}.
+This gluing is automatic and carries no error-correction content by itself. The
+non-trivial statement is the well-definedness of the recovery map: a globally consistent
+syndrome $\sigma$ determines a \emph{unique} correctable error class in $\Pauli_n/S$
+(equivalently a unique recovery up to a stabilizer) exactly when the Knill--Laflamme
+matrix \eqref{eq:kl} is nondegenerate on the correctable set. Thus the sheaf of syndromes
+is the easy layer, and correctability is the genuine descent from global syndrome data to
+a unique global logical correction.
+\end{proof}
+
+\begin{remark}[Operator-algebra generalization]
+\label{rem:oaqec}
+The subsystem decomposition \eqref{eq:subsystem} is the framework of
+\emph{operator-algebra quantum error correction} (OAQEC): the correctable code is a von
+Neumann subalgebra $\mathcal A\subset\mathcal B(\Hphys)$, and logical operators are
+$\mathcal A$, gauge operators its commutant restricted to the code, errors the
+complement. When $\mathcal A$ has nontrivial center one recovers gauge theories with a
+center (edge modes); this is the setting of \Cref{sec:holographic}.
+\end{remark}
+
+% =====================================================================
+\section{Surface codes: gauge redundancy is literally homology}
+\label{sec:surface}
+
+The analogy of \Cref{sec:qha} becomes a theorem for topological codes. Here the
+logical content is a \emph{homology group} of the code surface --- Part IV's dictionary
+entry ``homology $H_n(X)$ $\leftrightarrow$ conserved extended structures'' realized
+literally, not analogically. This is the strongest status-\Ss\ bridge in the series.
+
+\begin{definition}[Surface code]
+\label{def:surface-code}
+The surface/toric code~\cite{Kitaev,DKLP} is defined as follows. Let $\Sigma$ be a closed
+\emph{connected} orientable surface of genus $g$ with a cellulation (a lattice embedded in
+$\Sigma$).
+Place a qubit on each edge. For each vertex $v$ define the
+\emph{star operator} $A_v=\prod_{e\ni v}X_e$ (product over edges incident to $v$); for
+each face $f$ define the \emph{plaquette operator} $B_f=\prod_{e\in\partial f}Z_e$
+(product over edges in the boundary of $f$). The stabilizer group is
+$S=\langle A_v, B_f\rangle$. These all commute (each $A_v$ and $B_f$ share an even number
+of edges), so \eqref{eq:code-space} defines the code space.
+\end{definition}
+
+\begin{theorem}[Surface-code logical operators are the (co)homology $H_1, H^1(\Sigma;\ZZ_2)$ --- T3]
+\label{thm:surface-code}
+For the surface code on a genus-$g$ surface $\Sigma$:
+\begin{enumerate}
+\item the code space has dimension $2^{2g}$, i.e. $\Hlog\cong(\CC^2)^{\otimes 2g}$ and
+the code encodes $k=2g$ logical qubits;
+\item the $Z$-type and $X$-type logical operators (modulo stabilizers) are respectively
+the nontrivial classes of $H_1(\Sigma;\ZZ_2)$ and the Poincar\'e-dual classes of
+$H^1(\Sigma;\ZZ_2)$, each isomorphic to $\ZZ_2^{2g}$, so that the full logical Pauli
+group modulo stabilizers is the $4g$-dimensional symplectic $\ZZ_2$-space
+\[
+N(S)/S\ \cong\ H_1(\Sigma;\ZZ_2)\ \oplus\ H^1(\Sigma;\ZZ_2)\ \cong\ \ZZ_2^{\,4g};
+\]
+each homological summand contributes the $2g$ generators of one Pauli type for the $2g$
+logical qubits, and the intersection pairing supplies the symplectic (anti)commutation
+form;
+\item error strings that are boundaries $c=\partial b$ act trivially on the code space
+(they are ``pure gauge''); only homologically nontrivial (noncontractible) strings
+implement logical operations.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+\emph{(1) Dimension count.} There are $|E|$ qubits, and $|V|+|F|$ stabilizer generators
+$A_v, B_f$. They are not all independent: $\prod_v A_v = I$ and $\prod_f B_f = I$ (each
+edge appears in exactly two stars and two plaquettes over $\ZZ_2$), and these are the
+\emph{only} relations --- this holds precisely because $\Sigma$ is a \emph{closed}
+surface (no boundary), so every edge is shared by exactly two faces and two vertices.
+Hence the number of independent generators is
+$(|V|-1)+(|F|-1)=|V|+|F|-2$. The number of encoded qubits is
+\[
+k\ =\ |E|-(|V|+|F|-2)\ =\ 2-(|V|-|E|+|F|)\ =\ 2-\chi(\Sigma)\ =\ 2-(2-2g)\ =\ 2g,
+\]
+using the Euler characteristic $\chi(\Sigma)=|V|-|E|+|F|=2-2g$. Thus $\dim\Hlog=2^{2g}$.
+
+\emph{(2) Homological identification.} Work over $\ZZ_2$. A $Z$-type Pauli
+$\prod_{e\in c}Z_e$ is indexed by a $1$-chain $c\in C_1(\Sigma;\ZZ_2)$. It commutes with
+every star $A_v$ iff $c$ is a \emph{cycle} ($\partial c=0$), since the number of edges of
+$c$ at each vertex must be even. It lies in the stabilizer $S$ (is a product of
+plaquettes) iff $c$ is a \emph{boundary} ($c=\partial b$ for a $2$-chain $b$). Hence
+the $Z$-logical operators modulo stabilizers are
+\[
+\ker\partial_1/\im\partial_2\ =\ H_1(\Sigma;\ZZ_2)\ \cong\ \ZZ_2^{2g}.
+\]
+The same argument on the dual cellulation gives the $X$-logical operators as
+$H_1(\Sigma^\vee;\ZZ_2)\cong H^1(\Sigma;\ZZ_2)\cong\ZZ_2^{2g}$, Poincar\'e-dual to the
+$Z$-cycles. The full logical Pauli group modulo stabilizers is therefore the direct sum
+$N(S)/S\cong H_1\oplus H^1\cong\ZZ_2^{4g}$; the $\ZZ_2$-valued intersection pairing on
+$H_1\times H^1$ supplies the nondegenerate symplectic form implementing the canonical
+(anti)commutation of the $2g$ logical qubit pairs (each qubit an $X_i,Z_i$ pair drawn one
+from each homological summand).
+
+\emph{(3) Boundaries are pure gauge.} If $c=\partial b$ then $\prod_{e\in c}Z_e=\prod_{f\in
+b}B_f\in S$, so it acts as the identity on the code space \eqref{eq:code-space}. Thus a
+contractible error loop is undetectable and harmless, while only noncontractible loops
+--- generators of $H_1$ --- change the logical state. This is precisely the AT-library
+entry ``boundary $c=\partial b$ $\leftrightarrow$ pure gauge or physically null
+sector.''
+\end{proof}
+
+\begin{center}
+\begin{tikzcd}[row sep=large, column sep=large]
+C_2(\Sigma;\ZZ_2) \arrow[r, "\partial_2"] &
+C_1(\Sigma;\ZZ_2) \arrow[r, "\partial_1"] &
+C_0(\Sigma;\ZZ_2)\\
+\text{plaquettes } B_f \arrow[u, phantom, "\rotatebox{90}{$\in$}"] &
+\text{$Z$-strings} \arrow[u, phantom, "\rotatebox{90}{$\in$}"] &
+\text{stars } A_v \arrow[u, phantom, "\rotatebox{90}{$\in$}"]
+\end{tikzcd}
+\end{center}
+
+\begin{corollary}[Gauge redundancy $\leftrightarrow$ quantum high availability, literal case]
+\label{cor:literal-bridge}
+The surface code realizes \eqref{eq:subsystem} and \eqref{eq:aut-stab} simultaneously.
+The logical content is the homology $\Hlog\cong(\CC^2)^{\otimes 2g}$ with logical
+operators graded by $H_1(\Sigma;\ZZ_2)\cong\ZZ_2^{2g}$. Because the surface code is a
+\emph{pure} stabilizer code, the gauge factor is trivial ($\dim\Hgauge=1$): the
+contractible-loop (boundary) operators lie \emph{in} the stabilizer $S$ and act as the
+identity on the code space, so they are the ``pure gauge'' null sector rather than
+operators on a nontrivial tensor factor. The genuine redundancy is therefore carried by
+the syndrome grading $\Herr$: the violated stars/plaquettes $A_v, B_f$ label the
+orthogonal error sectors through which the full $2^{|E|}$-dimensional kinematic space
+projects onto the $2^{2g}$-dimensional code space. (A Bacon--Shor--type subsystem code on
+$\Sigma$ would instead populate a nontrivial $\Hgauge$; see the remark on OAQEC below.)
+Hence ``gauge redundancy is to physics what fault-tolerant encoding is to quantum
+information'' is, \emph{for surface codes}, a theorem (status \Ss), not a slogan: the
+gauge-null (boundary) sector and the logical sector are the two homological strata
+$\mathrm{im}\,\partial_2$ and $H_1(\Sigma;\ZZ_2)$ of one and the same chain complex.
+\end{corollary}
+
+\begin{remark}[Cross-module reuse]
+\label{rem:crossmodule-t3}
+\Cref{thm:surface-code} reuses Part IV's homology dictionary verbatim
+($H_n(X)\leftrightarrow$ conserved extended structures) and instantiates Part I's
+Equivalence axiom (gauge-equivalent = homologous). It is the module's central case
+study and the reason Part VI has the most cross-references of any module.
+\end{remark}
+
+% =====================================================================
+\section{Hopf-algebraic decomposition: renormalization as antipode}
+\label{sec:hopf}
+
+The second reused backbone is coalgebraic. Part II introduced the Goncharov~\cite{Goncharov} Lie
+coalgebra and the coaction \eqref{eq:master-coaction} as the ``anatomy'' of amplitudes.
+Part VI uses the \emph{same} formal operation --- a graded connected Hopf-algebra
+coproduct --- on a different combinatorial datatype (Feynman graphs / rooted trees),
+where the antipode computes renormalization counterterms.
+
+\begin{definition}[Hopf algebra of rooted trees]
+\label{def:ck}
+Let $H$ be the free commutative algebra over $\QQ$ on rooted trees (forests as products),
+graded by the number of vertices (loop number). The \emph{coproduct} is the sum over
+admissible cuts:
+\begin{equation}
+\cop(\Gamma)\ =\ \Gamma\otimes 1\ +\ 1\otimes\Gamma\ +\ \sum_{\text{cuts } c}
+P^c(\Gamma)\otimes R^c(\Gamma),
+\label{eq:ck-coproduct}
+\end{equation}
+where $R^c$ is the component containing the root and $P^c$ the pruned forest. $H$ is a
+graded connected bialgebra; connectedness ($H_0=\QQ$) forces a unique \emph{antipode}
+$\antipode$ making $H$ a Hopf algebra, given recursively by
+\begin{equation}
+\antipode(\Gamma)\ =\ -\Gamma\ -\ \sum_{\text{cuts } c}\antipode\bigl(P^c(\Gamma)\bigr)\,
+R^c(\Gamma).
+\label{eq:ck-antipode}
+\end{equation}
+\end{definition}
+
+\begin{definition}[Feynman-rules character and Birkhoff decomposition]
+\label{def:character}
+A regularized \emph{Feynman-rules character} is an algebra map
+$\varphi:H\to\CC(\!(z)\!)$ (formal Laurent series in the dimensional-regularization parameter
+$z$), an element of the group $G=\Hom_{\mathrm{alg}}(H,\mathcal A)$ of $\mathcal
+A$-valued characters under the convolution product $\varphi\star\psi=m_{\mathcal
+A}\circ(\varphi\otimes\psi)\circ\cop$. The minimal-subtraction splitting $\mathcal
+A=\mathcal A_-\oplus\mathcal A_+$ (pole part vs. holomorphic part) is a Rota--Baxter
+structure of weight $-1$.
+\end{definition}
+
+\begin{theorem}[Antipode = counterterm; renormalization = Birkhoff decomposition --- T4]
+\label{thm:connes-kreimer}
+Let $\varphi:H\to\mathcal A$ be a Feynman-rules character valued in a commutative
+Rota--Baxter algebra $\mathcal A=\mathcal A_-\oplus\mathcal A_+$ with projection $R$ onto
+$\mathcal A_-$. Then $\varphi$ admits a unique \emph{Birkhoff decomposition}
+$\varphi=\varphi_-^{\star-1}\star\varphi_+$ in $G$, with the \emph{counterterm}
+$\varphi_-$ and \emph{renormalized character} $\varphi_+$ given recursively by Bogoliubov's
+formulas
+\begin{align}
+\varphi_-(\Gamma)\ &=\ -R\Bigl(\varphi(\Gamma)+\sum \varphi_-(P^c\Gamma)\,\varphi(R^c\Gamma)\Bigr),
+\label{eq:bphz-minus}\\
+\varphi_+(\Gamma)\ &=\ (1-R)\Bigl(\varphi(\Gamma)+\sum \varphi_-(P^c\Gamma)\,\varphi(R^c\Gamma)\Bigr).
+\label{eq:bphz-plus}
+\end{align}
+The counterterm $\varphi_-=\antipode_R^{\varphi}$ is the twisted (Rota--Baxter) antipode
+--- an operator on the character group $\Hom(H,\mathcal A)$, not a precomposition with a
+map on $H$, since $R$ acts on the target algebra $\mathcal A$ --- and $\varphi_+$ is the
+BPHZ-renormalized amplitude. Thus renormalization is exactly the Hopf-algebraic
+decomposition \eqref{eq:master-coaction} applied to the divergence structure.
+\end{theorem}
+
+\begin{proof}[Proof sketch]
+Since $H$ is graded connected, the convolution group $G$ has a well-defined exponential/
+logarithm and every character has a $\star$-inverse computed by the antipode
+\eqref{eq:ck-antipode}. Writing $\varphi_-=e\circ\epsilon - R\circ(\varphi_-\star(\varphi-e\circ\epsilon))$
+and solving degree by degree gives \eqref{eq:bphz-minus}; the Rota--Baxter
+identity~\cite{RotaBaxter}
+\[
+R(a)R(b)+R(ab)=R\bigl(R(a)b+aR(b)\bigr)
+\]
+is precisely what makes $\varphi_-$ multiplicative (a character), so the decomposition
+lands in the group $G$. The holomorphic part $\varphi_+=\varphi_-\star\varphi$ is then
+finite at $z=0$ and equals the forest formula of BPHZ. Identifying the recursion with
+the antipode recursion \eqref{eq:ck-antipode} twisted by $R$ gives
+$\varphi_-=\antipode_R^{\varphi}$, the twisted antipode on $\Hom(H,\mathcal A)$. This is
+the Connes--Kreimer Riemann--Hilbert theorem~\cite{ConnesKreimer}.
+\end{proof}
+
+\begin{corollary}[Shared Hopf backbone of Parts II and VI]
+\label{cor:shared-hopf}
+Both the Goncharov coaction (Part II) and the Connes--Kreimer coproduct (Part VI) are
+coproducts of graded connected Hopf algebras; they are the same formal operation
+\eqref{eq:master-coaction} applied to two combinatorial datatypes (polylog symbols vs.
+rooted trees), with two physical readings (amplitude anatomy vs. renormalization
+subtraction). The synthesis paper should present these as one ``Hopf algebra of
+decomposition'' chapter.
+\end{corollary}
+
+% =====================================================================
+\section{Holographic quantum error correction: strengthening the bridge}
+\label{sec:holographic}
+
+The slogan ``gauge redundancy is to physics what fault-tolerant encoding is to quantum
+information'' (\Cref{cor:literal-bridge} makes it a theorem for surface codes) is, in
+full generality, status \Hh. The most rigorous body of work strengthening it toward
+status \Ss\ is \emph{holographic quantum error correction}. We summarize it and label
+its epistemic status carefully.
+
+\subsection{Bulk locality as an error-correcting code}
+
+In the AdS/CFT correspondence a bulk (gravitational) operator is redundantly encoded on
+the boundary conformal field theory. Almheiri, Dong, and Harlow~\cite{ADH} observed that
+this redundancy is precisely that of a quantum error-correcting code: a bulk local
+operator in the interior can be reconstructed on any of several boundary subregions,
+exactly as a logical operator of a code has representatives on several physical
+subsystems~\cite{DongHarlowWall}. Access to
+only a boundary subregion is like having part of the code erased; the operator can still
+be reconstructed provided the subregion contains the relevant entanglement wedge, a fact
+that can be derived from bulk modular flow~\cite{EGH}.
+
+\begin{principle}[Holographic code dictionary, status \Ss/\Hh]
+\label{prin:holo}
+Under the entanglement-wedge reconstruction of AdS/CFT:
+\[
+\begin{array}{lcl}
+\text{bulk effective field theory} &\leftrightarrow& \text{logical Hilbert space }\Hlog,\\
+\text{boundary CFT} &\leftrightarrow& \text{physical Hilbert space }\Hphys,\\
+\text{bulk gauge/diffeomorphism redundancy} &\leftrightarrow& \text{code redundancy},\\
+\text{radial/holographic direction} &\leftrightarrow& \text{redundancy depth},\\
+\text{Ryu--Takayanagi entropy} &\leftrightarrow& \text{code subalgebra / entropy}.
+\end{array}
+\]
+The Pastawski--Yoshida--Harlow--Preskill (HaPPY) tensor-network
+codes~\cite{HaPPY} are explicit toy models realizing this dictionary.
+\end{principle}
+
+\begin{remark}[Harlow's theorem: RT from QEC]
+\label{rem:harlow}
+Harlow~\cite{HarlowRT} proved that a quantum-corrected Ryu--Takayanagi formula holds in
+\emph{any}
+operator-algebra quantum error-correcting code (subalgebra codes,
+\Cref{rem:oaqec}), and that when the boundary subalgebras have nontrivial center the
+code describes a \emph{gauge theory with edge modes}. This is the sharpest known sense in
+which bulk gauge redundancy \emph{is} the redundancy of a code: the center of the
+subalgebra is the gauge (superselection/edge-mode) data, exactly the $\Hgauge$ factor of
+\eqref{eq:subsystem}. Status: \Ss\ as a theorem about OAQEC codes; \Ss/\Hh\ as a claim
+about physical quantum gravity, where finite-$N$ corrections may modify the picture.
+\end{remark}
+
+\subsection{Epistemic assessment}
+
+\begin{itemize}
+\item For \textbf{surface/topological codes}, ``gauge redundancy $=$ QHA'' is a theorem
+(\Cref{cor:literal-bridge}): status \Ss.
+\item For \textbf{OAQEC/subalgebra codes with center}, the identification ``gauge (edge
+mode) data $=$ subalgebra center'' is a theorem (Harlow): status \Ss.
+\item For \textbf{physical AdS/CFT quantum gravity}, the holographic-code picture is
+strongly supported but subject to finite-$N$/gauge-invariance caveats: status \Ss/\Hh.
+\item The fully general slogan across \emph{all} gauge theories remains a guiding
+heuristic: status \Hh.
+\end{itemize}
+We therefore report the bridge as a spectrum from theorem (surface codes) to heuristic
+(fully general), rather than as a single claim --- exactly the discipline the series'
+status system was designed to enforce.
+
+% =====================================================================
+\section{Results}
+\label{sec:results}
+
+We collect the principal results and their epistemic status.
+
+\begin{theorem}[Summary of Part VI]
+\label{thm:summary}
+Let $(\cat C, J)$ be a site, $G$ a group acting on $X$, and consider stabilizer/surface
+codes as above. Then:
+\begin{enumerate}
+\item \textup{(T1, \Cref{thm:aut-stab}, status \Ss)}
+$\Aut_{\quot{X}{G}}(x)\cong\Stab_G(x)$, and $\quot{X}{G}$ is strictly more faithful than
+$X/G$ exactly on the isotropy $H^\bullet_{\mathrm{grp}}(\Stab_G(x))$.
+\item \textup{(T2, \Cref{thm:stackification}, status \Ss; application \Ss/\Hh)} the
+representation prestack $\Repp$ admits a universal stackification $\Repp^{J}$, which is
+Part I's representation stack; the ladder closes (\Cref{cor:closure}).
+\item \textup{(T3, \Cref{thm:surface-code}, status \Ss)} surface-code $Z$- and $X$-type
+logical operators are $H_1(\Sigma;\ZZ_2)$ and $H^1(\Sigma;\ZZ_2)$, each $\cong\ZZ_2^{2g}$,
+so $N(S)/S\cong\ZZ_2^{4g}$ encodes $2g$ logical qubits; boundaries are pure gauge. Hence
+gauge redundancy $=$ QHA is a theorem for surface codes (\Cref{cor:literal-bridge}).
+\item \textup{(T4, \Cref{thm:connes-kreimer}, status \Ss)} the Connes--Kreimer antipode
+computes the BPHZ counterterm and renormalization is the Birkhoff decomposition of the
+Feynman-rules character; Parts II and VI share one Hopf-algebra backbone
+(\Cref{cor:shared-hopf}).
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+Each part is proved in the referenced statement: (1) \Cref{thm:aut-stab},
+\Cref{cor:faithfulness}; (2) \Cref{thm:stackification}, \Cref{cor:closure}; (3)
+\Cref{thm:surface-code}, \Cref{cor:literal-bridge}; (4) \Cref{thm:connes-kreimer},
+\Cref{cor:shared-hopf}.
+\end{proof}
+
+\begin{table}[t]
+\centering
+\renewcommand{\arraystretch}{1.25}
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{4.4cm}%
+                  >{\raggedright\arraybackslash}p{4.4cm}%
+                  >{\raggedright\arraybackslash}p{3.3cm}c@{}}
+\hline
+\textbf{Mathematics} & \textbf{Physical representation} & \textbf{QI interpretation} &
+\textbf{Status}\\
+\hline
+Presheaf & local observable assignment & local syndrome data & \Ss\\
+Sheaf & fields from local data & syndrome consistency (local gluing) & \Ss\\
+Descent & coordinate-independent physics & correctable global error / recovery & \Ss\\
+Stack $\quot{X}{G}$ & gauge field w/ redundancy & encoding $+$ equivalences & \Ss\\
+$\Aut_{\quot{X}{G}}(x)\!\cong\!\Stab_G(x)$ & residual/isotropy symmetry & error-detecting
+redundancy & \Ss\\
+Classifying stack $\mathrm{B}G$ & gauge-field classifier & code-family classifier & \Ss\\
+$H_1(\Sigma;\ZZ_2)$ & conserved cycles & surface-code logical qubits & \Ss\\
+Boundary $c=\partial b$ & pure gauge / null & trivial (in-stabilizer) error & \Ss\\
+Hopf coproduct $\cop$ & decomposition & nested-error bookkeeping & \Ss\\
+Antipode $\antipode$ & renormalization inverse & counterterm & \Ss/\Hh\\
+Gauge $=$ QHA (general) & redundancy $=$ fault tolerance & holographic code & \Hh\\
+\hline
+\end{tabular}
+\caption{Part VI representation dictionary with status labels (excerpt of Appendix F,
+augmented with quantum-information column). Composite labels mark entries standard as
+mathematics but heuristic in their fully general physical reading.}
+\label{tab:dictionary}
+\end{table}
+
+\FloatBarrier
+
+% =====================================================================
+\section{Discussion}
+\label{sec:discussion}
+
+\subsection{How Part VI composes on Parts I--V}
+
+Part VI is the module with the most cross-references, as befits a capstone:
+\begin{itemize}
+\item \textbf{From Part V}~\cite{ML-partV} it takes fibered categories, groupoids, and the
+$(2,1)$-categorical machinery needed for \Cref{def:stack} and
+\Cref{thm:stackification}; univalence (Part V) is the type-theoretic shadow of the
+descent equivalence \eqref{eq:descent-equiv}.
+\item \textbf{To Part I}~\cite{ML-partI} it delivers \Cref{thm:stackification}, discharging
+the forward reference and closing the ladder (\Cref{cor:closure}).
+\item \textbf{From Part IV}~\cite{ML-partIV} it reuses homology: \Cref{thm:surface-code}
+makes Part IV's dictionary entry literal.
+\item \textbf{From Part II}~\cite{ML-partII} it reuses the Hopf-algebraic coproduct:
+\Cref{thm:connes-kreimer} is Part II's decomposition axiom applied to divergences
+(\Cref{cor:shared-hopf}).
+\item \textbf{From Part III}~\cite{ML-partIII} it reuses moduli stacks: $\quot{X}{G}$ is
+the gauge-theoretic special case of Part III's moduli stacks.
+\end{itemize}
+
+\subsection{Limitations}
+
+We reproduce and address the series' limitations (Part I, \S0.5):
+\begin{enumerate}
+\item \emph{Not every analogy is a theory.} Status labels are part of the formalism:
+\Cref{tab:dictionary} carefully distinguishes the status-\Ss\ surface-code identity
+(\Cref{cor:literal-bridge}) from the status-\Hh\ general slogan (\Cref{sec:holographic}).
+\item \emph{Gauge redundancy $\neq$ physical symmetry} (\Cref{rem:limitation-gauge}). The
+stack $\quot{X}{G}$ is the right object \emph{only} when $G$ is declared pure
+description; the same mathematics with $G$ a physical symmetry would give a genuinely
+different physics. This modeling choice is not decided by the mathematics.
+\item \emph{No single universal functor $\Math\to\Phys$.} \Cref{thm:stackification} is
+\emph{local} (indexed by the site $\Dom$); it does not assert one global functor. This
+respects the series' deliberate domain-indexed design.
+\item \emph{Finite-$N$ caveats.} The holographic-code bridge (\Cref{sec:holographic}) is
+subject to gauge-invariance and finite-$N$ corrections; we label it \Ss/\Hh\ accordingly
+and do not overclaim it as a theorem about physical quantum gravity.
+\end{enumerate}
+
+\subsection{Open problems}
+
+\begin{itemize}
+\item Beyond surface codes and OAQEC, is there a general theorem making ``gauge
+redundancy $=$ fault-tolerant encoding'' status \Ss\ for an arbitrary gauge theory?
+The holographic literature (Harlow; entanglement-wedge reconstruction) is the most
+promising route.
+\item Can the stackification $\Repp^{J}$ (\Cref{thm:stackification}) be carried out
+explicitly for a concrete site of physical theories (factorization homology; Schreiber's
+cohesive-topos program)?
+\item Is there a single graded connected Hopf algebra unifying the Goncharov and
+Connes--Kreimer coproducts (\Cref{cor:shared-hopf})?
+\end{itemize}
+
+% =====================================================================
+\section{Conclusion}
+\label{sec:conclusion}
+
+Part VI has formalized sheaves, stacks, gauge redundancy, and quantum high-availability
+as one construction seen four ways: \emph{many local representatives, one invariant
+logical content, plus explicit data recording the redundancy}. We proved that the
+quotient stack retains isotropy (T1), that the representation prestack stackifies to
+Part I's representation stack and thereby closes the modular ladder (T2), that
+surface-code logical operators are literally $H_1(\Sigma;\ZZ_2)$ so that ``gauge
+redundancy $=$ quantum high-availability'' is a theorem for surface codes (T3), and that
+Connes--Kreimer renormalization is Hopf-algebraic decomposition sharing Part II's
+coalgebraic backbone (T4). We surveyed holographic quantum error correction as the
+rigorous frontier strengthening the general bridge, with each claim's epistemic status
+(\Ss/\Hh/\Pp) explicitly labeled.
+
+The four closing theses of the series specialize here to:
+\begin{quote}\itshape
+symmetry redundancy is extra descriptive freedom that does not change physical
+information; a gauge field is a physical field represented by locally redundant
+descriptions; a stack is the mathematical object that remembers local descriptions,
+gluing, and redundancy symmetries; quantum high availability is logical information
+protected by encoding it across redundant physical degrees of freedom.
+\end{quote}
+Gauge redundancy is to physics what fault-tolerant encoding is to quantum information ---
+proven for surface codes, conjectured in general, and now formalized as the capstone
+module of the representation library. The synthesis paper (Part VII) will assemble the
+closure theorem (\Cref{cor:closure}) with the four master formulas and the status-label
+statistics into a single recomposition of the ladder.
+
+% =====================================================================
+\section*{Companion formalizations}
+\addcontentsline{toc}{section}{Companion formalizations}
+
+% ragged right here avoids loose interword spacing around unbreakable code paths
+\raggedright
+The constructions above are encoded in companion code.
+
+\begin{itemize}
+\item \textbf{Haskell} (\path{src/sheaves-stacks-gauge-quantum-ha/}): modules
+\texttt{Sheaf}, \texttt{Stack} (coarse vs.\ stack quotient, returning the retained
+stabilizer), \texttt{QHA} (encoding, syndrome, recovery), \texttt{Stabilizer}
+(surface-code stabilizers and $H_1$ logicals), and \texttt{Hopf} (Connes--Kreimer
+coproduct and antipode). The \texttt{Main} module demonstrates T1 (isotropy retained),
+T3 (genus-$g$ code dimension $2^{2g}$), and T4, whose antipode passes the Hopf axiom
+$m(\antipode\otimes\id)\cop=0$.
+
+\item \textbf{Lean} (\path{lean/sheaves-stacks-gauge-quantum-ha/}): a Mathlib-free,
+best-effort sketch of the types \texttt{SheafOnSite}, \texttt{StackOnSite},
+\texttt{QuotientStack}, and \texttt{StabilizerCode}, together with the theorem signatures
+\texttt{aut\_equiv\_stabilizer} (T1) and \texttt{surfaceCode\_logical\_eq\_h1Rank} (T3);
+the file type-checks, with the substantive proofs recorded as deferred \texttt{sorry}
+goals in the idiomatic sketch style.
+\end{itemize}
+
+% =====================================================================
+\begin{thebibliography}{99}
+\raggedright
+
+\bibitem{KashiwaraSchapira}
+M.~Kashiwara and P.~Schapira,
+\emph{Sheaves on Manifolds},
+Grundlehren der mathematischen Wissenschaften \textbf{292},
+Springer-Verlag, Berlin, 1990 (corrected reprint 1994).
+
+\bibitem{Giraud}
+J.~Giraud,
+\emph{Cohomologie non ab\'elienne},
+Grundlehren der mathematischen Wissenschaften \textbf{179},
+Springer, 1971.
+
+\bibitem{Vistoli}
+A.~Vistoli,
+``Notes on Grothendieck topologies, fibered categories and descent theory,''
+arXiv:math/0412512 (2004).
+
+\bibitem{Kitaev}
+A.~Yu.~Kitaev,
+``Fault-tolerant quantum computation by anyons,''
+arXiv:quant-ph/9707021 (1997);
+\emph{Ann. Physics} \textbf{303} (2003), 2--30.
+
+\bibitem{DKLP}
+E.~Dennis, A.~Kitaev, A.~Landahl, and J.~Preskill,
+``Topological quantum memory,''
+arXiv:quant-ph/0110143;
+\emph{J. Math. Phys.} \textbf{43} (2002), 4452--4505.
+
+\bibitem{Gottesman}
+D.~Gottesman,
+``Stabilizer Codes and Quantum Error Correction,''
+Caltech Ph.D. thesis, arXiv:quant-ph/9705052 (1997).
+
+\bibitem{ConnesKreimer}
+A.~Connes and D.~Kreimer,
+``Renormalization in quantum field theory and the Riemann--Hilbert problem I:
+The Hopf algebra structure of graphs and the main theorem,''
+arXiv:hep-th/9912092;
+\emph{Comm. Math. Phys.} \textbf{210} (2000), 249--273.
+
+\bibitem{Goncharov}
+A.~B.~Goncharov,
+``Galois symmetries of fundamental groupoids and noncommutative geometry,''
+arXiv:math/0208144;
+\emph{Duke Math. J.} \textbf{128} (2005), 209--284.
+
+\bibitem{KnillLaflamme}
+E.~Knill and R.~Laflamme,
+``Theory of quantum error-correcting codes,''
+\emph{Phys. Rev. A} \textbf{55} (1997), 900--911;
+arXiv:quant-ph/9604034.
+
+\bibitem{ADH}
+A.~Almheiri, X.~Dong, and D.~Harlow,
+``Bulk locality and quantum error correction in AdS/CFT,''
+arXiv:1411.7041;
+\emph{J. High Energy Phys.} \textbf{04} (2015), 163.
+
+\bibitem{HaPPY}
+F.~Pastawski, B.~Yoshida, D.~Harlow, and J.~Preskill,
+``Holographic quantum error-correcting codes: Toy models for the bulk/boundary
+correspondence,''
+arXiv:1503.06237;
+\emph{J. High Energy Phys.} \textbf{06} (2015), 149.
+
+\bibitem{HarlowRT}
+D.~Harlow,
+``The Ryu--Takayanagi formula from quantum error correction,''
+arXiv:1607.03901;
+\emph{Comm. Math. Phys.} \textbf{354} (2017), 865--912.
+
+\bibitem{DongHarlowWall}
+X.~Dong, D.~Harlow, and A.~C.~Wall,
+``Reconstruction of bulk operators within the entanglement wedge in gauge-gravity
+duality,''
+arXiv:1601.05416;
+\emph{Phys. Rev. Lett.} \textbf{117} (2016), 021601.
+
+\bibitem{EGH}
+T.~Faulkner and A.~Lewkowycz (and related),
+``Bulk locality from modular flow,''
+arXiv:1704.05464;
+\emph{J. High Energy Phys.} \textbf{07} (2017), 151.
+
+\bibitem{RotaBaxter}
+K.~Ebrahimi-Fard, L.~Guo, and D.~Kreimer,
+``Integrable renormalization II: The general case,''
+\emph{Ann. Henri Poincar\'e} \textbf{6} (2005), 369--395;
+arXiv:hep-th/0403118.
+
+\bibitem{ML-partI}
+M.~Long and The YonedaAI Collaboration,
+``Foundations: The Representation Stack and Realization Pipeline'' (Part I of
+\emph{A \MtoP{} Representation Library}), YonedaAI Research Collective, 2026.
+
+\bibitem{ML-partII}
+M.~Long and The YonedaAI Collaboration,
+``Motives, Periods, and Amplitudes'' (Part II), YonedaAI Research Collective, 2026.
+
+\bibitem{ML-partIII}
+M.~Long and The YonedaAI Collaboration,
+``Algebraic Geometry: Spaces of Physical Possibility'' (Part III), YonedaAI Research
+Collective, 2026.
+
+\bibitem{ML-partIV}
+M.~Long and The YonedaAI Collaboration,
+``Algebraic Topology: Conserved Global Information'' (Part IV), YonedaAI Research
+Collective, 2026.
+
+\bibitem{ML-partV}
+M.~Long and The YonedaAI Collaboration,
+``Category Theory and Homotopy Type Theory: Composition and Identity'' (Part V),
+YonedaAI Research Collective, 2026.
+
+\end{thebibliography}
+
+\end{document}

@@ -1,0 +1,763 @@
+<h1 data-number="1" id="sec:intro"><span class="header-section-number">1</span> Introduction</h1>
+<h2 data-number="1.1" id="the-modular-program-and-where-part-iv-sits"><span class="header-section-number">1.1</span> The modular program and where Part IV sits</h2>
+<p>The parent program, <em>A Math<span class="math inline">\(\to\)</span>Physics Representation Library</em>, advances a single organizing claim: many physical quantities are not merely <em>described by</em> mathematics but are <em>obtained as realizations</em> of structured mathematical information. The organizing device is the <em>realization pipeline</em> <span class="math display">\[\begin{equation}
+\label{eq:pipeline}
+\begin{gathered}
+  M \;\xrightarrow{\;\Phi\;}\; \Phi(M)
+    \;\xrightarrow{\;\mathrm{Real}_\alpha\;}\; \text{physical representation}
+    \;\xrightarrow{\;\mathrm{Obs}\;}\; \text{measurement data},\\[0.4em]
+  \mathrm{Obs}_\alpha(M) = \mathrm{Obs}\bigl(\mathrm{Real}_\alpha(\Phi(M))\bigr),
+\end{gathered}
+\end{equation}\]</span> together with a three-level epistemic status system that every module must carry:</p>
+<div class="center">
+<table>
+<thead>
+<tr>
+<th style="text-align: center;">Label</th>
+<th style="text-align: left;">Meaning</th>
+<th style="text-align: left;">Canonical example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;"><span class="math inline">\(\textnormal{\sffamily\bfseries S}\)</span></td>
+<td style="text-align: left;">standard use in mathematics or physics</td>
+<td style="text-align: left;">TQFT as a functor <span class="math inline">\(\mathrm{Bord}_n\to\mathrm{Vect}\)</span></td>
+</tr>
+<tr>
+<td style="text-align: center;"><span class="math inline">\(\textnormal{\sffamily\bfseries H}\)</span></td>
+<td style="text-align: left;">strong heuristic dictionary entry</td>
+<td style="text-align: left;">motive as “functional essence”</td>
+</tr>
+<tr>
+<td style="text-align: center;"><span class="math inline">\(\textnormal{\sffamily\bfseries P}\)</span></td>
+<td style="text-align: left;">speculative philosophical ontology</td>
+<td style="text-align: left;">reality as motivic-categorical realization</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Composite labels (<span class="math inline">\(\textnormal{\sffamily\bfseries S}/\textnormal{\sffamily\bfseries H}\)</span>, <span class="math inline">\(\textnormal{\sffamily\bfseries H}/\textnormal{\sffamily\bfseries P}\)</span>) appear when a construction is standard as pure mathematics but heuristic or speculative in its <em>physical</em> reading. We use the labels verbatim; they are part of the formalism, not decoration.</p>
+<p>The program is explicitly <em>modular</em> rather than unified: each part is readable and defensible on its own, and composition is exhibited as a hierarchical building process. The ladder proceeds <span> <span class="math display">\[\underbrace{\text{I}}_{\text{stack}}\to
+  \underbrace{\text{II}}_{\text{periods}}\to
+  \underbrace{\text{III}}_{\text{geometry}}\to
+  \underbrace{\text{IV}^{\!\star}}_{\text{topology}}\to
+  \underbrace{\text{V}}_{\text{cat./HoTT}}\to
+  \underbrace{\text{VI}}_{\text{stacks/gauge/QHA}}\to
+  \text{Synth.},\]</span></span> where <span class="math inline">\(\text{IV}^{\star}\)</span> denotes the present paper. Part III equips the “spaces of physical possibility” (varieties, moduli) with a geometry. Part IV equips those same spaces with <em>topological invariants</em> stable under continuous deformation, and it is the first place where a <em>genuinely functorial, status-<span class="math inline">\(\textnormal{\sffamily\bfseries S}\)</span></em> instance of the pipeline <a href="#eq:pipeline" data-reference-type="eqref" data-reference="eq:pipeline">[eq:pipeline]</a> appears: a topological quantum field theory is literally a functor. This is the historical and conceptual bridge to Part V, where functoriality is abstracted into the universal grammar of categories and homotopy type theory.</p>
+<h2 data-number="1.2" id="thesis-of-part-iv"><span class="header-section-number">1.2</span> Thesis of Part IV</h2>
+<p>We defend, formalize, and where possible prove the slogan</p>
+<div class="center">
+<p><em>algebraic topology is the grammar of conserved global information.</em></p>
+</div>
+<p>Concretely: a homology class is a conserved extended structure; a cohomology class is a stable observable insensitive to local deformation; characteristic classes encode quantized topological information carried by bundles; bordism groups and generalized cohomology classify topological phases and anomalies; and TQFT packages all of this as a symmetric monoidal functor from cobordisms to an algebraic target. The recurring physical motif is <em>conservation</em>: what survives continuous deformation is exactly what algebraic topology measures, and this is the topological face of the parent program’s Decomposition and Locality axioms.</p>
+<h2 data-number="1.3" id="contributions"><span class="header-section-number">1.3</span> Contributions</h2>
+<ol>
+<li><p><strong>A representation-stack account of (co)homology</strong> (<a href="#sec:homology" data-reference-type="ref+Label" data-reference="sec:homology">3</a>). We define a <em>conserved global information functor</em> <span class="math inline">\(H_\bullet\colon\mathrm{hTop}\to\mathrm{GrAb}\)</span> and prove homotopy invariance and functoriality in full, giving a precise sense in which topological observables are <em>conserved</em> under physical deformation (<a href="#thm:homotopy-inv,thm:cons-functor" data-reference-type="ref+Label" data-reference="thm:homotopy-inv,thm:cons-functor">[thm:homotopy-inv,thm:cons-functor]</a>).</p></li>
+<li><p><strong>TQFT as a status-<span class="math inline">\(\textnormal{\sffamily\bfseries S}\)</span> realization entry</strong> (<a href="#sec:tqft" data-reference-type="ref+Label" data-reference="sec:tqft">5</a>). We show an <span class="math inline">\(n\)</span>-dimensional TQFT is exactly a Part I representation entry, and that symmetric monoidality is the Decomposition axiom over cobordisms (<a href="#thm:tqft-entry" data-reference-type="ref+Label" data-reference="thm:tqft-entry">5</a>); we state the cobordism hypothesis as a classification theorem for topological realization channels (<a href="#thm:cobordism-hyp" data-reference-type="ref+Label" data-reference="thm:cobordism-hyp">6</a>).</p></li>
+<li><p><strong>The index theorem as a pipeline identity</strong> (<a href="#sec:char" data-reference-type="ref+Label" data-reference="sec:char">4</a>). We reframe Atiyah–Singer as an instance of <span class="math inline">\(\text{observable}=\mathrm{Real}(\text{abstract structure})\)</span> (<a href="#thm:index" data-reference-type="ref+Label" data-reference="thm:index">4</a>), the strongest available status-<span class="math inline">\(\textnormal{\sffamily\bfseries S}\)</span> anchor.</p></li>
+<li><p><strong>Discrete gauge theory and locality</strong> (<a href="#sec:dw" data-reference-type="ref+Label" data-reference="sec:dw">6</a>). We show Dijkgraaf–Witten theory instantiates the Locality/descent axiom via a group cocycle, with triangulation independence coming from Pachner-move invariance (<a href="#thm:dw" data-reference-type="ref+Label" data-reference="thm:dw">7</a>).</p></li>
+<li><p><strong>Bordism classification of anomalies and phases</strong> (<a href="#sec:bordism" data-reference-type="ref+Label" data-reference="sec:bordism">7</a>). We record the Freed–Hopkins classification of invertible field theories and its physical reading as a status-<span class="math inline">\(\textnormal{\sffamily\bfseries S}\)</span> / <span class="math inline">\(\textnormal{\sffamily\bfseries S}\!/\textnormal{\sffamily\bfseries H}\)</span> statement (<a href="#thm:spt" data-reference-type="ref+Label" data-reference="thm:spt">8</a>).</p></li>
+<li><p><strong>Formalization</strong> (<a href="#sec:code" data-reference-type="ref+Label" data-reference="sec:code">9</a>). Companion Haskell code (compiling under GHC) and a Lean sketch encode chain complexes, homology, characteristic classes and TQFT axioms, extending the parent program’s formal-verification bridge.</p></li>
+</ol>
+<h2 data-number="1.4" id="epistemic-status-of-part-iv"><span class="header-section-number">1.4</span> Epistemic status of Part IV</h2>
+<p>Part IV is unusually rich in status-<span class="math inline">\(\textnormal{\sffamily\bfseries S}\)</span> content: TQFT, the index theorem, Dijkgraaf–Witten theory, and the bordism classification of invertible field theories are all standard mathematics or mathematical physics. The heuristic (<span class="math inline">\(\textnormal{\sffamily\bfseries H}\)</span>) content lies in the <em>physical readings</em> of dictionary entries (e.g. “coboundary <span class="math inline">\(=\)</span> pure gauge”), and the speculative (<span class="math inline">\(\textnormal{\sffamily\bfseries P}\)</span>) content is confined to the ontological framing inherited from the parent program. We flag labels at every dictionary entry (<a href="#sec:dict" data-reference-type="ref+Label" data-reference="sec:dict">12</a>) and at each theorem.</p>
+<h2 data-number="1.5" id="outline"><span class="header-section-number">1.5</span> Outline</h2>
+<p><a href="#sec:framework" data-reference-type="ref+Label" data-reference="sec:framework">2</a> recalls the representation stack and pipeline from Part I in the precise form used here. <a href="#sec:homology" data-reference-type="ref+Label" data-reference="sec:homology">3</a> develops (co)homology as conserved global information. <a href="#sec:char" data-reference-type="ref+Label" data-reference="sec:char">4</a> treats characteristic classes and the index theorem. <a href="#sec:tqft" data-reference-type="ref+Label" data-reference="sec:tqft">5</a> develops TQFT and the cobordism hypothesis. <a href="#sec:dw" data-reference-type="ref+Label" data-reference="sec:dw">6</a> treats Dijkgraaf–Witten theory; <a href="#sec:bordism" data-reference-type="ref+Label" data-reference="sec:bordism">7</a> treats bordism and SPT phases. <a href="#sec:results" data-reference-type="ref+Label" data-reference="sec:results">8</a> collects the main results. <a href="#sec:code" data-reference-type="ref+Label" data-reference="sec:code">9</a> describes the companion code. <a href="#sec:discussion" data-reference-type="ref+Label" data-reference="sec:discussion">10</a> discusses limitations and connections to Parts III and V, and <a href="#sec:conclusion" data-reference-type="ref+Label" data-reference="sec:conclusion">11</a> concludes. <a href="#sec:dict" data-reference-type="ref+Label" data-reference="sec:dict">12</a> reproduces the algebraic-topology dictionary with status labels.</p>
+<h1 data-number="2" id="sec:framework"><span class="header-section-number">2</span> Mathematical Framework: the representation stack, recalled</h1>
+<p>We recall from Part I only what Part IV uses, in a self-contained form.</p>
+<div id="def:dom" class="definition">
+<p><strong>Definition 1</strong> (Domains and targets).  Let <span class="math inline">\(\mathsf{Dom}\)</span> be a (small) category of <em>mathematical domains</em>. For each <span class="math inline">\(d\in\mathsf{Dom}\)</span> let <span class="math inline">\(\mathsf{Math}_d\)</span> be a category (or higher category) of mathematical structures in that domain. Let <span class="math inline">\(\mathsf{Phys}\)</span> be a category of <em>physical representation targets</em>: state spaces, observable algebras, process categories, gauge moduli, quantum code spaces, and measurement outcomes. In Part IV the relevant domains are <span class="math inline">\(\mathrm{Top}\)</span> (topological spaces), <span class="math inline">\(\mathrm{Man}_n\)</span> (closed manifolds and cobordisms), and the associated <span class="math inline">\(\mathrm{Bord}_n\)</span>.</p>
+</div>
+<div id="def:entry" class="definition">
+<p><strong>Definition 2</strong> (Representation entry).  A <em>representation entry</em> is a quadruple <span class="math inline">\(E=(M,P,\tau,\sigma)\)</span> where <span class="math inline">\(M\in\mathsf{Math}_d\)</span> is a mathematical structure, <span class="math inline">\(P\in\mathsf{Phys}\)</span> a physical representation, <span class="math inline">\(\tau\)</span> a semantic translation datum (a functor, a natural transformation, or a weaker relation), and <span class="math inline">\(\sigma\)</span> is the epistemic status label (<span class="math inline">\(\textnormal{\sffamily\bfseries S}\)</span>, <span class="math inline">\(\textnormal{\sffamily\bfseries H}\)</span>, or <span class="math inline">\(\textnormal{\sffamily\bfseries P}\)</span>).</p>
+</div>
+<div id="def:pipeline" class="definition">
+<p><strong>Definition 3</strong> (Realization pipeline).  A <em>realization pipeline</em> on categories <span class="math inline">\(M\xrightarrow{\Phi}I
+\xrightarrow{\mathrm{Real}_\alpha}R\xrightarrow{\mathrm{Obs}}O\)</span> is a composable triple of functors; the associated <em>observable functor</em> is <span class="math inline">\(\mathrm{Obs}_\alpha := \mathrm{Obs}\circ\mathrm{Real}_\alpha\circ\Phi\)</span>, and we write <span class="math inline">\(\mathrm{Obs}_\alpha(M)=\mathrm{Obs}(\mathrm{Real}_\alpha(\Phi(M)))\)</span> as in <a href="#eq:pipeline" data-reference-type="eqref" data-reference="eq:pipeline">[eq:pipeline]</a>. The index <span class="math inline">\(\alpha\)</span> ranges over <em>realization channels</em>; in Part IV the channels of interest are <em>topological</em>: singular/de Rham (co)homology, characteristic classes, TQFT evaluation, and the analytic index.</p>
+</div>
+<p>Part I isolates four axioms. We restate the two that Part IV discharges concretely.</p>
+<div id="ax:locality" class="definition">
+<p><strong>Definition 4</strong> (Locality and descent axiom).  Physical representations must be locally assignable and globally coherent; a failure of descent is an obstruction, an anomaly, or a missing boundary datum.</p>
+</div>
+<div id="ax:decomp" class="definition">
+<p><strong>Definition 5</strong> (Decomposition axiom).  Compositional or period-like observables admit a decomposition operation (boundary, coproduct, coaction, spectral sequence, factorization, or gluing) revealing lower-level informational pieces.</p>
+</div>
+<p>The master diagram of Part I, in the form we use, is <span class="math display">\[\begin{tikzcd}[column sep=1.6em, row sep=large]
+M&#39; \arrow[d, dashed, &quot;\sim&quot;&#39;, &quot;\text{gauge / equiv.\ / duality}&quot;] &amp; &amp; &amp;\\
+M \arrow[r, &quot;\Phi&quot;] &amp; \Phi(M) \arrow[r, &quot;\mathrm{Real}_\alpha&quot;] &amp; \text{physical rep.} \arrow[r, &quot;\mathrm{Obs}&quot;] &amp; \text{observable}
+\end{tikzcd}\]</span> The dashed identification <span class="math inline">\(M\sim M&#39;\)</span> encodes the Equivalence axiom: mathematical descriptions related by a gauge or equivalence relation determine the same physical content at the chosen observational level. Part IV realizes the dashed arrow twice: as homotopy of spaces (<a href="#sec:homology" data-reference-type="ref+Label" data-reference="sec:homology">3</a>) and as coboundary shift of a Dijkgraaf–Witten cocycle (<a href="#sec:dw" data-reference-type="ref+Label" data-reference="sec:dw">6</a>).</p>
+<div id="rem:framework-status" class="remark">
+<p><em>Remark 1</em> (Status of the framework).  <a href="#def:dom,def:entry,def:pipeline" data-reference-type="ref+Label" data-reference="def:dom,def:entry,def:pipeline">[def:dom,def:entry,def:pipeline]</a> are status-<span class="math inline">\(\textnormal{\sffamily\bfseries S}\)</span> as pure category theory; their <em>physical</em> interpretation carries the label of the individual entry. Part IV’s contribution is to populate the framework with entries whose <span class="math inline">\(\tau\)</span> is an <em>actual functor</em>, i.e. status-<span class="math inline">\(\textnormal{\sffamily\bfseries S}\)</span> entries, in contrast to the heuristic entries that dominate Parts II–III.</p>
+</div>
+<h1 data-number="3" id="sec:homology"><span class="header-section-number">3</span> (Co)homology as conserved global information</h1>
+<p>We now develop the core of Part IV: algebraic topology as the module of observables conserved under continuous deformation. We proceed from chain complexes to homology, prove functoriality and homotopy invariance, dualize to cohomology, and read the results physically.</p>
+<h2 data-number="3.1" id="chain-complexes-and-the-boundary-operator"><span class="header-section-number">3.1</span> Chain complexes and the boundary operator</h2>
+<div id="def:chain" class="definition">
+<p><strong>Definition 6</strong> (Chain complex).  A <em>chain complex</em> of abelian groups is a sequence <span class="math display">\[\begin{tikzcd}[column sep=2.1em]
+\cdots \arrow[r, &quot;\partial_{n+1}&quot;] &amp; C_n \arrow[r, &quot;\partial_n&quot;] &amp; C_{n-1}
+  \arrow[r, &quot;\partial_{n-1}&quot;] &amp; \cdots \arrow[r, &quot;\partial_1&quot;] &amp; C_0 \arrow[r, &quot;\partial_0&quot;] &amp; 0
+\end{tikzcd}\]</span> of abelian groups <span class="math inline">\(C_n\)</span> (<span class="math inline">\(n\ge 0\)</span>) and homomorphisms <span class="math inline">\(\partial_n\colon C_n\to
+C_{n-1}\)</span> satisfying the <em>fundamental relation</em> <span class="math display">\[\begin{equation}
+\label{eq:d2}
+  \partial_{n}\circ\partial_{n+1}=0\qquad\text{for all }n .
+\end{equation}\]</span> Elements of <span class="math inline">\(Z_n:=\ker\partial_n\)</span> are <em><span class="math inline">\(n\)</span>-cycles</em>; elements of <span class="math inline">\(B_n:=\operatorname{im}\partial_{n+1}\)</span> are <em><span class="math inline">\(n\)</span>-boundaries</em>. A morphism of chain complexes (a <em>chain map</em>) <span class="math inline">\(f_\bullet\colon C_\bullet\to D_\bullet\)</span> is a family <span class="math inline">\(f_n\colon C_n\to D_n\)</span> with <span class="math inline">\(\partial^D_n f_n = f_{n-1}\partial^C_n\)</span>.</p>
+</div>
+<div id="lem:BsubZ" class="lemma">
+<p><strong>Lemma 1</strong> (Boundaries are cycles).  <em>For every chain complex, <span class="math inline">\(B_n\subseteq Z_n\)</span>, so <span class="math inline">\(H_n:=Z_n/B_n\)</span> is a well-defined abelian group.</em></p>
+</div>
+<div class="proof">
+<p><em>Proof.</em> Let <span class="math inline">\(b\in B_n\)</span>, say <span class="math inline">\(b=\partial_{n+1}c\)</span> for some <span class="math inline">\(c\in C_{n+1}\)</span>. Then by <a href="#eq:d2" data-reference-type="eqref" data-reference="eq:d2">[eq:d2]</a>, <span class="math inline">\(\partial_n b = \partial_n\partial_{n+1}c = 0\)</span>, so <span class="math inline">\(b\in\ker\partial_n=Z_n\)</span>. Hence <span class="math inline">\(B_n\subseteq Z_n\)</span>. As <span class="math inline">\(C_n\)</span> is abelian, <span class="math inline">\(B_n\)</span> is a (normal) subgroup of <span class="math inline">\(Z_n\)</span> and the quotient <span class="math inline">\(Z_n/B_n\)</span> is an abelian group. ◻</p>
+</div>
+<div id="def:homology" class="definition">
+<p><strong>Definition 7</strong> (Homology).  The <em><span class="math inline">\(n\)</span>-th homology group</em> of <span class="math inline">\(C_\bullet\)</span> is <span class="math inline">\(H_n(C_\bullet):=Z_n/B_n\)</span>. The class of a cycle <span class="math inline">\(z\in Z_n\)</span> is written <span class="math inline">\([z]\)</span>. A chain complex is <em>exact</em> at <span class="math inline">\(C_n\)</span> if <span class="math inline">\(H_n(C_\bullet)=0\)</span>, i.e. <span class="math inline">\(Z_n=B_n\)</span>.</p>
+</div>
+<p>For a topological space <span class="math inline">\(X\)</span> we take <span class="math inline">\(C_\bullet=C_\bullet(X)\)</span> the singular chain complex, with <span class="math inline">\(C_n(X)\)</span> the free abelian group on continuous maps <span class="math inline">\(\sigma\colon\Delta^n\to X\)</span> and <span class="math inline">\(\partial_n\sigma=\sum_{i=0}^n(-1)^i\,\sigma\!\mid_{[v_0,\dots,\hat v_i,\dots,v_n]}\)</span> the alternating face sum. Then <span class="math inline">\(H_n(X):=H_n(C_\bullet(X))\)</span> is singular homology.</p>
+<div id="lem:sing-d2" class="lemma">
+<p><strong>Lemma 2</strong> (Singular boundary squares to zero).  <em>The singular boundary satisfies <span class="math inline">\(\partial_n\partial_{n+1}=0\)</span>, so <span class="math inline">\(C_\bullet(X)\)</span> is a chain complex in the sense of <a href="#def:chain" data-reference-type="ref+Label" data-reference="def:chain">6</a>.</em></p>
+</div>
+<div class="proof">
+<p><em>Proof.</em> It suffices to check on a single simplex <span class="math inline">\(\sigma\colon\Delta^{n+1}\to X\)</span>. Writing <span class="math inline">\(\sigma_{[\hat i]}\)</span> for the <span class="math inline">\(i\)</span>-th face, <span class="math display">\[\partial_n\partial_{n+1}\sigma
+  = \sum_{i=0}^{n+1}(-1)^i\,\partial_n\sigma_{[\hat i]}
+  = \sum_{i=0}^{n+1}\sum_{j=0}^{n}(-1)^i(-1)^j\,(\sigma_{[\hat i]})_{[\hat j]} .\]</span> The face maps satisfy the simplicial identity <span class="math inline">\((\sigma_{[\hat i]})_{[\hat j]}
+=(\sigma_{[\hat j]})_{[\widehat{i-1}]}\)</span> for <span class="math inline">\(j&lt;i\)</span>. Splitting the double sum into <span class="math inline">\(j&lt;i\)</span> and <span class="math inline">\(j\ge i\)</span> and applying this identity shows the two pieces cancel term by term after reindexing, giving <span class="math inline">\(0\)</span>. ◻</p>
+</div>
+<h2 data-number="3.2" id="functoriality-the-conserved-information-functor"><span class="header-section-number">3.2</span> Functoriality: the conserved-information functor</h2>
+<div id="prop:H-functor" class="proposition">
+<p><strong>Proposition 1</strong> (Homology is functorial).  <em>A continuous map <span class="math inline">\(f\colon X\to Y\)</span> induces a chain map <span class="math inline">\(f_\#\colon C_\bullet(X)\to
+C_\bullet(Y)\)</span> by <span class="math inline">\(f_\#(\sigma)=f\circ\sigma\)</span>, hence homomorphisms <span class="math inline">\(f_*\colon H_n(X)\to H_n(Y)\)</span> for all <span class="math inline">\(n\)</span>. This assignment satisfies <span class="math inline">\((\mathrm{id}_X)_*=\mathrm{id}\)</span> and <span class="math inline">\((g\circ f)_*=g_*\circ f_*\)</span>; thus <span class="math inline">\(H_n(-)\)</span> is a functor <span class="math inline">\(\mathrm{Top}\to\mathrm{Ab}\)</span>.</em></p>
+</div>
+<div class="proof">
+<p><em>Proof.</em> For a singular simplex <span class="math inline">\(\sigma\colon\Delta^n\to X\)</span> and <span class="math inline">\(0\le i\le n\)</span> we have <span class="math inline">\((f\circ\sigma)_{[\hat i]}=f\circ\sigma_{[\hat i]}\)</span>, so <span class="math inline">\(f_\#\)</span> commutes with the face maps and hence with <span class="math inline">\(\partial\)</span>; thus <span class="math inline">\(f_\#\)</span> is a chain map. A chain map sends cycles to cycles and boundaries to boundaries, so it descends to <span class="math inline">\(f_*\colon H_n(X)\to H_n(Y)\)</span>. Functoriality of <span class="math inline">\((-)_\#\)</span> is immediate from <span class="math inline">\((g\circ f)\circ\sigma=g\circ(f\circ\sigma)\)</span> and passes to homology. ◻</p>
+</div>
+<p>The physical content of Part IV rests on the fact that <span class="math inline">\(H_n\)</span> is not merely functorial but <em>homotopy invariant</em>: it cannot distinguish continuously deformable maps. This is precisely “conservation under deformation.”</p>
+<div id="def:chain-homotopy" class="definition">
+<p><strong>Definition 8</strong> (Chain homotopy).  Two chain maps <span class="math inline">\(f_\bullet,g_\bullet\colon C_\bullet\to D_\bullet\)</span> are <em>chain homotopic</em> if there is a family <span class="math inline">\(P_n\colon C_n\to D_{n+1}\)</span> with <span class="math display">\[\begin{equation}
+\label{eq:chain-htpy}
+  \partial^D_{n+1}P_n + P_{n-1}\partial^C_n = g_n - f_n\qquad\text{for all }n .
+\end{equation}\]</span></p>
+</div>
+<div id="lem:chainhtpy-homology" class="lemma">
+<p><strong>Lemma 3</strong> (Chain homotopy <span class="math inline">\(\Rightarrow\)</span> equality on homology).  <em>If <span class="math inline">\(f_\bullet\)</span> and <span class="math inline">\(g_\bullet\)</span> are chain homotopic, then <span class="math inline">\(f_*=g_*\)</span> on homology.</em></p>
+</div>
+<div class="proof">
+<p><em>Proof.</em> Let <span class="math inline">\(z\in Z_n\)</span>, so <span class="math inline">\(\partial z=0\)</span>. Applying <a href="#eq:chain-htpy" data-reference-type="eqref" data-reference="eq:chain-htpy">[eq:chain-htpy]</a>, <span class="math display">\[(g_n-f_n)(z) = \partial_{n+1}P_n(z) + P_{n-1}\partial_n(z)
+  = \partial_{n+1}\bigl(P_n(z)\bigr) + P_{n-1}(0)
+  = \partial_{n+1}\bigl(P_n(z)\bigr)\in B_n .\]</span> Hence <span class="math inline">\(g_n(z)\)</span> and <span class="math inline">\(f_n(z)\)</span> differ by a boundary, so <span class="math inline">\([g_n(z)]=[f_n(z)]\)</span> in <span class="math inline">\(H_n(D_\bullet)\)</span>; that is, <span class="math inline">\(g_*=f_*\)</span>. ◻</p>
+</div>
+<div id="thm:homotopy-inv" class="theorem">
+<p><strong>Theorem 1</strong> (Homotopy invariance of homology).  <em>If <span class="math inline">\(f,g\colon X\to Y\)</span> are homotopic continuous maps, then <span class="math inline">\(f_*=g_*\colon
+H_n(X)\to H_n(Y)\)</span> for all <span class="math inline">\(n\)</span>. Consequently a homotopy equivalence induces isomorphisms on all homology groups, and <span class="math inline">\(H_n\)</span> descends to a functor <span class="math display">\[H_n\colon \mathrm{hTop}\longrightarrow \mathrm{Ab}\]</span> on the homotopy category <span class="math inline">\(\mathrm{hTop}\)</span> (spaces and homotopy classes of maps).</em></p>
+</div>
+<div class="proof">
+<p><em>Proof.</em> A homotopy <span class="math inline">\(F\colon X\times[0,1]\to Y\)</span> from <span class="math inline">\(f\)</span> to <span class="math inline">\(g\)</span> induces a chain homotopy between <span class="math inline">\(f_\#\)</span> and <span class="math inline">\(g_\#\)</span> via the <em>prism operator</em> <span class="math inline">\(P_n\colon C_n(X)\to C_{n+1}(Y)\)</span> obtained by subdividing the prism <span class="math inline">\(\Delta^n\times[0,1]\)</span> into <span class="math inline">\((n+1)\)</span>-simplices <span class="math inline">\([v_0,\dots,v_i,w_i,\dots,w_n]\)</span> (with <span class="math inline">\(v_j=(x,0)\)</span>, <span class="math inline">\(w_j=(x,1)\)</span> vertices) and setting <span class="math inline">\(P_n(\sigma)=\sum_{i=0}^n(-1)^i F\circ(\sigma\times\mathrm{id})\!\mid_{[v_0,\dots,v_i,w_i,\dots,w_n]}\)</span>. A direct computation of <span class="math inline">\(\partial P + P\partial\)</span> using the simplicial identities yields <span class="math inline">\(g_\# - f_\#\)</span>, i.e. <a href="#eq:chain-htpy" data-reference-type="eqref" data-reference="eq:chain-htpy">[eq:chain-htpy]</a>. By <a href="#lem:chainhtpy-homology" data-reference-type="ref+Label" data-reference="lem:chainhtpy-homology">3</a>, <span class="math inline">\(f_*=g_*\)</span>. If <span class="math inline">\(f\)</span> is a homotopy equivalence with inverse <span class="math inline">\(h\)</span>, then <span class="math inline">\(f_*h_*=(fh)_*=(\mathrm{id})_*=\mathrm{id}\)</span> and similarly <span class="math inline">\(h_*f_*=\mathrm{id}\)</span>, so <span class="math inline">\(f_*\)</span> is an isomorphism. Since <span class="math inline">\(H_n\)</span> agrees on homotopic maps, it factors through <span class="math inline">\(\mathrm{hTop}\)</span>. ◻</p>
+</div>
+<p>We package this as the central object of Part IV.</p>
+<div id="def:cgi" class="definition">
+<p><strong>Definition 9</strong> (Conserved global information functor).  The <em>conserved global information functor</em> is <span class="math display">\[H_\bullet \colon \mathrm{hTop}\longrightarrow \mathrm{GrAb},
+  \qquad X\longmapsto \bigl(H_n(X)\bigr)_{n\ge 0},\]</span> valued in graded abelian groups, assembled from <a href="#thm:homotopy-inv" data-reference-type="ref+Label" data-reference="thm:homotopy-inv">1</a>. A <em>topological observable</em> of <span class="math inline">\(X\)</span> is an element of <span class="math inline">\(H^n(X)\)</span> (see <a href="#def:cohomology" data-reference-type="ref+Label" data-reference="def:cohomology">10</a>); its value on a cycle is a <em>conserved charge</em>.</p>
+</div>
+<div id="thm:cons-functor" class="theorem">
+<p><strong>Theorem 2</strong> (Conservation principle).  <em>Let <span class="math inline">\(\{X_t\}_{t\in[0,1]}\)</span> be a continuous family of spaces realized as the fibers of a fibration <span class="math inline">\(E\to[0,1]\)</span> over the contractible base <span class="math inline">\([0,1]\)</span>. Then for all <span class="math inline">\(n\)</span> the groups <span class="math inline">\(H_n(X_t)\)</span> are canonically isomorphic, and any topological observable <span class="math inline">\(\omega\in H^n(X_0)\)</span> has a unique continuation <span class="math inline">\(\omega_t\in H^n(X_t)\)</span> with <span class="math inline">\(\langle\omega_t,[z_t]\rangle\)</span> independent of <span class="math inline">\(t\)</span> for a continuously varying cycle class <span class="math inline">\([z_t]\)</span>. In this precise sense topological observables are conserved under continuous physical deformation.</em></p>
+</div>
+<div class="proof">
+<p><em>Proof.</em> A fibration over a contractible base is fiber-homotopy equivalent to the trivial fibration <span class="math inline">\(X_0\times[0,1]\to[0,1]\)</span>; in particular any two fibers <span class="math inline">\(X_s,X_t\)</span> are homotopy equivalent, and parallel transport along <span class="math inline">\([0,1]\)</span> furnishes a canonical homotopy class of equivalence <span class="math inline">\(X_0\simeq X_t\)</span>. By <a href="#thm:homotopy-inv" data-reference-type="ref+Label" data-reference="thm:homotopy-inv">1</a> the induced maps <span class="math inline">\(H_n(X_0)\xrightarrow{\ \cong\ }H_n(X_t)\)</span> are isomorphisms; dualizing (<a href="#prop:coho-functor" data-reference-type="ref+Label" data-reference="prop:coho-functor">2</a>) gives the corresponding isomorphisms on <span class="math inline">\(H^n\)</span> and hence the continuation <span class="math inline">\(\omega_t\)</span>. The pairing <span class="math inline">\(\langle\omega_t,[z_t]\rangle\)</span> is preserved because both <span class="math inline">\(\omega_t\)</span> and <span class="math inline">\([z_t]\)</span> are images of <span class="math inline">\(\omega_0,[z_0]\)</span> under the same transport isomorphism, which is compatible with the (co)homology pairing (<a href="#def:pairing" data-reference-type="ref+Label" data-reference="def:pairing">11</a>). Thus the pairing is constant in <span class="math inline">\(t\)</span>. ◻</p>
+</div>
+<h2 data-number="3.3" id="cohomology-closed-and-exact-forms-and-gauge"><span class="header-section-number">3.3</span> Cohomology, closed and exact forms, and gauge</h2>
+<div id="def:cohomology" class="definition">
+<p><strong>Definition 10</strong> (Singular cohomology).  For an abelian group <span class="math inline">\(A\)</span>, the <em>singular cochain complex</em> of <span class="math inline">\(X\)</span> is <span class="math inline">\(C^n(X;A):=\operatorname{Hom}(C_n(X),A)\)</span> with coboundary <span class="math inline">\(\delta^n=\operatorname{Hom}(\partial_{n+1},A)\)</span>, i.e. <span class="math inline">\((\delta\varphi)(c)=\varphi(\partial c)\)</span>. Then <span class="math inline">\(\delta^{n+1}\delta^n=0\)</span> (dual to <a href="#eq:d2" data-reference-type="eqref" data-reference="eq:d2">[eq:d2]</a>), and the <em><span class="math inline">\(n\)</span>-th cohomology group</em> is <span class="math inline">\(H^n(X;A):=\ker\delta^n/\operatorname{im}\delta^{n-1}\)</span>. Cocycles are <span class="math inline">\(Z^n\)</span>, coboundaries are <span class="math inline">\(B^n\)</span>.</p>
+</div>
+<div id="prop:coho-functor" class="proposition">
+<p><strong>Proposition 2</strong> (Cohomology is a contravariant functor).  <em><span class="math inline">\(H^n(-;A)\colon\mathrm{hTop}^{\mathrm{op}}\to\mathrm{Ab}\)</span> is a functor: a map <span class="math inline">\(f\colon X\to Y\)</span> induces <span class="math inline">\(f^*=\operatorname{Hom}(f_\#,A)\colon H^n(Y;A)\to H^n(X;A)\)</span>, with <span class="math inline">\((\mathrm{id})^*=\mathrm{id}\)</span>, <span class="math inline">\((gf)^*=f^*g^*\)</span>, and <span class="math inline">\(f^*\)</span> depending only on the homotopy class of <span class="math inline">\(f\)</span>.</em></p>
+</div>
+<div class="proof">
+<p><em>Proof.</em> <span class="math inline">\(\operatorname{Hom}(-,A)\)</span> is a contravariant additive functor, so it sends the chain map <span class="math inline">\(f_\#\)</span> to a cochain map <span class="math inline">\(f^*\)</span> and reverses composition; homotopy invariance is dual to <a href="#thm:homotopy-inv" data-reference-type="ref+Label" data-reference="thm:homotopy-inv">1</a> because <span class="math inline">\(\operatorname{Hom}(-,A)\)</span> sends a chain homotopy <a href="#eq:chain-htpy" data-reference-type="eqref" data-reference="eq:chain-htpy">[eq:chain-htpy]</a> to a cochain homotopy. ◻</p>
+</div>
+<div id="def:pairing" class="definition">
+<p><strong>Definition 11</strong> (Evaluation pairing).  The <em>Kronecker pairing</em> <span class="math inline">\(\langle-,-\rangle\colon H^n(X;A)\times H_n(X)\to A\)</span> is <span class="math inline">\(\langle[\varphi],[z]\rangle:=\varphi(z)\)</span>. It is well defined: if <span class="math inline">\(\varphi=\delta\psi\)</span> then <span class="math inline">\(\varphi(z)=\psi(\partial z)=0\)</span> for a cycle <span class="math inline">\(z\)</span>, and if <span class="math inline">\(z=\partial w\)</span> then <span class="math inline">\(\varphi(z)=(\delta\varphi)(w)=0\)</span> for a cocycle <span class="math inline">\(\varphi\)</span>.</p>
+</div>
+<p>The de Rham incarnation makes the “conserved field” reading transparent.</p>
+<div id="def:derham" class="definition">
+<p><strong>Definition 12</strong> (de Rham cohomology).  For a smooth manifold <span class="math inline">\(X\)</span>, let <span class="math inline">\(\Omega^n(X)\)</span> be the smooth <span class="math inline">\(n\)</span>-forms with exterior derivative <span class="math inline">\(d\colon\Omega^n\to\Omega^{n+1}\)</span>, <span class="math inline">\(d^2=0\)</span>. A form is <em>closed</em> if <span class="math inline">\(d\omega=0\)</span> and <em>exact</em> if <span class="math inline">\(\omega=d\alpha\)</span>. The <em>de Rham cohomology</em> is <span class="math inline">\(H^n_{\mathrm{dR}}(X):=\ker(d\!\mid_{\Omega^n})/\operatorname{im}(d\!\mid_{\Omega^{n-1}})\)</span>.</p>
+</div>
+<div id="prop:derham-gauge" class="proposition">
+<p><strong>Proposition 3</strong> (Conservation and gauge, de Rham form).  <em>Let <span class="math inline">\(\omega\in\Omega^n(X)\)</span> be a field strength. Then:</em></p>
+<ol>
+<li><p><em><span class="math inline">\(d\omega=0\)</span> (a conservation law / Bianchi identity) is the statement that <span class="math inline">\(\omega\)</span> is a cocycle; its class <span class="math inline">\([\omega]\in H^n_{\mathrm{dR}}(X)\)</span> is a deformation-invariant observable.</em></p></li>
+<li><p><em>a shift <span class="math inline">\(\omega\mapsto\omega+d\alpha\)</span> leaves the class <span class="math inline">\([\omega]\)</span> unchanged, so <span class="math inline">\([\omega]\)</span> is the gauge-invariant flux and an exact part <span class="math inline">\(d\alpha\)</span> carries the topologically trivial class <span class="math inline">\([\,d\alpha\,]=0\)</span> (status <span class="math inline">\(\textnormal{\sffamily\bfseries H}\)</span>). We caution that this is <em>global</em> cohomological triviality: at the level of a potential <span class="math inline">\(A\)</span> with <span class="math inline">\(\omega=dA\)</span>, the genuine local gauge redundancy is <span class="math inline">\(A\mapsto A+d\lambda\)</span>, which leaves <span class="math inline">\(\omega\)</span> pointwise invariant, whereas a nonzero exact field strength <span class="math inline">\(d\alpha\)</span> need not vanish pointwise. Thus “pure gauge” here means null in cohomology, not <span class="math inline">\(\omega=0\)</span>.</em></p></li>
+<li><p><em>For a closed oriented <span class="math inline">\(n\)</span>-cycle <span class="math inline">\(\Gamma\)</span>, the flux <span class="math inline">\(\Phi(\Gamma):=\int_\Gamma\omega\)</span> depends only on <span class="math inline">\([\omega]\)</span> and the homology class <span class="math inline">\([\Gamma]\)</span>, by Stokes’ theorem; it is the conserved charge measured over <span class="math inline">\(\Gamma\)</span>.</em></p></li>
+</ol>
+</div>
+<div class="proof">
+<p><em>Proof.</em> (i)–(ii) are immediate from <a href="#def:derham" data-reference-type="ref+Label" data-reference="def:derham">12</a>: <span class="math inline">\(d\omega=0\)</span> means <span class="math inline">\(\omega\)</span> is a de Rham cocycle, and <span class="math inline">\(d(\omega+d\alpha)=d\omega=0\)</span> with <span class="math inline">\([\omega+d\alpha]=[\omega]\)</span> since <span class="math inline">\(d\alpha\)</span> is exact. (iii): if <span class="math inline">\(\omega&#39;=\omega+d\alpha\)</span> and <span class="math inline">\(\Gamma&#39;=\Gamma+\partial S\)</span>, then by Stokes <span class="math inline">\(\int_{\Gamma&#39;}\omega&#39;=\int_\Gamma\omega+\int_\Gamma d\alpha+\int_{\partial S}\omega+\int_{\partial S}d\alpha\)</span>, and each correction integral vanishes because <span class="math inline">\(\Gamma\)</span> is closed (<span class="math inline">\(\int_\Gamma d\alpha=\int_{\partial\Gamma}\alpha=0\)</span>), <span class="math inline">\(\omega\)</span> is closed (<span class="math inline">\(\int_{\partial S}\omega=\int_S d\omega=0\)</span>), and likewise for the last term. Thus <span class="math inline">\(\Phi\)</span> descends to <span class="math inline">\(H^n_{\mathrm{dR}}\times H_n\)</span>. ◻</p>
+</div>
+<p>By the de Rham theorem, <span class="math inline">\(H^n_{\mathrm{dR}}(X)\cong H^n(X;\mathbb{R})\)</span> with the pairing of <a href="#def:pairing" data-reference-type="ref+Label" data-reference="def:pairing">11</a> matching integration; so the de Rham and singular pictures are the same status-<span class="math inline">\(\textnormal{\sffamily\bfseries S}\)</span> observable module in two realization channels.</p>
+<h2 data-number="3.4" id="exact-sequences-conservation-and-obstruction-bookkeeping"><span class="header-section-number">3.4</span> Exact sequences: conservation and obstruction bookkeeping</h2>
+<div id="prop:les" class="proposition">
+<p><strong>Proposition 4</strong> (Long exact sequence of a pair).  <em>For a pair <span class="math inline">\((X,B)\)</span> there is a natural long exact sequence <span class="math display">\[\begin{tikzcd}[column sep=1.6em]
+\cdots \arrow[r] &amp; H_n(B) \arrow[r, &quot;i_*&quot;] &amp; H_n(X) \arrow[r, &quot;j_*&quot;] &amp;
+H_n(X,B) \arrow[r, &quot;\partial&quot;] &amp; H_{n-1}(B) \arrow[r] &amp; \cdots
+\end{tikzcd}\]</span> in which <span class="math inline">\(\operatorname{im}i_* = \ker j_*\)</span>, <span class="math inline">\(\operatorname{im}j_*=\ker\partial\)</span>, and <span class="math inline">\(\operatorname{im}\partial=\ker i_*\)</span>. Physically, <span class="math inline">\(\partial\)</span> is the boundary/defect charge-transfer map: a bulk class with nontrivial <span class="math inline">\(\partial\)</span> deposits conserved charge on the boundary <span class="math inline">\(B\)</span>.</em></p>
+</div>
+<div class="proof">
+<p><em>Proof.</em> This is the homology long exact sequence associated to the short exact sequence of chain complexes <span class="math inline">\(0\to C_\bullet(B)\to C_\bullet(X)\to C_\bullet(X,B)\to 0\)</span>, where <span class="math inline">\(C_\bullet(X,B):=C_\bullet(X)/C_\bullet(B)\)</span>. Exactness is the standard homological snake lemma / zig-zag construction: the connecting map <span class="math inline">\(\partial\)</span> sends the class of a relative cycle <span class="math inline">\(c\)</span> (so <span class="math inline">\(\partial c\in C_{n-1}(B)\)</span>) to <span class="math inline">\([\partial c]\in
+H_{n-1}(B)\)</span>, and the three exactness statements are verified by diagram chase. Naturality follows because a map of pairs induces a map of the short exact sequences. ◻</p>
+</div>
+<div id="prop:mv" class="proposition">
+<p><strong>Proposition 5</strong> (Mayer–Vietoris: reconstructing global physics from patches).  <em>If <span class="math inline">\(X=U\cup V\)</span> with <span class="math inline">\(U,V\)</span> open, there is a long exact sequence <span class="math display">\[\begin{tikzcd}[column sep=1.35em]
+\cdots \arrow[r] &amp; H_n(U\cap V) \arrow[r] &amp; H_n(U)\oplus H_n(V) \arrow[r] &amp;
+H_n(X) \arrow[r, &quot;\partial&quot;] &amp; H_{n-1}(U\cap V) \arrow[r] &amp; \cdots
+\end{tikzcd}\]</span> This is the topological form of the Locality/descent axiom (<a href="#ax:locality" data-reference-type="ref+Label" data-reference="ax:locality">4</a>): global conserved information on <span class="math inline">\(X\)</span> is reconstructed from local information on <span class="math inline">\(U\)</span>, <span class="math inline">\(V\)</span> together with the gluing data on the overlap <span class="math inline">\(U\cap V\)</span>; the connecting map <span class="math inline">\(\partial\)</span> is the obstruction to naive gluing.</em></p>
+</div>
+<div class="proof">
+<p><em>Proof.</em> Apply the homology long exact sequence to the short exact sequence <span class="math inline">\(0\to C_\bullet(U\cap V)\xrightarrow{(i,-j)}C_\bullet(U)\oplus C_\bullet(V)
+\xrightarrow{k+l}C_\bullet(U+V)\to 0\)</span>, and use that the inclusion <span class="math inline">\(C_\bullet(U+V)\hookrightarrow C_\bullet(X)\)</span> of sums of chains supported in <span class="math inline">\(U\)</span> or <span class="math inline">\(V\)</span> induces isomorphisms on homology (small-simplices / barycentric-subdivision theorem). Exactness is again the zig-zag lemma. ◻</p>
+</div>
+<div id="rem:mv-descent" class="remark">
+<p><em>Remark 2</em> (Descent reading).  <a href="#prop:mv" data-reference-type="ref+Label" data-reference="prop:mv">5</a> is exactly a descent statement: the sequence exhibits <span class="math inline">\(H_\bullet(X)\)</span> as glued from <span class="math inline">\(H_\bullet(U),H_\bullet(V)\)</span> along <span class="math inline">\(H_\bullet(U\cap V)\)</span>, up to the correction measured by <span class="math inline">\(\partial\)</span>. When <span class="math inline">\(\partial=0\)</span> the local data glue on the nose (a <em>sheaf</em>-like situation); when <span class="math inline">\(\partial\ne 0\)</span> they glue only up to the obstruction (a <em>stack</em>-like situation). This is the first appearance in the ladder of the sheaf/stack dichotomy that Part VI makes precise.</p>
+</div>
+<h2 data-number="3.5" id="poincaré-duality-and-cup-product"><span class="header-section-number">3.5</span> Poincaré duality and cup product</h2>
+<div id="thm:pd" class="theorem">
+<p><strong>Theorem 3</strong> (Poincaré duality).  <em>Let <span class="math inline">\(X\)</span> be a closed oriented <span class="math inline">\(n\)</span>-manifold with fundamental class <span class="math inline">\([X]\in H_n(X)\)</span>. Then cap product with <span class="math inline">\([X]\)</span> is an isomorphism <span class="math display">\[-\frown[X]\colon H^k(X)\xrightarrow{\ \cong\ }H_{n-k}(X)\qquad(0\le k\le n).\]</span> Physically: a codimension-<span class="math inline">\(k\)</span> defect (a class in <span class="math inline">\(H_{n-k}\)</span>) is equivalent data to a degree-<span class="math inline">\(k\)</span> field-strength observable (a class in <span class="math inline">\(H^k\)</span>); defects and dual field strengths carry the same conserved information.</em></p>
+</div>
+<div class="proof">
+<p><em>Proof.</em> This is the classical Poincaré duality theorem; we recall the mechanism. Cap product <span class="math inline">\(\frown\colon H^k(X)\otimes H_n(X)\to H_{n-k}(X)\)</span> is defined on the chain level by <span class="math inline">\(\varphi\frown\sigma=\varphi(\sigma\!\mid_{\text{front }k})\,\sigma\!\mid_{\text{back }n-k}\)</span> and descends to (co)homology. For a closed oriented manifold, capping with the fundamental class is shown to be an isomorphism by the standard local-to-global argument, which is naturally phrased using <em>compactly supported</em> cohomology <span class="math inline">\(H^k_c\)</span>: unlike ordinary cohomology (which has <span class="math inline">\(H^n(\mathbb{R}^n)=0\)</span>), one has <span class="math inline">\(H^k_c(\mathbb{R}^n)\cong\mathbb{Z}\)</span> concentrated in degree <span class="math inline">\(k=n\)</span>, and the duality <span class="math inline">\(H^k_c(\mathbb{R}^n)\cong H_{n-k}(\mathbb{R}^n)\)</span> holds for <span class="math inline">\(\mathbb{R}^n\)</span> and half-spaces (where both sides are computable). One then propagates along a good cover by an induction using the Mayer–Vietoris sequences (<a href="#prop:mv" data-reference-type="ref+Label" data-reference="prop:mv">5</a>) on both sides and the five lemma; the naturality of <span class="math inline">\(\frown\)</span> makes the induction squares commute. For the closed manifold <span class="math inline">\(X\)</span> one has <span class="math inline">\(H^k_c(X)=H^k(X)\)</span>, yielding the stated form. ◻</p>
+</div>
+<div id="def:cup" class="definition">
+<p><strong>Definition 13</strong> (Cup product).  The <em>cup product</em> <span class="math inline">\(\smile\colon H^k(X;R)\otimes H^\ell(X;R)\to H^{k+\ell}(X;R)\)</span> is induced by <span class="math inline">\((\varphi\smile\psi)(\sigma)=\varphi(\sigma\!\mid_{\text{front}})\cdot
+\psi(\sigma\!\mid_{\text{back}})\)</span>, making <span class="math inline">\(H^\bullet(X;R)\)</span> a graded-commutative ring. Physically the cup product is the <em>interaction</em> of two charge/flux observables, and its graded commutativity <span class="math inline">\(\alpha\smile\beta=(-1)^{|\alpha||\beta|}\beta\smile\alpha\)</span> <span class="math inline">\((\textnormal{\sffamily\bfseries S}/\textnormal{\sffamily\bfseries H})\)</span> encodes the statistics of the corresponding excitations.</p>
+</div>
+<div id="ex:torus" class="example">
+<p><strong>Example 1</strong> (Conserved charge on the torus).  For <span class="math inline">\(X=T^2=S^1\times S^1\)</span> one has <span class="math inline">\(H^1(T^2;\mathbb{Z})\cong\mathbb{Z}^2\)</span> generated by classes <span class="math inline">\(a,b\)</span> dual to the two circles, with <span class="math inline">\(a\smile a=b\smile b=0\)</span> and <span class="math inline">\(a\smile b=-b\smile a\)</span> generating <span class="math inline">\(H^2(T^2;\mathbb{Z})\cong\mathbb{Z}\)</span>. Two <em>distinct</em> conserved observables live here and must not be confused.</p>
+<ol>
+<li><p>A <em>flat</em> gauge field (<span class="math inline">\(F=0\)</span>) is classified up to gauge by its two holonomies, i.e. by a class in <span class="math inline">\(H^1(T^2;\mathrm{U}(1))\cong\mathrm{U}(1)\times\mathrm{U}(1)\)</span> (Wilson loops around the two cycles). Such a connection has vanishing curvature and hence <em>trivial</em> first Chern number; the moduli space of flat connections detects only the <span class="math inline">\(H^1\)</span>-data.</p></li>
+<li><p>A generally <em>non-flat</em> complex line bundle <span class="math inline">\(L\to T^2\)</span> carries a quantized magnetic flux, the first Chern number <span class="math inline">\(\int_{T^2}\tfrac{F}{2\pi}=\langle c_1(L),[T^2]\rangle\in\mathbb{Z}\)</span> with <span class="math inline">\(c_1(L)\in H^2(T^2;\mathbb{Z})\cong\mathbb{Z}\)</span>; a nonzero value <em>forces</em> <span class="math inline">\(F\neq 0\)</span>, so this observable is disjoint from case (i).</p></li>
+</ol>
+<p>It is precisely the nondegenerate cup pairing <span class="math inline">\(\langle a\smile b,[T^2]\rangle=1\)</span> that makes <span class="math inline">\(H^2(T^2;\mathbb{Z})\cong\mathbb{Z}\)</span> one-dimensional and thereby able to host the integer flux of case (ii). Both are toy models underlying the quantum-Hall and surface-code phenomenology revisited in Part VI.</p>
+</div>
+<h1 data-number="4" id="sec:char"><span class="header-section-number">4</span> Characteristic classes and the index theorem</h1>
+<p>Characteristic classes are the module of <em>quantized</em> topological information: they assign to a gauge bundle a cohomology class of its base, natural under pullback, and their integrals are integer- or rational-valued conserved charges.</p>
+<h2 data-number="4.1" id="classifying-spaces-and-characteristic-classes"><span class="header-section-number">4.1</span> Classifying spaces and characteristic classes</h2>
+<div id="def:bundle" class="definition">
+<p><strong>Definition 14</strong> (Principal bundle and classifying space).  A <em>principal <span class="math inline">\(G\)</span>-bundle</em> over <span class="math inline">\(X\)</span> is a fiber bundle <span class="math inline">\(\pi\colon P\to X\)</span> with a free, fiber-transitive right <span class="math inline">\(G\)</span>-action. Isomorphism classes of principal <span class="math inline">\(G\)</span>-bundles over a paracompact <span class="math inline">\(X\)</span> are in natural bijection with homotopy classes of maps <span class="math inline">\([X,BG]\)</span>, where <span class="math inline">\(BG\)</span> is the <em>classifying space</em> (the base of the universal bundle <span class="math inline">\(EG\to BG\)</span>); the bijection sends <span class="math inline">\(f\colon X\to BG\)</span> to the pullback <span class="math inline">\(f^*EG\)</span>.</p>
+</div>
+<div id="def:charclass" class="definition">
+<p><strong>Definition 15</strong> (Characteristic class).  A <em>characteristic class</em> for <span class="math inline">\(G\)</span>-bundles with coefficients in <span class="math inline">\(R\)</span> is a natural transformation <span class="math inline">\(c\colon [-,BG]\Rightarrow H^*(-;R)\)</span>; equivalently, by <a href="#def:bundle" data-reference-type="ref+Label" data-reference="def:bundle">14</a> and the Yoneda lemma, an element <span class="math inline">\(c\in H^*(BG;R)\)</span>, with the class of a bundle <span class="math inline">\(f^*EG\)</span> given by <span class="math inline">\(c(f^*EG)=f^*c\)</span>.</p>
+</div>
+<div id="prop:char-nat" class="proposition">
+<p><strong>Proposition 6</strong> (Naturality is conservation).  <em>For any continuous <span class="math inline">\(g\colon Y\to X\)</span> and any principal <span class="math inline">\(G\)</span>-bundle <span class="math inline">\(P\to X\)</span>, <span class="math inline">\(c(g^*P)=g^*c(P)\)</span>. In particular characteristic numbers <span class="math inline">\(\int_X c(P)\)</span> of closed manifolds are homotopy/cobordism invariants: they are conserved under continuous deformation of the bundle and of the base.</em></p>
+</div>
+<div class="proof">
+<p><em>Proof.</em> Naturality is <a href="#def:charclass" data-reference-type="ref+Label" data-reference="def:charclass">15</a> directly: if <span class="math inline">\(P=f^*EG\)</span> then <span class="math inline">\(g^*P=(f\circ g)^*EG\)</span> has class <span class="math inline">\((f\circ g)^*c=g^*f^*c=g^*c(P)\)</span>. The characteristic number statement follows because <span class="math inline">\(\int_X\colon H^n(X)\to R\)</span> (for <span class="math inline">\(X\)</span> closed oriented <span class="math inline">\(n\)</span>-manifold) is a homotopy invariant of the pair <span class="math inline">\((X,\text{class})\)</span> by <a href="#thm:homotopy-inv" data-reference-type="ref+Label" data-reference="thm:homotopy-inv">1</a> and <a href="#prop:coho-functor" data-reference-type="ref+Label" data-reference="prop:coho-functor">2</a>. ◻</p>
+</div>
+<div id="ex:chern" class="example">
+<p><strong>Example 2</strong> (Chern classes and quantized flux).  For <span class="math inline">\(G=\mathrm{U}(k)\)</span> one has the polynomial ring <span class="math display">\[H^*(B\mathrm{U}(k);\mathbb{Z})=\mathbb{Z}[c_1,\dots,c_k],\qquad c_i\in H^{2i},\]</span> whose generators <span class="math inline">\(c_i\)</span> are the <em>Chern classes</em>. For a complex line bundle <span class="math inline">\(L\to X\)</span>, <span class="math inline">\(c_1(L)\in H^2(X;\mathbb{Z})\)</span> is the quantized first Chern number; over a closed surface <span class="math inline">\(\Sigma\)</span>, <span class="math inline">\(\int_\Sigma c_1(L)=\frac{1}{2\pi}\int_\Sigma F\in\mathbb{Z}\)</span> is the Dirac-quantized magnetic monopole charge / total flux. The <em>Chern character</em> <span class="math display">\[\mathrm{ch}(E)=\mathop{\mathrm{rk}}(E)+c_1+\tfrac12(c_1^2-2c_2)+\cdots\in H^{\mathrm{even}}(X;\mathbb{Q})\]</span> is a ring homomorphism <span class="math inline">\(\mathrm{ch}\colon K^0(X)\to H^{\mathrm{even}}(X;\mathbb{Q})\)</span> turning <span class="math inline">\(K\)</span>-theory charges into cohomological ones. All entries here are status-<span class="math inline">\(\textnormal{\sffamily\bfseries S}\)</span>.</p>
+</div>
+<div id="ex:sw" class="example">
+<p><strong>Example 3</strong> (Stiefel–Whitney classes and spin).  For <span class="math inline">\(G=\mathrm{O}(k)\)</span>, the <em>Stiefel–Whitney classes</em> <span class="math inline">\(w_i\in H^i(X;\mathbb{Z}/2)\)</span> obstruct structure: <span class="math inline">\(w_1(TX)=0\)</span> iff <span class="math inline">\(X\)</span> is orientable, and (given <span class="math inline">\(w_1=0\)</span>) <span class="math inline">\(w_2(TX)=0\)</span> iff <span class="math inline">\(X\)</span> admits a <em>spin structure</em>, the condition under which fermions can be globally defined. Thus <span class="math inline">\(w_2\)</span> is a conserved <span class="math inline">\(\mathbb{Z}/2\)</span> obstruction whose vanishing is a consistency condition for fermionic matter <span class="math inline">\((\textnormal{\sffamily\bfseries S})\)</span>.</p>
+</div>
+<h2 data-number="4.2" id="the-index-theorem-as-a-realization-pipeline-identity"><span class="header-section-number">4.2</span> The index theorem as a realization-pipeline identity</h2>
+<div id="thm:index" class="theorem">
+<p><strong>Theorem 4</strong> (Atiyah–Singer as <span class="math inline">\(\text{observable}=\mathrm{Real}(\text{abstract structure})\)</span>).  <em>Let <span class="math inline">\(X\)</span> be a closed even-dimensional spin manifold with spinor bundle <span class="math inline">\(S=S^+\oplus S^-\)</span> (the chiral splitting), and <span class="math inline">\(E\to X\)</span> a complex vector bundle with connection; let <span class="math inline">\(D_E^+\colon\Gamma(S^+\otimes E)\to\Gamma(S^-\otimes E)\)</span> be the associated chiral twisted Dirac operator. Then the analytic index equals a purely topological expression: <span class="math display">\[\begin{equation}
+\label{eq:index}
+  \mathrm{ind}(D_E^+) \;=\; \dim\ker D_E^+ - \dim\ker D_E^-
+  \;=\; \int_X \widehat{A}(TX)\wedge\mathrm{ch}(E)\;\in\;\mathbb{Z},
+\end{equation}\]</span> where <span class="math inline">\(D_E^-\)</span> is the formal adjoint (so <span class="math inline">\(\ker D_E^-=\operatorname{coker}D_E^+\)</span>). Reading the left side as an <em>observable</em> <span class="math inline">\(\mathrm{Obs}\)</span> (a net chiral zero-mode count / anomaly coefficient) and the right side as <span class="math inline">\(\mathrm{Real}_{\mathrm{top}}\bigl(\Phi(X,E)\bigr)\)</span> with <span class="math inline">\(\Phi(X,E)\)</span> the topological data <span class="math inline">\(\widehat{A}(TX),\mathrm{ch}(E)\)</span>, <a href="#eq:index" data-reference-type="eqref" data-reference="eq:index">[eq:index]</a> is an instance of the Part I master formula <span class="math inline">\(\mathrm{Obs}_{\mathrm{top}}(M)=\mathrm{Obs}(\mathrm{Real}_{\mathrm{top}}(\Phi(M)))\)</span> with realization channel <span class="math inline">\(\alpha=\mathrm{top}\)</span>. Status <span class="math inline">\(\textnormal{\sffamily\bfseries S}\)</span>.</em></p>
+</div>
+<div class="proof">
+<p><em>Proof.</em> Equation <a href="#eq:index" data-reference-type="eqref" data-reference="eq:index">[eq:index]</a> is the Atiyah–Singer index theorem <span class="citation">[<a href="#ref-10" class="citation-link">10</a>]</span>, which we do not reprove; we verify only the pipeline reading. Set <span class="math inline">\(\Phi(X,E):=(\widehat{A}(TX),\mathrm{ch}(E))\in H^\bullet(X;\mathbb{Q})\)</span>, a functor of the topological data (natural under bundle pullback by <a href="#prop:char-nat" data-reference-type="ref+Label" data-reference="prop:char-nat">6</a>). Let <span class="math inline">\(\mathrm{Real}_{\mathrm{top}}\)</span> be the integration channel <span class="math inline">\(\mathrm{Real}_{\mathrm{top}}(\eta)=\int_X\eta\)</span> applied to the top-degree component of the product <span class="math inline">\(\widehat{A}(TX)\wedge\mathrm{ch}(E)\)</span>, valued in <span class="math inline">\(\mathbb{Q}\)</span>; and let <span class="math inline">\(\mathrm{Obs}\)</span> be the identity on <span class="math inline">\(\mathbb{Z}\subseteq\mathbb{Q}\)</span>. Then <span class="math inline">\(\mathrm{Obs}(\mathrm{Real}_{\mathrm{top}}(\Phi(X,E)))=\int_X\widehat{A}(TX)\wedge\mathrm{ch}(E)\)</span>, which by <a href="#eq:index" data-reference-type="eqref" data-reference="eq:index">[eq:index]</a> equals <span class="math inline">\(\mathrm{ind}(D_E^+)\)</span>, the analytic observable. Each of <span class="math inline">\(\Phi,\mathrm{Real}_{\mathrm{top}},\mathrm{Obs}\)</span> is functorial (naturality, linearity of the integral, inclusion), so <span class="math inline">\(\mathrm{Obs}_{\mathrm{top}}=\mathrm{Obs}\circ\mathrm{Real}_{\mathrm{top}}\circ\Phi\)</span> is a realization pipeline in the sense of <a href="#def:pipeline" data-reference-type="ref+Label" data-reference="def:pipeline">3</a>, and <a href="#eq:index" data-reference-type="eqref" data-reference="eq:index">[eq:index]</a> is the assertion that it computes the index. Integrality of the right side is a nontrivial consequence, exactly the content of the theorem. ◻</p>
+</div>
+<div id="rem:index-anchor" class="remark">
+<p><em>Remark 3</em> (Why the index theorem is the ideal status-<span class="math inline">\(\textnormal{\sffamily\bfseries S}\)</span> anchor).  <a href="#thm:index" data-reference-type="ref+Label" data-reference="thm:index">4</a> imports no new mathematics: its physical reading (“topology <span class="math inline">\(\to\)</span> analysis: zero modes and anomalies from topology”) <em>is</em> the theorem. This makes it the least contestable entry in the entire library and the model we hold other, more heuristic entries against.</p>
+</div>
+<h1 data-number="5" id="sec:tqft"><span class="header-section-number">5</span> Topological quantum field theory: functorial realization</h1>
+<p>We now reach the conceptual center of Part IV. A TQFT is a realization pipeline that is <em>itself a functor</em> over a category of cobordisms; it is the first status-<span class="math inline">\(\textnormal{\sffamily\bfseries S}\)</span> instance of the Part I pipeline in which <span class="math inline">\(\mathrm{Real}_\alpha\)</span> is a genuine functor, not a heuristic translation rule. This is precisely why Part IV is where category theory enters the ladder as ambient grammar.</p>
+<h2 data-number="5.1" id="the-bordism-category"><span class="header-section-number">5.1</span> The bordism category</h2>
+<div id="def:bord" class="definition">
+<p><strong>Definition 16</strong> (Bordism category).  Fix <span class="math inline">\(n\ge 1\)</span>. The <em>bordism category</em> <span class="math inline">\(\mathrm{Bord}_n\)</span> has:</p>
+<ul>
+<li><p><strong>objects</strong>: closed oriented <span class="math inline">\((n-1)\)</span>-manifolds <span class="math inline">\(\Sigma\)</span>;</p></li>
+<li><p><strong>morphisms</strong> <span class="math inline">\(\Sigma_0\to\Sigma_1\)</span>: oriented cobordisms, i.e. (diffeomorphism classes rel boundary of) compact oriented <span class="math inline">\(n\)</span>-manifolds <span class="math inline">\(W\)</span> with <span class="math inline">\(\partial W\cong \overline{\Sigma_0}\sqcup\Sigma_1\)</span>;</p></li>
+<li><p><strong>composition</strong>: gluing of cobordisms along the common boundary;</p></li>
+<li><p><strong>identities</strong>: cylinders <span class="math inline">\(\Sigma\times[0,1]\)</span>.</p></li>
+</ul>
+<p>Disjoint union <span class="math inline">\(\sqcup\)</span> makes <span class="math inline">\(\mathrm{Bord}_n\)</span> a symmetric monoidal category with unit the empty <span class="math inline">\((n-1)\)</span>-manifold <span class="math inline">\(\varnothing\)</span>.</p>
+</div>
+<div id="def:tqft" class="definition">
+<p><strong>Definition 17</strong> (TQFT, Atiyah’s axioms).  An <em><span class="math inline">\(n\)</span>-dimensional TQFT</em> valued in <span class="math inline">\(\mathrm{Vect}_k\)</span> (finite-dimensional <span class="math inline">\(k\)</span>-vector spaces) is a symmetric monoidal functor <span class="math inline">\(Z\colon\mathrm{Bord}_n\to\mathrm{Vect}_k\)</span>. Explicitly:</p>
+<ol>
+<li><p><span class="math inline">\(Z\)</span> assigns to each closed <span class="math inline">\((n-1)\)</span>-manifold <span class="math inline">\(\Sigma\)</span> a finite-dimensional vector space <span class="math inline">\(Z(\Sigma)\)</span>, with <span class="math inline">\(Z(\varnothing)=k\)</span>;</p></li>
+<li><p><span class="math inline">\(Z(\Sigma_0\sqcup\Sigma_1)\cong Z(\Sigma_0)\otimes Z(\Sigma_1)\)</span> (monoidality);</p></li>
+<li><p><span class="math inline">\(Z\)</span> assigns to a cobordism <span class="math inline">\(W\colon\Sigma_0\to\Sigma_1\)</span> a linear map <span class="math inline">\(Z(W)\colon Z(\Sigma_0)\to Z(\Sigma_1)\)</span>, with <span class="math inline">\(Z(W&#39;\circ W)=Z(W&#39;)\circ Z(W)\)</span> (gluing) and <span class="math inline">\(Z(\Sigma\times[0,1])=\mathrm{id}_{Z(\Sigma)}\)</span>;</p></li>
+<li><p><span class="math inline">\(Z(\overline\Sigma)\cong Z(\Sigma)^*\)</span> (orientation reversal is dual).</p></li>
+</ol>
+<p>A closed <span class="math inline">\(n\)</span>-manifold <span class="math inline">\(M\)</span> is a cobordism <span class="math inline">\(\varnothing\to\varnothing\)</span>, so <span class="math inline">\(Z(M)\in\operatorname{Hom}(k,k)=k\)</span> is a numerical invariant (a partition function).</p>
+</div>
+<h2 data-number="5.2" id="tqft-is-a-representation-entry"><span class="header-section-number">5.2</span> TQFT is a representation entry</h2>
+<div id="thm:tqft-entry" class="theorem">
+<p><strong>Theorem 5</strong> (TQFT realizes the Part I pipeline; monoidality is the Decomposition axiom).  <em>An <span class="math inline">\(n\)</span>-dimensional TQFT <span class="math inline">\(Z\colon\mathrm{Bord}_n\to\mathrm{Vect}_k\)</span> is precisely a status-<span class="math inline">\(\textnormal{\sffamily\bfseries S}\)</span> representation entry <span class="math inline">\(E=(\mathrm{Bord}_n,\mathrm{Vect}_k,Z,\textnormal{\sffamily\bfseries S})\)</span> in the sense of <a href="#def:entry" data-reference-type="ref+Label" data-reference="def:entry">2</a>, realizing the pipeline of <a href="#def:pipeline" data-reference-type="ref+Label" data-reference="def:pipeline">3</a> with <span class="math display">\[\begin{gathered}
+  \Phi=\text{(inclusion of a closed $(n-1)$-manifold as an object)},\\
+  \mathrm{Real}_\alpha=Z,\qquad
+  \mathrm{Obs}=\dim\ (\text{or trace/partition function}).
+\end{gathered}\]</span> Moreover the symmetric monoidal structure of <span class="math inline">\(Z\)</span> is exactly the Decomposition axiom (<a href="#ax:decomp" data-reference-type="ref+Label" data-reference="ax:decomp">5</a>) applied to disjoint unions and gluing: <span class="math display">\[\begin{equation}
+\label{eq:tqft-decomp}
+  Z(M_1\sqcup M_2)=Z(M_1)\otimes Z(M_2),\qquad
+  Z(W_2\circ W_1)=Z(W_2)\circ Z(W_1).
+\end{equation}\]</span></em></p>
+</div>
+<div class="proof">
+<p><em>Proof.</em> The data of <a href="#def:entry" data-reference-type="ref+Label" data-reference="def:entry">2</a> are: a mathematical structure <span class="math inline">\(M=\mathrm{Bord}_n\in\mathsf{Math}_{\mathrm{Man}}\)</span>, a physical target <span class="math inline">\(P=\mathrm{Vect}_k\in\mathsf{Phys}\)</span> (state spaces and linear processes), a translation datum <span class="math inline">\(\tau=Z\)</span>, and a status <span class="math inline">\(\sigma\)</span>. Since <span class="math inline">\(Z\)</span> is an <em>actual functor</em> (Atiyah’s axioms), <span class="math inline">\(\tau\)</span> is functorial and the entry is status-<span class="math inline">\(\textnormal{\sffamily\bfseries S}\)</span> by <a href="#rem:framework-status" data-reference-type="ref+Label" data-reference="rem:framework-status">1</a>. To exhibit the pipeline, note <span class="math inline">\(\Phi\)</span> includes an <span class="math inline">\((n-1)\)</span>-manifold <span class="math inline">\(\Sigma\)</span> as an object of <span class="math inline">\(\mathrm{Bord}_n\)</span>; <span class="math inline">\(\mathrm{Real}_\alpha=Z\)</span> sends it to <span class="math inline">\(Z(\Sigma)\in\mathrm{Vect}_k\)</span>; and <span class="math inline">\(\mathrm{Obs}=\dim\)</span> (or, on closed <span class="math inline">\(M\)</span>, the scalar <span class="math inline">\(Z(M)\)</span>) extracts a number. Each is functorial and they compose, so <span class="math inline">\(\mathrm{Obs}_\alpha=\mathrm{Obs}\circ Z\circ\Phi\)</span> is a realization pipeline (<a href="#def:pipeline" data-reference-type="ref+Label" data-reference="def:pipeline">3</a>).</p>
+<p>Finally, <a href="#eq:tqft-decomp" data-reference-type="eqref" data-reference="eq:tqft-decomp">[eq:tqft-decomp]</a> is the statement that <span class="math inline">\(Z\)</span> is symmetric monoidal (Z2) and a functor (Z3). Reading disjoint union as “parallel composition of systems” and gluing as “sequential composition of processes,” <a href="#eq:tqft-decomp" data-reference-type="eqref" data-reference="eq:tqft-decomp">[eq:tqft-decomp]</a> says the observable of a composite decomposes into the observables of its pieces via <span class="math inline">\(\otimes\)</span> and <span class="math inline">\(\circ\)</span>; this is precisely the Decomposition axiom instantiated on cobordisms. Uniqueness of the entry follows because a symmetric monoidal functor is determined by its action on objects and generating morphisms, which is the data specified. ◻</p>
+</div>
+<div id="ex:2d-tqft" class="example">
+<p><strong>Example 4</strong> (A 2d TQFT is a commutative Frobenius algebra).  For <span class="math inline">\(n=2\)</span>, the classification theorem states that <span class="math inline">\(2\)</span>-dimensional TQFTs <span class="math inline">\(Z\colon\mathrm{Bord}_2\to\mathrm{Vect}_k\)</span> correspond bijectively to commutative Frobenius algebras <span class="math inline">\(A=Z(S^1)\)</span>: the pair of pants (a cobordism <span class="math inline">\(S^1\sqcup S^1\to S^1\)</span>) gives the multiplication <span class="math inline">\(A\otimes A\to A\)</span>, the reversed pair of pants gives the comultiplication, the disk (<span class="math inline">\(\varnothing\to S^1\)</span>) gives the unit <span class="math inline">\(\eta\colon k\to A\)</span>, and the reversed disk (<span class="math inline">\(S^1\to\varnothing\)</span>) gives the counit <span class="math inline">\(\varepsilon\colon A\to k\)</span> (the Frobenius trace form). Gluing the two disks yields the sphere <span class="math inline">\(S^2\)</span> (<span class="math inline">\(\varnothing\to\varnothing\)</span>), which therefore evaluates to the scalar <span class="math inline">\(\varepsilon(\eta(1))=\varepsilon(1_A)\)</span>; the closed torus <span class="math inline">\(T^2\)</span>, obtained instead as the trace of <span class="math inline">\(\mathrm{id}_A\)</span> (composition of coevaluation and evaluation), evaluates to <span class="math inline">\(\dim_k A\)</span>. Associativity, commutativity, and the Frobenius relation are each a diffeomorphism between glued surfaces, hence forced by functoriality <a href="#eq:tqft-decomp" data-reference-type="eqref" data-reference="eq:tqft-decomp">[eq:tqft-decomp]</a>. This is the cleanest illustration that “the algebra of observables <span class="math inline">\(=\)</span> the decomposition law of cobordisms.” Status <span class="math inline">\(\textnormal{\sffamily\bfseries S}\)</span>.</p>
+</div>
+<h2 data-number="5.3" id="the-cobordism-hypothesis"><span class="header-section-number">5.3</span> The cobordism hypothesis</h2>
+<div id="thm:cobordism-hyp" class="theorem">
+<p><strong>Theorem 6</strong> (Cobordism hypothesis; Baez–Dolan, Lurie).  <em>Let <span class="math inline">\(\mathcal{C}\)</span> be a symmetric monoidal <span class="math inline">\((\infty,n)\)</span>-category with duals. The evaluation-at-a-point map <span class="math display">\[\operatorname{Fun}^{\otimes}\bigl(\mathrm{Bord}_n^{\mathrm{fr}},\mathcal{C}\bigr)
+  \xrightarrow{\ Z\mapsto Z(\mathrm{pt})\ }
+  \mathcal{C}^{\mathrm{fd}}\]</span> is an equivalence between the space of fully extended framed <span class="math inline">\(n\)</span>-dimensional TQFTs valued in <span class="math inline">\(\mathcal{C}\)</span> and the maximal <span class="math inline">\(\infty\)</span>-groupoid <span class="math inline">\(\mathcal{C}^{\mathrm{fd}}\)</span> of <em>fully dualizable</em> objects of <span class="math inline">\(\mathcal{C}\)</span>. Thus a fully extended TQFT is determined, up to a contractible space of choices, by a single fully dualizable object <span class="math inline">\(Z(\mathrm{pt})\)</span>. Status <span class="math inline">\(\textnormal{\sffamily\bfseries S}\)</span> (theorem of Lurie; proof sketched at length in <span class="citation">[<a href="#ref-2" class="citation-link">2</a>]</span>).</em></p>
+</div>
+<div class="proof">
+<p><em>Proof idea (cited, not reproduced).</em> The full proof <span class="citation">[<a href="#ref-2" class="citation-link">2</a>]</span> is an induction on codimension. The key input is that <span class="math inline">\(\mathrm{Bord}_n^{\mathrm{fr}}\)</span> is the <em>free</em> symmetric monoidal <span class="math inline">\((\infty,n)\)</span>-category with duals on a single object <span class="math inline">\(\mathrm{pt}\)</span>: every cobordism is generated, under composition and duality, by the point together with its (higher) evaluation and coevaluation morphisms. A symmetric monoidal functor out of a free such category is determined by the image of the generator, subject to that image being fully dualizable (so that all the duality data have targets). Hence <span class="math inline">\(Z\mapsto Z(\mathrm{pt})\)</span> is an equivalence onto <span class="math inline">\(\mathcal{C}^{\mathrm{fd}}\)</span>. Framings can be traded for tangential <span class="math inline">\(G\)</span>-structures by taking homotopy fixed points of an <span class="math inline">\(O(n)\)</span>-action, giving the structured variants. ◻</p>
+</div>
+<div id="cor:rigidity" class="corollary">
+<p><strong>Corollary 1</strong> (Rigidity of topological realization channels).  <em>In the extended setting, the topological realization channel is <em>rigid</em>: once the point-realization <span class="math inline">\(Z(\mathrm{pt})\)</span> is fixed as a fully dualizable object, all higher-codimension observables (line, surface, and defect data) are uniquely determined. Physically, fixing how the elementary local excitation realizes fixes the entire extended field theory. This is the strongest compositionality statement in the ladder and directly motivates Part V’s abstraction of <span class="math inline">\(\mathcal{C}\)</span> into the general theory of (higher) categories.</em></p>
+</div>
+<div class="proof">
+<p><em>Proof.</em> Immediate from <a href="#thm:cobordism-hyp" data-reference-type="ref+Label" data-reference="thm:cobordism-hyp">6</a>: the evaluation map is an equivalence, so its inverse reconstructs <span class="math inline">\(Z\)</span> (all its values in every codimension) from <span class="math inline">\(Z(\mathrm{pt})\)</span> functorially and essentially uniquely. ◻</p>
+</div>
+<p>The functorial picture is summarized by the commuting triangle of monoidal functors, in which <span class="math inline">\(Z\)</span> factors the Part I pipeline through the topological channel: <span class="math display">\[\begin{tikzcd}[column sep=3.2em, row sep=large]
+\mathrm{Bord}_n \arrow[r, &quot;Z&quot;] \arrow[dr, &quot;\mathrm{Obs}_\alpha&quot;&#39;] &amp; \mathrm{Vect}_k \arrow[d, &quot;\dim\,/\,\mathrm{tr}&quot;]\\
+&amp; k
+\end{tikzcd}
+\qquad\qquad
+\begin{tikzcd}[column sep=2.4em]
+\mathrm{pt} \arrow[r, mapsto, &quot;Z&quot;] &amp; Z(\mathrm{pt})\in\mathcal{C}^{\mathrm{fd}}
+\end{tikzcd}\]</span></p>
+<h1 data-number="6" id="sec:dw"><span class="header-section-number">6</span> Dijkgraaf–Witten theory: locality from group cohomology</h1>
+<p>Dijkgraaf–Witten (DW) theory is a concrete, computable TQFT built from a finite group and a group cocycle; it is the ideal illustration of the Locality/descent axiom, and of the coboundary <span class="math inline">\(=\)</span> gauge reading of the dictionary.</p>
+<div id="def:dw-data" class="definition">
+<p><strong>Definition 18</strong> (Group cohomology and DW data).  For a finite group <span class="math inline">\(G\)</span> and coefficients <span class="math inline">\(\mathbb{R}/\mathbb{Z}\)</span> (trivial action), the <em>group cohomology</em> <span class="math inline">\(H^\bullet(G;\mathbb{R}/\mathbb{Z}):=H^\bullet(BG;\mathbb{R}/\mathbb{Z})\)</span> is computed by the bar complex: <span class="math inline">\(n\)</span>-cochains are functions <span class="math inline">\(\varphi\colon G^n\to\mathbb{R}/\mathbb{Z}\)</span>, with <em>additive</em> coboundary <span class="math display">\[\begin{multline*}
+  (\delta\varphi)(g_1,\dots,g_{n+1})=\varphi(g_2,\dots,g_{n+1})\\
+  +\sum_{i=1}^{n}(-1)^i\,\varphi(g_1,\dots,g_ig_{i+1},\dots,g_{n+1})
+  +(-1)^{n+1}\varphi(g_1,\dots,g_n) .
+\end{multline*}\]</span> Here the leading term <span class="math inline">\(\varphi(g_2,\dots,g_{n+1})\)</span> carries no prefactor precisely because the <span class="math inline">\(G\)</span>-action on the coefficients <span class="math inline">\(\mathbb{R}/\mathbb{Z}\)</span> is <em>trivial</em>; for a nontrivial action it would instead read <span class="math inline">\(g_1\!\cdot\!\varphi(g_2,\dots,g_{n+1})\)</span>. A <em>Dijkgraaf–Witten datum</em> in dimension <span class="math inline">\(3\)</span> is a class <span class="math inline">\(\omega\in H^3(G;\mathbb{R}/\mathbb{Z})\)</span>; the associated phase <span class="math inline">\(e^{2\pi i\,\omega}\in\mathrm{U}(1)\)</span> recovers the equivalent multiplicative <span class="math inline">\(\mathrm{U}(1)\)</span>-valued convention.</p>
+</div>
+<div id="thm:dw" class="theorem">
+<p><strong>Theorem 7</strong> (DW theory instantiates the Locality/descent axiom).  <em>Let <span class="math inline">\(G\)</span> be finite and <span class="math inline">\(\omega\in H^3(BG;\mathbb{R}/\mathbb{Z})\)</span> a <span class="math inline">\(3\)</span>-cocycle. The state sum <span class="math display">\[\begin{equation}
+\label{eq:dw}
+  Z_\omega(X)=\frac{1}{|G|}\sum_{\phi\in\operatorname{Hom}(\pi_1(X),G)}
+  \exp\!\bigl(2\pi i\,\langle\phi^*\omega,[X]\rangle\bigr)
+\end{equation}\]</span> over a closed oriented <span class="math inline">\(3\)</span>-manifold <span class="math inline">\(X\)</span> defines a TQFT <span class="math inline">\(Z_\omega\colon\mathrm{Bord}_3\to\mathrm{Vect}_\mathbb{C}\)</span>; here the pairing <span class="math inline">\(\langle\phi^*\omega,[X]\rangle\)</span> lies in <span class="math inline">\(\mathbb{R}/\mathbb{Z}\)</span>, so the exponential <span class="math inline">\(e^{2\pi i(-)}\in\mathrm{U}(1)\)</span> is well typed. The state sum is independent of the triangulation (hence well defined and local in the sense of <a href="#ax:locality" data-reference-type="ref+Label" data-reference="ax:locality">4</a>) precisely because <span class="math inline">\(\omega\)</span> is a cocycle; and a coboundary shift <span class="math inline">\(\omega\mapsto\omega+\delta\eta\)</span> changes <span class="math inline">\(Z_\omega\)</span> by nothing, matching the “coboundary <span class="math inline">\(=\)</span> pure gauge” dictionary entry.</em></p>
+</div>
+<div class="proof">
+<p><em>Proof.</em> Present <span class="math inline">\(X\)</span> by a triangulation <span class="math inline">\(T\)</span> with an ordering of vertices; a discrete <span class="math inline">\(G\)</span>-connection is a labelling of edges by <span class="math inline">\(G\)</span> compatible on faces, i.e. a map <span class="math inline">\(\phi\colon\pi_1(X)\to G\)</span> up to gauge. Each tetrahedron contributes a phase <span class="math inline">\(\exp\!\bigl(\pm 2\pi i\,\omega(g,h,k)\bigr)\)</span> according to its orientation, and the state sum <a href="#eq:dw" data-reference-type="eqref" data-reference="eq:dw">[eq:dw]</a> is the product of these phases over tetrahedra, averaged over connections. Two triangulations of <span class="math inline">\(X\)</span> are related by a finite sequence of <em>Pachner (bistellar) moves</em>. The invariance of the local weight under each Pachner move is <em>equivalent</em> to the cocycle condition <span class="math inline">\(\delta\omega=0\)</span>: the <span class="math inline">\(2\)</span>–<span class="math inline">\(3\)</span> Pachner move is exactly the (additive) pentagon/cocycle identity <span class="math display">\[\omega(h,k,l)-\omega(gh,k,l)+\omega(g,hk,l)-\omega(g,h,kl)+\omega(g,h,k)=0
+  \quad\text{in }\mathbb{R}/\mathbb{Z}.\]</span> Hence <span class="math inline">\(Z_\omega(X)\)</span> is independent of <span class="math inline">\(T\)</span>, establishing locality and gluing. If <span class="math inline">\(\omega&#39;=\omega+\delta\eta\)</span> for a <span class="math inline">\(2\)</span>-cochain <span class="math inline">\(\eta\)</span>, the extra phases are associated to faces and their exponents telescope to <span class="math inline">\(0\)</span> (mod <span class="math inline">\(\mathbb{Z}\)</span>) over the closed manifold <span class="math inline">\(X\)</span> (each internal face is shared by two tetrahedra with opposite orientation), so <span class="math inline">\(Z_{\omega&#39;}(X)=Z_\omega(X)\)</span>. Functoriality on cobordisms follows because the state sum on a manifold with boundary defines a vector in the state space of the boundary and gluing corresponds to contracting these vectors. ◻</p>
+</div>
+<div id="rem:dw-equiv" class="remark">
+<p><em>Remark 4</em> (Descent and the Equivalence axiom).  <a href="#thm:dw" data-reference-type="ref+Label" data-reference="thm:dw">7</a> realizes the dashed arrow of the Part I master diagram in a discrete setting: the equivalence <span class="math inline">\(\omega\sim\omega+\delta\eta\)</span> (change of cocycle representative) is a gauge/equivalence relation under which the physical content <span class="math inline">\(Z_\omega\)</span> is invariant. Thus DW theory simultaneously discharges the Locality/descent axiom (triangulation independence) and the Equivalence axiom (coboundary invariance). Status <span class="math inline">\(\textnormal{\sffamily\bfseries S}\)</span>.</p>
+</div>
+<div id="ex:zn-dw" class="example">
+<p><strong>Example 5</strong> (<span class="math inline">\(G=\mathbb{Z}/N\)</span>, untwisted).  For <span class="math inline">\(\omega=0\)</span>, <span class="math inline">\(Z_0(X)=|\operatorname{Hom}(\pi_1(X),\mathbb{Z}/N)|/N=|H^1(X;\mathbb{Z}/N)|/N\)</span>. On the <span class="math inline">\(3\)</span>-torus <span class="math inline">\(T^3\)</span> this counts flat <span class="math inline">\(\mathbb{Z}/N\)</span> connections, <span class="math inline">\(|H^1(T^3;\mathbb{Z}/N)|=N^3\)</span>, so <span class="math inline">\(Z_0(T^3)=N^2\)</span>; the ground-state degeneracy <span class="math inline">\(N^2\)</span> is the physical signature of <span class="math inline">\(\mathbb{Z}/N\)</span> topological order on the spatial torus, a status-<span class="math inline">\(\textnormal{\sffamily\bfseries S}\)</span> topological invariant recovered directly from <span class="math inline">\(H^1\)</span>.</p>
+</div>
+<h1 data-number="7" id="sec:bordism"><span class="header-section-number">7</span> Bordism, anomalies, and symmetry-protected topological phases</h1>
+<p>The final layer of Part IV classifies <em>invertible</em> topological field theories — the mathematical home of anomalies and symmetry-protected topological (SPT) phases — by bordism-theoretic invariants.</p>
+<div id="def:bordism" class="definition">
+<p><strong>Definition 19</strong> (Bordism group).  For a tangential structure <span class="math inline">\(H\)</span> (e.g. orientation, spin, or a map to <span class="math inline">\(BG\)</span>), the <em>bordism group</em> <span class="math inline">\(\Omega_n^H\)</span> is the abelian group of closed <span class="math inline">\(n\)</span>-manifolds with <span class="math inline">\(H\)</span>-structure modulo the relation <span class="math inline">\(M\sim M&#39;\)</span> iff <span class="math inline">\(M\sqcup\overline{M&#39;}=\partial W\)</span> for some compact <span class="math inline">\(H\)</span>-manifold <span class="math inline">\(W\)</span>; addition is disjoint union. By the Pontryagin–Thom construction, <span class="math inline">\(\Omega_n^H\cong\pi_n(MTH)\)</span>, the <span class="math inline">\(n\)</span>-th stable homotopy group of the Thom spectrum <span class="math inline">\(MTH\)</span>.</p>
+</div>
+<div id="def:invertible" class="definition">
+<p><strong>Definition 20</strong> (Invertible field theory).  A field theory <span class="math inline">\(Z\)</span> is <em>invertible</em> if <span class="math inline">\(Z(\Sigma)\)</span> is invertible in the target symmetric monoidal category for every <span class="math inline">\(\Sigma\)</span> (e.g. a line in <span class="math inline">\(\mathrm{Vect}\)</span>) and each <span class="math inline">\(Z(W)\)</span> is an isomorphism. Invertible TQFTs are exactly the fully dualizable objects with trivial higher morphisms, hence factor through a spectrum-level map by <a href="#thm:cobordism-hyp" data-reference-type="ref+Label" data-reference="thm:cobordism-hyp">6</a>.</p>
+</div>
+<div id="thm:spt" class="theorem">
+<p><strong>Theorem 8</strong> (Freed–Hopkins classification of invertible theories; SPT phases).  <em>Reflection-positive invertible <span class="math inline">\(n\)</span>-dimensional field theories with tangential structure <span class="math inline">\(H\)</span> are classified by the torsion subgroup of <span class="math display">\[\bigl[MTH,\ \Sigma^{n+1}I\mathbb{Z}\bigr] \;\cong\; \bigl(I\mathbb{Z}\bigr)^{n+1}(MTH),\]</span> the degree-<span class="math inline">\((n+1)\)</span> Anderson-dual cohomology of the Thom spectrum <span class="math inline">\(MTH\)</span> (recall <span class="math inline">\(E^k(X)=[X,\Sigma^k E]\)</span>, so an <span class="math inline">\((n+1)\)</span>-fold suspension lands in degree <span class="math inline">\(n+1\)</span>) <span class="citation">[<a href="#ref-7" class="citation-link">7</a>]</span>. Consequently, a symmetry-protected topological phase with finite symmetry group <span class="math inline">\(G\)</span> in <span class="math inline">\(d\)</span> spacetime dimensions is classified, at the level of the relevant (co)bordism invariant, by a summand of <span class="math inline">\(\Omega^{H}_{d}(BG)\)</span> or its generalized-cohomology refinement. The pure-mathematics classification is status <span class="math inline">\(\textnormal{\sffamily\bfseries S}\)</span>; the identification of a <em>specific</em> lattice model’s phase with a given bordism invariant is model-dependent, status <span class="math inline">\(\textnormal{\sffamily\bfseries S}/\textnormal{\sffamily\bfseries H}\)</span>.</em></p>
+</div>
+<div class="proof">
+<p><em>Proof idea (cited).</em> By <a href="#def:invertible" data-reference-type="ref+Label" data-reference="def:invertible">20</a> an invertible theory is a map of spectra from the bordism spectrum <span class="math inline">\(MTH\)</span> to the target; reflection positivity forces the target to be the Anderson dual <span class="math inline">\(I\mathbb{Z}\)</span> of the sphere (Freed–Hopkins <span class="citation">[<a href="#ref-7" class="citation-link">7</a>]</span>, building on <span class="citation">[<a href="#ref-6" class="citation-link">6</a>]</span>). The classification is then the computation of the homotopy classes <span class="math inline">\([MTH,\Sigma^{n+1}I\mathbb{Z}]\)</span>, which by definition of Anderson duality is the stated generalized cohomology group. Coupling to a background <span class="math inline">\(G\)</span>-symmetry replaces <span class="math inline">\(MTH\)</span> by <span class="math inline">\(MTH\wedge BG_+\)</span>, giving the <span class="math inline">\(\Omega^H_d(BG)\)</span>-level statement. The physical identification with an SPT phase is via the partition function on mapping tori and its response to symmetry defects, which is model-dependent, hence the composite label. ◻</p>
+</div>
+<div id="rem:anomaly" class="remark">
+<p><em>Remark 5</em> (Anomaly as failure of descent).  An anomaly of an <span class="math inline">\(n\)</span>-dimensional theory is precisely a nontrivial invertible <span class="math inline">\((n+1)\)</span>-dimensional theory in which it lives as a boundary — a failure of the partition function to be a number rather than a vector, i.e. a failure of the Locality/descent axiom (<a href="#ax:locality" data-reference-type="ref+Label" data-reference="ax:locality">4</a>) at the top codimension. Bordism invariants thus <em>measure</em> the obstruction to descent, closing the loop with <a href="#rem:mv-descent" data-reference-type="ref+Label" data-reference="rem:mv-descent">2</a>: anomalies are the top-dimensional analogue of the Mayer–Vietoris connecting map. Status <span class="math inline">\(\textnormal{\sffamily\bfseries S}/\textnormal{\sffamily\bfseries H}\)</span>.</p>
+</div>
+<h1 data-number="8" id="sec:results"><span class="header-section-number">8</span> Results</h1>
+<p>We collect the principal results of Part IV and their status labels.</p>
+<ul>
+<li><p><strong>Homotopy invariance (<a href="#thm:homotopy-inv" data-reference-type="ref+Label" data-reference="thm:homotopy-inv">1</a>)</strong> and the <strong>conserved global information functor</strong> <span class="math inline">\(H_\bullet\colon\mathrm{hTop}\to\mathrm{GrAb}\)</span> (<a href="#def:cgi" data-reference-type="ref+Label" data-reference="def:cgi">9</a>): topological observables are conserved under continuous deformation. Status <span class="math inline">\(\textnormal{\sffamily\bfseries S}\)</span>; physical reading <span class="math inline">\(\textnormal{\sffamily\bfseries S}/\textnormal{\sffamily\bfseries H}\)</span>.</p></li>
+<li><p><strong>Conservation principle (<a href="#thm:cons-functor" data-reference-type="ref+Label" data-reference="thm:cons-functor">2</a>)</strong>: over a contractible parameter base, (co)homology classes and their pairings are constant. Status <span class="math inline">\(\textnormal{\sffamily\bfseries S}\)</span>.</p></li>
+<li><p><strong>de Rham gauge picture (<a href="#prop:derham-gauge" data-reference-type="ref+Label" data-reference="prop:derham-gauge">3</a>)</strong> and <strong>Poincaré duality (<a href="#thm:pd" data-reference-type="ref+Label" data-reference="thm:pd">3</a>)</strong>: closed forms are conserved fields, exact forms pure gauge, defects dual to field strengths. Status <span class="math inline">\(\textnormal{\sffamily\bfseries S}\)</span>; readings <span class="math inline">\(\textnormal{\sffamily\bfseries S}/\textnormal{\sffamily\bfseries H}\)</span>.</p></li>
+<li><p><strong>Index theorem as pipeline identity (<a href="#thm:index" data-reference-type="ref+Label" data-reference="thm:index">4</a>)</strong>: the strongest status-<span class="math inline">\(\textnormal{\sffamily\bfseries S}\)</span> instance of <span class="math inline">\(\text{observable}=\mathrm{Real}(\text{abstract
+    structure})\)</span>.</p></li>
+<li><p><strong>TQFT as representation entry (<a href="#thm:tqft-entry" data-reference-type="ref+Label" data-reference="thm:tqft-entry">5</a>)</strong>: the first functorial, status-<span class="math inline">\(\textnormal{\sffamily\bfseries S}\)</span> realization of the Part I pipeline; monoidality is the Decomposition axiom.</p></li>
+<li><p><strong>Cobordism hypothesis (<a href="#thm:cobordism-hyp" data-reference-type="ref+Label" data-reference="thm:cobordism-hyp">6</a>, <a href="#cor:rigidity" data-reference-type="ref+Label" data-reference="cor:rigidity">1</a>)</strong>: topological realization channels are rigid; the bridge to Part V. Status <span class="math inline">\(\textnormal{\sffamily\bfseries S}\)</span>.</p></li>
+<li><p><strong>Dijkgraaf–Witten (<a href="#thm:dw" data-reference-type="ref+Label" data-reference="thm:dw">7</a>)</strong>: Locality/descent and Equivalence axioms from a group cocycle. Status <span class="math inline">\(\textnormal{\sffamily\bfseries S}\)</span>.</p></li>
+<li><p><strong>Bordism classification (<a href="#thm:spt" data-reference-type="ref+Label" data-reference="thm:spt">8</a>)</strong>: anomalies and SPT phases as bordism invariants; anomaly as failure of descent (<a href="#rem:anomaly" data-reference-type="ref+Label" data-reference="rem:anomaly">5</a>). Status <span class="math inline">\(\textnormal{\sffamily\bfseries S}\)</span> / <span class="math inline">\(\textnormal{\sffamily\bfseries S}\!/\textnormal{\sffamily\bfseries H}\)</span>.</p></li>
+</ul>
+<div id="prop:status-stats" class="proposition">
+<p><strong>Proposition 7</strong> (Status statistics of Part IV).  <em>Of the eight headline results above, seven are status-<span class="math inline">\(\textnormal{\sffamily\bfseries S}\)</span> as pure mathematics (all but the model-specific half of <a href="#thm:spt" data-reference-type="ref+Label" data-reference="thm:spt">8</a>); the heuristic content is confined to the <em>physical readings</em> of dictionary entries, and no result is status-<span class="math inline">\(\textnormal{\sffamily\bfseries P}\)</span>. Part IV is therefore the most rigorously anchored module of the ladder to date.</em></p>
+</div>
+<div class="proof">
+<p><em>Proof.</em> By inspection of the individual status labels assigned at each theorem: TQFT functoriality (<a href="#thm:tqft-entry" data-reference-type="ref+Label" data-reference="thm:tqft-entry">5</a>), the cobordism hypothesis (<a href="#thm:cobordism-hyp" data-reference-type="ref+Label" data-reference="thm:cobordism-hyp">6</a>), the index theorem (<a href="#thm:index" data-reference-type="ref+Label" data-reference="thm:index">4</a>), Dijkgraaf–Witten theory (<a href="#thm:dw" data-reference-type="ref+Label" data-reference="thm:dw">7</a>), homotopy invariance (<a href="#thm:homotopy-inv" data-reference-type="ref+Label" data-reference="thm:homotopy-inv">1</a>), the conservation principle (<a href="#thm:cons-functor" data-reference-type="ref+Label" data-reference="thm:cons-functor">2</a>), and Poincaré duality (<a href="#thm:pd" data-reference-type="ref+Label" data-reference="thm:pd">3</a>) are each established theorems of algebraic topology or mathematical physics; only the model-identification half of <a href="#thm:spt" data-reference-type="ref+Label" data-reference="thm:spt">8</a> is <span class="math inline">\(\textnormal{\sffamily\bfseries S}/\textnormal{\sffamily\bfseries H}\)</span>, and the ontological framing (inherited, not asserted here) is the only place <span class="math inline">\(\textnormal{\sffamily\bfseries P}\)</span> occurs in the parent program. No headline result of Part IV is independently <span class="math inline">\(\textnormal{\sffamily\bfseries P}\)</span>. ◻</p>
+</div>
+<h1 data-number="9" id="sec:code"><span class="header-section-number">9</span> Companion formalization: Haskell and Lean</h1>
+<p>Following the parent program’s formal-verification bridge (“math is code, code is math”; Curry–Howard–Lambek), Part IV ships companion code. The Haskell package compiles under GHC and encodes the structures of <a href="#sec:homology,sec:char,sec:tqft" data-reference-type="ref+Label" data-reference="sec:homology,sec:char,sec:tqft">[sec:homology,sec:char,sec:tqft]</a>; the Lean file is a best-effort sketch of the same signatures in a proof-assistant idiom.</p>
+<h2 data-number="9.1" id="haskell-chain-complexes-homology-and-tqft"><span class="header-section-number">9.1</span> Haskell: chain complexes, homology, and TQFT</h2>
+<p>The module <code>ChainComplex</code> realizes <a href="#def:chain,def:homology" data-reference-type="ref+Label" data-reference="def:chain,def:homology">[def:chain,def:homology]</a> over <span class="math inline">\(\mathbb{Z}\)</span>-free chain groups with an explicit boundary matrix, computes Betti numbers via ranks (Smith-normal-form-free rational homology), and verifies <span class="math inline">\(\partial^2=0\)</span>. The module <code>TQFT</code> encodes <a href="#def:tqft" data-reference-type="ref+Label" data-reference="def:tqft">17</a> as a symmetric-monoidal-functor typeclass and instantiates the <span class="math inline">\(2\)</span>d Frobenius-algebra example (<a href="#ex:2d-tqft" data-reference-type="ref+Label" data-reference="ex:2d-tqft">4</a>) and the untwisted Dijkgraaf–Witten count (<a href="#ex:zn-dw" data-reference-type="ref+Label" data-reference="ex:zn-dw">5</a>). The following excerpt shows the core signatures:</p>
+<pre><code>data ChainComplex = CC { dims :: [Int], boundary :: [Matrix] }
+d2isZero     :: ChainComplex -&gt; Bool
+bettiNumbers :: ChainComplex -&gt; [Int]
+class SymMonFunctor z where
+  fUnit    :: z
+  fTensor  :: z -&gt; z -&gt; z
+  fCompose :: z -&gt; z -&gt; z
+dwUntwisted  :: Int -&gt; Int -&gt; Double   -- (N, b_1 of manifold) -&gt; Z(T^3)</code></pre>
+<p>The <code>Main</code> module runs all demonstrations: it verifies <span class="math inline">\(\partial^2=0\)</span> and prints Betti numbers for the circle, torus, and <span class="math inline">\(2\)</span>-sphere (recovering <span class="math inline">\(b_\bullet(S^1)=(1,1)\)</span>, <span class="math inline">\(b_\bullet(T^2)=(1,2,1)\)</span>, <span class="math inline">\(b_\bullet(S^2)=(1,0,1)\)</span>), checks the Frobenius/TQFT gluing laws, and prints the Dijkgraaf–Witten degeneracy <span class="math inline">\(Z_0(T^3)=N^2\)</span> of <a href="#ex:zn-dw" data-reference-type="ref+Label" data-reference="ex:zn-dw">5</a>.</p>
+<h2 data-number="9.2" id="lean-chain-complex-and-homology-types"><span class="header-section-number">9.2</span> Lean: chain-complex and homology types</h2>
+<p>The Lean sketch <code>AlgTop.lean</code> declares a <code>ChainComplex</code> structure with fields <code>d</code> (the boundary map in each degree) and a hypothesis <code>d_comp_d</code> asserting <span class="math inline">\(\partial_n\circ\partial_{n+1}=0\)</span> for all <span class="math inline">\(n\)</span>, defines cycles/boundaries/homology as subquotients, and states signatures for the <code>TQFT</code> structure (a symmetric monoidal functor <span class="math inline">\(\mathrm{Bord}_n\to\mathrm{Vect}\)</span>) and for <a href="#thm:index" data-reference-type="ref+Label" data-reference="thm:index">4</a> and <a href="#thm:dw" data-reference-type="ref+Label" data-reference="thm:dw">7</a> as <code>theorem</code> statements with <code>sorry</code> placeholders. It is best-effort and not build-gated; its purpose is to record the intended machine-checkable interface, extending Part I’s Lean skeleton to the topological domain.</p>
+<h1 data-number="10" id="sec:discussion"><span class="header-section-number">10</span> Discussion</h1>
+<h2 data-number="10.1" id="how-part-iv-builds-on-part-iii"><span class="header-section-number">10.1</span> How Part IV builds on Part III</h2>
+<p>Part III supplies the geometric “spaces of physical possibility” (varieties, moduli, positive geometries). Part IV attaches to each such space its conserved global information: (co)homology, characteristic classes, and (via compactification and degeneration) a bordism class. The boundary stratification of a positive geometry — “boundaries of boundaries” — is literally a chain complex (<a href="#def:chain" data-reference-type="ref+Label" data-reference="def:chain">6</a>), and its homology measures which boundary charges are conserved. The variation-of-Hodge-structure and Gauss–Manin data of Part III are the smooth (de Rham) realization channel of the same cohomology treated here abstractly, so Parts III and IV are two realization channels (<span class="math inline">\(\alpha=\text{Hodge/de~Rham}\)</span> vs. <span class="math inline">\(\alpha=\text{singular/topological}\)</span>) of one observable module, matched by the de Rham theorem.</p>
+<h2 data-number="10.2" id="how-part-iv-seeds-part-v"><span class="header-section-number">10.2</span> How Part IV seeds Part V</h2>
+<p>TQFT (<a href="#thm:tqft-entry" data-reference-type="ref+Label" data-reference="thm:tqft-entry">5</a>) is the first fully rigorous, status-<span class="math inline">\(\textnormal{\sffamily\bfseries S}\)</span> instance of the Part I pipeline in which the realization <span class="math inline">\(\mathrm{Real}_\alpha\)</span> is a genuine functor. The cobordism hypothesis (<a href="#thm:cobordism-hyp" data-reference-type="ref+Label" data-reference="thm:cobordism-hyp">6</a>) then shows the entire extended theory is generated by a single fully dualizable object in a symmetric monoidal <span class="math inline">\((\infty,n)\)</span>-category <span class="math inline">\(\mathcal{C}\)</span>. This forces the ambient grammar of the next module to be exactly the theory of (higher) categories with duality: Part V abstracts <span class="math inline">\(\mathcal{C}\)</span>, functoriality, and the duality (evaluation / coevaluation) data into the general theory of categories, monoidal and dagger-compact structure, and homotopy type theory. In particular the “no natural diagonal” phenomenon behind no-cloning (Part V/VI) is the categorical shadow of the duality data that already organize <span class="math inline">\(\mathrm{Bord}_n\)</span> here.</p>
+<h2 data-number="10.3" id="limitations"><span class="header-section-number">10.3</span> Limitations</h2>
+<p>We reproduce and address the parent program’s limitations as they bear on Part IV.</p>
+<ol>
+<li><p><em>Not every analogy is a theory.</em> The dictionary entries of <a href="#sec:dict" data-reference-type="ref+Label" data-reference="sec:dict">12</a> carry status labels; the <span class="math inline">\(\textnormal{\sffamily\bfseries H}\)</span> entries (e.g. “Postnikov tower <span class="math inline">\(=\)</span> hierarchy of defects”) are heuristic and are flagged as such, not asserted as established physics.</p></li>
+<li><p><em>No single universal functor <span class="math inline">\(\mathsf{Math}\to\mathsf{Phys}\)</span>.</em> Part IV constructs <em>domain-local</em> functors (<span class="math inline">\(H_\bullet\)</span>, <span class="math inline">\(Z\)</span>), not one global functor; this is deliberate and consistent with the modular design.</p></li>
+<li><p><em>Model dependence of SPT identification.</em> <a href="#thm:spt" data-reference-type="ref+Label" data-reference="thm:spt">8</a> is status-<span class="math inline">\(\textnormal{\sffamily\bfseries S}\)</span> as a classification but only <span class="math inline">\(\textnormal{\sffamily\bfseries S}/\textnormal{\sffamily\bfseries H}\)</span> when tied to a specific lattice model; each such claim needs its own citation.</p></li>
+<li><p><em>Extended/framed subtleties.</em> <a href="#thm:cobordism-hyp" data-reference-type="ref+Label" data-reference="thm:cobordism-hyp">6</a> is stated for framed bordism; structured (oriented, spin, <span class="math inline">\(G\)</span>-) variants require homotopy fixed points of an <span class="math inline">\(O(n)\)</span>-action and are more delicate. We flag but do not resolve these.</p></li>
+</ol>
+<h2 data-number="10.4" id="connections-to-the-synthesis-backbone"><span class="header-section-number">10.4</span> Connections to the synthesis backbone</h2>
+<p>Three items recur across modules and are load-bearing for the synthesis paper: (i) the realization pipeline <a href="#eq:pipeline" data-reference-type="eqref" data-reference="eq:pipeline">[eq:pipeline]</a>, instantiated here as <span class="math inline">\(Z\)</span> and as the index theorem; (ii) homology <span class="math inline">\(H_n\)</span> as conserved cycles, which reappears in Part VI as surface-code logical operators <span class="math inline">\(H_1(\Sigma;\mathbb{Z}/2)\)</span>; and (iii) the sheaf/stack (descent) dichotomy, which appears here as the Mayer–Vietoris connecting map and the anomaly-as-failed-descent principle (<a href="#rem:mv-descent,rem:anomaly" data-reference-type="ref+Label" data-reference="rem:mv-descent,rem:anomaly">[rem:mv-descent,rem:anomaly]</a>) and is made rigorous only in Part VI.</p>
+<h1 data-number="11" id="sec:conclusion"><span class="header-section-number">11</span> Conclusion</h1>
+<p>Part IV formalizes algebraic topology as the grammar of conserved global information within the Math<span class="math inline">\(\to\)</span>Physics representation library. We proved homotopy invariance and functoriality of homology and packaged them as a conserved global information functor <span class="math inline">\(H_\bullet\colon\mathrm{hTop}\to\mathrm{GrAb}\)</span>; we read closed/exact forms as conserved fields/pure gauge and defects as dual field strengths; we reframed the Atiyah–Singer index theorem as an instance of <span class="math inline">\(\text{observable}=\mathrm{Real}(\text{abstract structure})\)</span>; and we exhibited TQFT as the first functorial, status-<span class="math inline">\(\textnormal{\sffamily\bfseries S}\)</span> realization of the Part I pipeline, with the cobordism hypothesis as its rigidity/classification capstone and Dijkgraaf–Witten theory as a computable model of the Locality and Equivalence axioms. The bordism classification of invertible theories placed anomalies and SPT phases into the same descent-theoretic frame.</p>
+<p>The decisive structural fact is that Part IV is where <em>functoriality becomes achievable in a genuinely topological, status-<span class="math inline">\(\textnormal{\sffamily\bfseries S}\)</span> setting</em>. Every later appeal to “the realization functor” in the ladder is anchored by the concrete functor <span class="math inline">\(Z\colon\mathrm{Bord}_n\to\mathrm{Vect}\)</span> constructed here. This is precisely the bridge to Part V, which abstracts functoriality, monoidal structure, and duality into the universal grammar of categories and homotopy type theory. In the four-slogan compression of the parent program — mathematics is syntax, motives are semantics, periods are measurements, coalgebras are decomposition laws — Part IV supplies the missing structural clause: <em>topology is conservation, and functoriality is its law of composition</em>.</p>
+<h1 class="unnumbered" id="acknowledgments">Acknowledgments</h1>
+<p>This work is Part IV of a seven-part modular program by the YonedaAI Research Collective. We thank the automated peer-review and formatting-review pipelines (external reviewers) for iterative feedback incorporated into this version.</p>
+<h1 data-number="12" id="sec:dict"><span class="header-section-number">12</span> Algebraic topology dictionary (with status labels)</h1>
+<p>The following reproduces the algebraic-topology library with its epistemic status labels, verbatim in structure from the parent program’s Appendix D. Composite labels are preserved.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;"><strong>Algebraic topology</strong></th>
+<th style="text-align: left;"><strong>Physical representation</strong></th>
+<th style="text-align: left;"><strong>Semantic meaning</strong></th>
+<th style="text-align: center;"><strong>Status</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: center;"></td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Algebraic topology</strong></td>
+<td style="text-align: left;"><strong>Physical representation</strong></td>
+<td style="text-align: left;"><strong>Semantic meaning</strong></td>
+<td style="text-align: center;"><strong>Status</strong></td>
+</tr>
+<tr>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: center;"></td>
+</tr>
+<tr>
+<td style="text-align: left;">Topological space <span class="math inline">\(X\)</span></td>
+<td style="text-align: left;">Configuration, spacetime, or state space</td>
+<td style="text-align: left;">Domain of possibility</td>
+<td style="text-align: center;"><span class="math inline">\(\textnormal{\sffamily\bfseries S}\)</span></td>
+</tr>
+<tr>
+<td style="text-align: left;">Point</td>
+<td style="text-align: left;">State or event</td>
+<td style="text-align: left;">Localized datum</td>
+<td style="text-align: center;"><span class="math inline">\(\textnormal{\sffamily\bfseries S}\)</span></td>
+</tr>
+<tr>
+<td style="text-align: left;">Path</td>
+<td style="text-align: left;">Evolution/worldline</td>
+<td style="text-align: left;">Continuous transition</td>
+<td style="text-align: center;"><span class="math inline">\(\textnormal{\sffamily\bfseries S}\)</span></td>
+</tr>
+<tr>
+<td style="text-align: left;">Loop</td>
+<td style="text-align: left;">Closed evolution</td>
+<td style="text-align: left;">Holonomy probe</td>
+<td style="text-align: center;"><span class="math inline">\(\textnormal{\sffamily\bfseries S}\)</span></td>
+</tr>
+<tr>
+<td style="text-align: left;">Homotopy</td>
+<td style="text-align: left;">Continuous deformation</td>
+<td style="text-align: left;">Physically equivalent path</td>
+<td style="text-align: center;"><span class="math inline">\(\textnormal{\sffamily\bfseries S}\)</span></td>
+</tr>
+<tr>
+<td style="text-align: left;">Homotopy class</td>
+<td style="text-align: left;">Topological sector</td>
+<td style="text-align: left;">Deformation-invariant class</td>
+<td style="text-align: center;"><span class="math inline">\(\textnormal{\sffamily\bfseries S}\)</span></td>
+</tr>
+<tr>
+<td style="text-align: left;"><span class="math inline">\(\pi_1(X)\)</span></td>
+<td style="text-align: left;">Winding structure</td>
+<td style="text-align: left;">Monodromy, defect winding</td>
+<td style="text-align: center;"><span class="math inline">\(\textnormal{\sffamily\bfseries S}\)</span></td>
+</tr>
+<tr>
+<td style="text-align: left;"><span class="math inline">\(\pi_n(X)\)</span></td>
+<td style="text-align: left;">Higher holes</td>
+<td style="text-align: left;">Brane/defect charge sectors</td>
+<td style="text-align: center;"><span class="math inline">\(\textnormal{\sffamily\bfseries S}/\textnormal{\sffamily\bfseries H}\)</span></td>
+</tr>
+<tr>
+<td style="text-align: left;">Homology <span class="math inline">\(H_n(X)\)</span></td>
+<td style="text-align: left;">Cycles or holes</td>
+<td style="text-align: left;">Conserved extended structures</td>
+<td style="text-align: center;"><span class="math inline">\(\textnormal{\sffamily\bfseries S}\)</span></td>
+</tr>
+<tr>
+<td style="text-align: left;">Cohomology <span class="math inline">\(H^n(X)\)</span></td>
+<td style="text-align: left;">Fields/flux observables</td>
+<td style="text-align: left;">Charge detectors on cycles</td>
+<td style="text-align: center;"><span class="math inline">\(\textnormal{\sffamily\bfseries S}\)</span></td>
+</tr>
+<tr>
+<td style="text-align: left;">Boundary operator <span class="math inline">\(\partial\)</span></td>
+<td style="text-align: left;">Boundary of region</td>
+<td style="text-align: left;">Where conservation appears</td>
+<td style="text-align: center;"><span class="math inline">\(\textnormal{\sffamily\bfseries S}\)</span></td>
+</tr>
+<tr>
+<td style="text-align: left;">Cycle <span class="math inline">\(\partial c=0\)</span></td>
+<td style="text-align: left;">Closed conserved object</td>
+<td style="text-align: left;">Conserved charge carrier</td>
+<td style="text-align: center;"><span class="math inline">\(\textnormal{\sffamily\bfseries S}\)</span></td>
+</tr>
+<tr>
+<td style="text-align: left;">Boundary <span class="math inline">\(c=\partial b\)</span></td>
+<td style="text-align: left;">Trivial conserved object</td>
+<td style="text-align: left;">Pure gauge / null sector</td>
+<td style="text-align: center;"><span class="math inline">\(\textnormal{\sffamily\bfseries H}\)</span></td>
+</tr>
+<tr>
+<td style="text-align: left;">Cocycle</td>
+<td style="text-align: left;">Closed field/charge rule</td>
+<td style="text-align: left;">Conservation condition</td>
+<td style="text-align: center;"><span class="math inline">\(\textnormal{\sffamily\bfseries S}\)</span></td>
+</tr>
+<tr>
+<td style="text-align: left;">Coboundary</td>
+<td style="text-align: left;">Gauge-exact field</td>
+<td style="text-align: left;">Redundant potential</td>
+<td style="text-align: center;"><span class="math inline">\(\textnormal{\sffamily\bfseries S}\)</span></td>
+</tr>
+<tr>
+<td style="text-align: left;">Long exact sequence</td>
+<td style="text-align: left;">Boundary–bulk relation</td>
+<td style="text-align: left;">Charge transfer</td>
+<td style="text-align: center;"><span class="math inline">\(\textnormal{\sffamily\bfseries S}\)</span></td>
+</tr>
+<tr>
+<td style="text-align: left;">Mayer–Vietoris</td>
+<td style="text-align: left;">Gluing local regions</td>
+<td style="text-align: left;">Global from patches</td>
+<td style="text-align: center;"><span class="math inline">\(\textnormal{\sffamily\bfseries S}\)</span></td>
+</tr>
+<tr>
+<td style="text-align: left;">Cup product</td>
+<td style="text-align: left;">Product of classes</td>
+<td style="text-align: left;">Interaction of observables</td>
+<td style="text-align: center;"><span class="math inline">\(\textnormal{\sffamily\bfseries S}/\textnormal{\sffamily\bfseries H}\)</span></td>
+</tr>
+<tr>
+<td style="text-align: left;">Cap product</td>
+<td style="text-align: left;">Class <span class="math inline">\(\frown\)</span> cycle</td>
+<td style="text-align: left;">Measurement over region</td>
+<td style="text-align: center;"><span class="math inline">\(\textnormal{\sffamily\bfseries S}\)</span></td>
+</tr>
+<tr>
+<td style="text-align: left;">Poincaré duality</td>
+<td style="text-align: left;">Cycles to fields</td>
+<td style="text-align: left;">Defects as dual field strengths</td>
+<td style="text-align: center;"><span class="math inline">\(\textnormal{\sffamily\bfseries S}\)</span></td>
+</tr>
+<tr>
+<td style="text-align: left;">de Rham cohomology</td>
+<td style="text-align: left;">Forms mod exact</td>
+<td style="text-align: left;">Gauge-invariant flux</td>
+<td style="text-align: center;"><span class="math inline">\(\textnormal{\sffamily\bfseries S}\)</span></td>
+</tr>
+<tr>
+<td style="text-align: left;">Closed form</td>
+<td style="text-align: left;">Conserved field</td>
+<td style="text-align: left;"><span class="math inline">\(d\omega=0\)</span> conservation</td>
+<td style="text-align: center;"><span class="math inline">\(\textnormal{\sffamily\bfseries S}\)</span></td>
+</tr>
+<tr>
+<td style="text-align: left;">Exact form</td>
+<td style="text-align: left;">Gauge-trivial field</td>
+<td style="text-align: left;"><span class="math inline">\(\omega=d\alpha\)</span> redundancy</td>
+<td style="text-align: center;"><span class="math inline">\(\textnormal{\sffamily\bfseries S}\)</span></td>
+</tr>
+<tr>
+<td style="text-align: left;">Hodge star <span class="math inline">\(\star\)</span></td>
+<td style="text-align: left;">Dual field operation</td>
+<td style="text-align: left;">EM/geometric duality</td>
+<td style="text-align: center;"><span class="math inline">\(\textnormal{\sffamily\bfseries S}\)</span></td>
+</tr>
+<tr>
+<td style="text-align: left;">Fiber bundle</td>
+<td style="text-align: left;">Local d.o.f. over base</td>
+<td style="text-align: left;">Internal state per point</td>
+<td style="text-align: center;"><span class="math inline">\(\textnormal{\sffamily\bfseries S}\)</span></td>
+</tr>
+<tr>
+<td style="text-align: left;">Principal bundle</td>
+<td style="text-align: left;">Gauge field topology</td>
+<td style="text-align: left;">Gauge choices glued</td>
+<td style="text-align: center;"><span class="math inline">\(\textnormal{\sffamily\bfseries S}\)</span></td>
+</tr>
+<tr>
+<td style="text-align: left;">Classifying space <span class="math inline">\(BG\)</span></td>
+<td style="text-align: left;">Universal classifier</td>
+<td style="text-align: left;"><span class="math inline">\(G\)</span>-sector space</td>
+<td style="text-align: center;"><span class="math inline">\(\textnormal{\sffamily\bfseries S}\)</span></td>
+</tr>
+<tr>
+<td style="text-align: left;">Characteristic class</td>
+<td style="text-align: left;">Bundle invariant</td>
+<td style="text-align: left;">Quantized charge/anomaly</td>
+<td style="text-align: center;"><span class="math inline">\(\textnormal{\sffamily\bfseries S}\)</span></td>
+</tr>
+<tr>
+<td style="text-align: left;">Chern class</td>
+<td style="text-align: left;">Complex bundle invariant</td>
+<td style="text-align: left;">Monopole, quantized flux</td>
+<td style="text-align: center;"><span class="math inline">\(\textnormal{\sffamily\bfseries S}\)</span></td>
+</tr>
+<tr>
+<td style="text-align: left;">Chern character</td>
+<td style="text-align: left;">Charge map</td>
+<td style="text-align: left;">Topological response/index</td>
+<td style="text-align: center;"><span class="math inline">\(\textnormal{\sffamily\bfseries S}\)</span></td>
+</tr>
+<tr>
+<td style="text-align: left;">Stiefel–Whitney class</td>
+<td style="text-align: left;">Real bundle obstruction</td>
+<td style="text-align: left;">Orientation/spin obstruction</td>
+<td style="text-align: center;"><span class="math inline">\(\textnormal{\sffamily\bfseries S}\)</span></td>
+</tr>
+<tr>
+<td style="text-align: left;">Spin structure</td>
+<td style="text-align: left;">Lift of frame data</td>
+<td style="text-align: left;">Fermion consistency</td>
+<td style="text-align: center;"><span class="math inline">\(\textnormal{\sffamily\bfseries S}\)</span></td>
+</tr>
+<tr>
+<td style="text-align: left;">Index theorem</td>
+<td style="text-align: left;">Topology to analysis</td>
+<td style="text-align: left;">Zero modes/anomalies</td>
+<td style="text-align: center;"><span class="math inline">\(\textnormal{\sffamily\bfseries S}\)</span></td>
+</tr>
+<tr>
+<td style="text-align: left;"><span class="math inline">\(K\)</span>-theory</td>
+<td style="text-align: left;">Cohomology of bundles</td>
+<td style="text-align: left;">D-brane/phase charges</td>
+<td style="text-align: center;"><span class="math inline">\(\textnormal{\sffamily\bfseries S}\)</span></td>
+</tr>
+<tr>
+<td style="text-align: left;">Spectra</td>
+<td style="text-align: left;">Stable homotopy objects</td>
+<td style="text-align: left;">Generalized charges</td>
+<td style="text-align: center;"><span class="math inline">\(\textnormal{\sffamily\bfseries S}\)</span></td>
+</tr>
+<tr>
+<td style="text-align: left;">Generalized cohomology</td>
+<td style="text-align: left;">Beyond ordinary charge</td>
+<td style="text-align: left;">Exotic charges/phases</td>
+<td style="text-align: center;"><span class="math inline">\(\textnormal{\sffamily\bfseries S}\)</span></td>
+</tr>
+<tr>
+<td style="text-align: left;">Steenrod operations</td>
+<td style="text-align: left;">Cohomology operations</td>
+<td style="text-align: left;">Constraints on phases</td>
+<td style="text-align: center;"><span class="math inline">\(\textnormal{\sffamily\bfseries S}/\textnormal{\sffamily\bfseries H}\)</span></td>
+</tr>
+<tr>
+<td style="text-align: left;">Postnikov tower</td>
+<td style="text-align: left;">Layered homotopy data</td>
+<td style="text-align: left;">Hierarchy of defects</td>
+<td style="text-align: center;"><span class="math inline">\(\textnormal{\sffamily\bfseries H}\)</span></td>
+</tr>
+<tr>
+<td style="text-align: left;">Loop space <span class="math inline">\(\Omega X\)</span></td>
+<td style="text-align: left;">Space of closed paths</td>
+<td style="text-align: left;">Recurrence dynamics</td>
+<td style="text-align: center;"><span class="math inline">\(\textnormal{\sffamily\bfseries S}/\textnormal{\sffamily\bfseries H}\)</span></td>
+</tr>
+<tr>
+<td style="text-align: left;">Suspension <span class="math inline">\(\Sigma X\)</span></td>
+<td style="text-align: left;">Dimension shift</td>
+<td style="text-align: left;">Dimensional lift of defects</td>
+<td style="text-align: center;"><span class="math inline">\(\textnormal{\sffamily\bfseries H}\)</span></td>
+</tr>
+<tr>
+<td style="text-align: left;">Cobordism</td>
+<td style="text-align: left;">Manifold as transition</td>
+<td style="text-align: left;">Spacetime history</td>
+<td style="text-align: center;"><span class="math inline">\(\textnormal{\sffamily\bfseries S}\)</span></td>
+</tr>
+<tr>
+<td style="text-align: left;">Bordism group</td>
+<td style="text-align: left;">Manifolds mod boundary</td>
+<td style="text-align: left;">Classification of phases</td>
+<td style="text-align: center;"><span class="math inline">\(\textnormal{\sffamily\bfseries S}\)</span></td>
+</tr>
+<tr>
+<td style="text-align: left;">TQFT</td>
+<td style="text-align: left;">Functor <span class="math inline">\(\mathrm{Bord}_n\to\mathrm{Vect}\)</span></td>
+<td style="text-align: left;">Topology-to-algebra</td>
+<td style="text-align: center;"><span class="math inline">\(\textnormal{\sffamily\bfseries S}\)</span></td>
+</tr>
+<tr>
+<td style="text-align: left;">Extended TQFT</td>
+<td style="text-align: left;">Data in all codimensions</td>
+<td style="text-align: left;">Particles, lines, surfaces</td>
+<td style="text-align: center;"><span class="math inline">\(\textnormal{\sffamily\bfseries S}\)</span></td>
+</tr>
+<tr>
+<td style="text-align: left;">Fully dualizable object</td>
+<td style="text-align: left;">Point-data of a TQFT</td>
+<td style="text-align: left;">Local seed of global theory</td>
+<td style="text-align: center;"><span class="math inline">\(\textnormal{\sffamily\bfseries S}\)</span></td>
+</tr>
+<tr>
+<td style="text-align: left;">Group cohomology</td>
+<td style="text-align: left;">Cohomology of symmetry</td>
+<td style="text-align: left;">Discrete action / SPT data</td>
+<td style="text-align: center;"><span class="math inline">\(\textnormal{\sffamily\bfseries S}\)</span></td>
+</tr>
+<tr>
+<td style="text-align: left;">Dijkgraaf–Witten</td>
+<td style="text-align: left;">Finite-group gauge theory</td>
+<td style="text-align: left;">Action from group cocycle</td>
+<td style="text-align: center;"><span class="math inline">\(\textnormal{\sffamily\bfseries S}\)</span></td>
+</tr>
+</tbody>
+</table>
+<div class="thebibliography">
+<p id="ref-1"><span class="ref-number">[1]</span> M. F. Atiyah, <em>Topological quantum field theories</em>, Publications Mathématiques de l’IHÉS <strong>68</strong> (1988), 175–186.</p>
+<p id="ref-2"><span class="ref-number">[2]</span> J. Lurie, <em>On the classification of topological field theories</em>, in <em>Current Developments in Mathematics 2008</em>, Int. Press, 2009, 129–280; arXiv:0905.0465.</p>
+<p id="ref-3"><span class="ref-number">[3]</span> A. Hatcher, <em>Algebraic Topology</em>, Cambridge University Press, 2002.</p>
+<p id="ref-4"><span class="ref-number">[4]</span> J. Milnor and J. D. Stasheff, <em>Characteristic Classes</em>, Annals of Mathematics Studies <strong>76</strong>, Princeton University Press, 1974.</p>
+<p id="ref-5"><span class="ref-number">[5]</span> R. Dijkgraaf and E. Witten, <em>Topological gauge theories and group cohomology</em>, Comm. Math. Phys. <strong>129</strong> (1990), 393–429.</p>
+<p id="ref-6"><span class="ref-number">[6]</span> D. S. Freed, <em>Anomalies and invertible field theories</em>, Proc. Symp. Pure Math. <strong>88</strong> (2015), 25–45; arXiv:1404.7224.</p>
+<p id="ref-7"><span class="ref-number">[7]</span> D. S. Freed and M. J. Hopkins, <em>Reflection positivity and invertible topological phases</em>, Geom. Topol. <strong>25</strong> (2021), 1165–1330; arXiv:1604.06527.</p>
+<p id="ref-8"><span class="ref-number">[8]</span> J. C. Baez and J. Dolan, <em>Higher-dimensional algebra and topological quantum field theory</em>, J. Math. Phys. <strong>36</strong> (1995), 6073–6105.</p>
+<p id="ref-9"><span class="ref-number">[9]</span> J. C. Baez and M. Stay, <em>Physics, topology, logic and computation: a Rosetta Stone</em>, in <em>New Structures for Physics</em>, Lecture Notes in Physics <strong>813</strong> (2010), 95–172; arXiv:0903.0340.</p>
+<p id="ref-10"><span class="ref-number">[10]</span> M. F. Atiyah and I. M. Singer, <em>The index of elliptic operators I</em>, Annals of Mathematics <strong>87</strong> (1968), 484–530.</p>
+<p id="ref-11"><span class="ref-number">[11]</span> A. Yu. Kitaev, <em>Fault-tolerant quantum computation by anyons</em>, Annals of Physics <strong>303</strong> (2003), 2–30; arXiv:quant-ph/9707021.</p>
+<p id="ref-12"><span class="ref-number">[12]</span> D. Grady and D. Pavlov, <em>The geometric cobordism hypothesis</em>, arXiv:2111.01095 (2021).</p>
+<p id="ref-13"><span class="ref-number">[13]</span> M. Kontsevich and D. Zagier, <em>Periods</em>, in <em>Mathematics Unlimited — 2001 and Beyond</em>, Springer, 2001, 771–808.</p>
+</div>

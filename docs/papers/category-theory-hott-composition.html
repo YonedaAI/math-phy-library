@@ -1,0 +1,473 @@
+<h1 data-number="1" id="sec:intro"><span class="header-section-number">1</span> Introduction</h1>
+<h2 data-number="1.1" id="where-this-module-sits"><span class="header-section-number">1.1</span> Where this module sits</h2>
+<p>The series <em>A Math<span class="math inline">\(\to\)</span>Physics Representation Library</em> formalizes the thesis that many physical quantities are not merely <em>described by</em> mathematics but are <em>obtained as realizations</em> of structured mathematical information. The organizing device is a <em>representation stack</em> together with a <em>realization pipeline</em> <span class="math display">\[\begin{equation}
+\label{eq:pipeline}
+\begin{aligned}
+M\in\mathsf{Math}_d \;\xrightarrow{\;\Phi\;}\; \text{abstract information }\Phi(M)
+\;&amp;\xrightarrow{\;\mathrm{Real}_\alpha\;}\; \text{physical representation}\\
+&amp;\xrightarrow{\;\mathrm{Obs}\;}\; \text{measurement data},
+\end{aligned}
+\end{equation}\]</span> compressed into the universal formula <span class="math display">\[\begin{equation}
+\label{eq:master}
+\boxed{\;\mathrm{Obs}_\alpha(M)=\mathrm{Obs}\bigl(\mathrm{Real}_\alpha(\Phi(M))\bigr)\;}
+\quad\text{i.e.}\quad
+\text{observable}=\mathrm{Real}(\text{abstract structure}).
+\end{equation}\]</span> Each entry of the library carries an epistemic status label <span class="math inline">\(\sigma\in\{\mathrm{S},\mathrm{H},\mathrm{P}\}\)</span>: <strong>S</strong> (standard mathematics or mathematical physics), <strong>H</strong> (strong heuristic dictionary entry), <strong>P</strong> (speculative ontological extension); composite labels <span class="math inline">\(\mathrm{S/H}\)</span> and <span class="math inline">\(\mathrm{H/P}\)</span> denote entries that are standard as mathematics but heuristic or speculative in their physical reading. This labelling is part of the formalism, not decoration, and we apply it verbatim throughout.</p>
+<p>The modular ladder is <span class="math display">\[\resizebox{\textwidth}{!}{$\displaystyle
+\underbrace{\text{I}}_{\text{stack}}\to
+\underbrace{\text{II}}_{\text{motives}}\to
+\underbrace{\text{III}}_{\text{geometry}}\to
+\underbrace{\text{IV}}_{\text{topology}}\to
+\underbrace{\text{V}}_{\text{\bf category theory \&amp; HoTT}}\to
+\underbrace{\text{VI}}_{\text{stacks, gauge, quantum HA}}\to
+\text{Synthesis}.$}\]</span> Part IV exhibited <em>one</em> rigorous instance of “physics as a functor”: a topological quantum field theory (TQFT) is a symmetric monoidal functor <span class="math inline">\(Z:\mathsf{Bord}_n\to\mathcal{C}\)</span> <span class="citation">[<a href="#ref-10" class="citation-link">10</a>, <a href="#ref-6" class="citation-link">6</a>]</span>. But Part IV used the word “functor” without developing the general theory of functors, and it used “equivalent realizations describe the same physics” without a formal notion of identity of structures. Part V is exactly the abstraction step that provides both:</p>
+<div class="center">
+<p><em>category theory is the grammar of physical composition;<br />
+HoTT is the logic of spaces, paths, equivalences, and higher identity.</em></p>
+</div>
+<p>Because every realization channel <span class="math inline">\(\mathrm{Real}_\alpha\)</span>, every duality, and every symmetry of Parts I–IV is a morphism, functor, or equivalence, Part V is the <em>compositional glue</em> of the whole library: it is where the laws of composition and identity that bind Parts I–VI are isolated and proved. It also sets up Part VI, whose stacks are groupoid-valued sheaves built from the categorical and truncation machinery introduced here.</p>
+<h2 data-number="1.2" id="contributions"><span class="header-section-number">1.2</span> Contributions</h2>
+<ol>
+<li><p><strong>A categorical recasting of the realization pipeline</strong> (<a href="#sec:framework" data-reference-type="ref+label" data-reference="sec:framework">2</a>). We show that <a href="#eq:pipeline" data-reference-type="eqref" data-reference="eq:pipeline">[eq:pipeline]</a> is literally a composite of functors between the groupoids of a representation prestack, so that the associativity and unit laws of the library are the associativity and unit laws of a category (<a href="#thm:pipeline-functor" data-reference-type="ref+Label" data-reference="thm:pipeline-functor">4</a>). This turns Part I’s informal “composition of compatible translations” into a theorem.</p></li>
+<li><p><strong>The composition/identity core</strong> (<a href="#sec:cat,sec:monoidal" data-reference-type="ref+label" data-reference="sec:cat,sec:monoidal">[sec:cat,sec:monoidal]</a>). We give precise definitions of categories, functors, natural transformations, functor categories, and monoidal and dagger-compact structure, with the interchange law and an Eckmann–Hilton argument (<a href="#prop:eckmann-hilton" data-reference-type="ref+Label" data-reference="prop:eckmann-hilton">13</a>) that already exhibits the interaction of two compositions with a shared identity—the thematic centre of the module.</p></li>
+<li><p><strong>Univalence discharges the Equivalence axiom</strong> (<a href="#thm:univalence" data-reference-type="ref+Label" data-reference="thm:univalence">27</a>, T1). We prove that any internally definable realization respects equivalence of structures, so Part I’s Axiom (Equivalence) becomes a theorem in a univalent model.</p></li>
+<li><p><strong>A single functor for logic, code, and physics</strong> (<a href="#thm:chl" data-reference-type="ref+Label" data-reference="thm:chl">29</a>, T2). The Curry–Howard–Lambek correspondence yields a composite functor <span class="math inline">\(\mathsf{TypeTheory}\to\mathcal{C}\to\mathsf{Phys}\)</span> interpreting the three-way dictionary (proof <span class="math inline">\(=\)</span> program <span class="math inline">\(=\)</span> physical realization) as one categorical translation.</p></li>
+<li><p><strong>A structural no-cloning theorem</strong> (<a href="#thm:nocloning" data-reference-type="ref+Label" data-reference="thm:nocloning">31</a>, T3). In a dagger-compact category, uniform natural copying forces the monoidal product to be a categorical product; since the tensor product of finite-dimensional Hilbert spaces is not a product, quantum high availability (Part VI) is <em>representationally forced</em> to be encoding, not replication.</p></li>
+<li><p><strong>Groupoid quotients are finer than set quotients</strong> (<a href="#thm:truncation" data-reference-type="ref+Label" data-reference="thm:truncation">33</a>, T4). We reconstruct “stacks retain gauge information” purely inside the HoTT truncation hierarchy: <span class="math inline">\(X/\!/G\)</span> is a <span class="math inline">\(1\)</span>-type retaining stabilizer loops, while <span class="math inline">\(X/G\)</span> is its <span class="math inline">\(0\)</span>-truncation, forgetting them.</p></li>
+<li><p><strong>Formal artifacts.</strong> A runnable Haskell package encoding categories, functors, natural transformations, dagger-compact structure, and groupoid-vs-set quotients (<a href="#sec:haskell" data-reference-type="ref+label" data-reference="sec:haskell">8</a>), and an idiomatic Lean sketch of the category/functor/identity-law types (<a href="#sec:lean" data-reference-type="ref+label" data-reference="sec:lean">9</a>).</p></li>
+</ol>
+<h2 data-number="1.3" id="epistemic-status-and-limitations"><span class="header-section-number">1.3</span> Epistemic status and limitations</h2>
+<p>We reproduce the series-wide limitations in the form relevant to this module. Category theory and HoTT are <em>status S mathematics</em>; their status becomes <span class="math inline">\(\mathrm{S/H}\)</span> or <span class="math inline">\(\mathrm{H}\)</span> only when we read a specific categorical or type-theoretic construction as a claim <em>about physics</em>. In particular: (i) we do <em>not</em> claim a single universal functor <span class="math inline">\(\mathsf{Math}\to\mathsf{Phys}\)</span>—the representation approach is deliberately domain-indexed (<a href="#sec:framework" data-reference-type="ref+label" data-reference="sec:framework">2</a>); (ii) reading a type <span class="math inline">\(A\)</span> as a “space of physical possibilities” is a heuristic semantic layer (status <span class="math inline">\(\mathrm{H}\)</span>), flagged as such; (iii) univalence is a theorem-generating principle <em>about mathematical structures</em>, and its physical reading (“equivalent representations are the same physical content”) is <span class="math inline">\(\mathrm{S/H}\)</span>. These flags are carried explicitly in the dictionary of <a href="#sec:dictionary" data-reference-type="ref+label" data-reference="sec:dictionary">7</a> and <a href="#app:library" data-reference-type="ref+label" data-reference="app:library">12</a>.</p>
+<h2 data-number="1.4" id="outline"><span class="header-section-number">1.4</span> Outline</h2>
+<p><a href="#sec:framework" data-reference-type="ref+Label" data-reference="sec:framework">2</a> recalls the representation-stack framework and casts the pipeline categorically. <a href="#sec:cat" data-reference-type="ref+Label" data-reference="sec:cat">3</a> develops categories, functors, natural transformations, and the interchange/Eckmann–Hilton phenomena. <a href="#sec:monoidal" data-reference-type="ref+Label" data-reference="sec:monoidal">4</a> develops monoidal, symmetric, compact-closed and dagger-compact structure and string diagrams. <a href="#sec:hott" data-reference-type="ref+Label" data-reference="sec:hott">5</a> develops HoTT: identity types, path induction, transport, equivalence, and univalence. <a href="#sec:results" data-reference-type="ref+Label" data-reference="sec:results">6</a> proves the four theorems T1–T4. <a href="#sec:dictionary" data-reference-type="ref+Label" data-reference="sec:dictionary">7</a> presents the category-theory/HoTT representation dictionary with S/H/P labels. <a href="#sec:haskell,sec:lean" data-reference-type="ref+Label" data-reference="sec:haskell,sec:lean">[sec:haskell,sec:lean]</a> give the Haskell and Lean formalizations. <a href="#sec:discussion" data-reference-type="ref+Label" data-reference="sec:discussion">10</a> discusses composition in the ladder and limitations; <a href="#sec:conclusion" data-reference-type="ref+label" data-reference="sec:conclusion">11</a> concludes. <a href="#app:library" data-reference-type="ref+Label" data-reference="app:library">12</a> contains the full dictionary longtables.</p>
+<h1 data-number="2" id="sec:framework"><span class="header-section-number">2</span> Mathematical framework: the representation stack, categorically</h1>
+<p>We recall the minimum from Part I and immediately reorganize it so that the categorical language of <a href="#sec:cat" data-reference-type="ref+label" data-reference="sec:cat">3</a> applies.</p>
+<div id="def:entry" class="definition">
+<p><strong>Definition 1</strong> (Representation entry, <span>Part I</span>).  A <em>representation entry</em> is a quadruple <span class="math inline">\(E=(M,P,\tau,\sigma)\)</span> where <span class="math inline">\(M\in\mathsf{Math}_d\)</span> is a mathematical structure in a domain <span class="math inline">\(d\in\mathsf{Dom}\)</span>, <span class="math inline">\(P\in\mathsf{Phys}\)</span> is a proposed physical representation, <span class="math inline">\(\tau\)</span> is a semantic translation datum (a functor, a natural transformation, an equivalence class of models, or a weaker interpretation map), and <span class="math inline">\(\sigma\in\{\mathrm{S},\mathrm{H},\mathrm{P}\}\)</span> is the epistemic status label.</p>
+</div>
+<div id="def:prestack" class="definition">
+<p><strong>Definition 2</strong> (Representation prestack, <span>Part I</span>).  A <em>representation prestack</em> is a pseudofunctor <span class="math inline">\(\mathsf{Rep}_{\mathsf{Phys}}:\mathsf{Dom}^{\mathrm{op}}\to\mathsf{Grpd}\)</span> assigning to each domain <span class="math inline">\(d\)</span> a groupoid <span class="math inline">\(\mathsf{Rep}_{\mathsf{Phys}}(d)\)</span> of representation entries, and to a domain refinement <span class="math inline">\(u:e\to d\)</span> a restriction functor <span class="math inline">\(u^{*}:\mathsf{Rep}_{\mathsf{Phys}}(d)\to\mathsf{Rep}_{\mathsf{Phys}}(e)\)</span>, functorial up to coherent natural isomorphism.</p>
+</div>
+<p>The words “groupoid”, “functor”, “natural isomorphism”, and “pseudofunctor” in <a href="#def:prestack" data-reference-type="ref+label" data-reference="def:prestack">2</a> are precisely the notions <a href="#sec:cat" data-reference-type="ref+label" data-reference="sec:cat">3</a> makes rigorous; Part I used them on trust. We keep the realization pipeline <a href="#eq:pipeline" data-reference-type="eqref" data-reference="eq:pipeline">[eq:pipeline]</a> but now name its stages as morphisms in categories.</p>
+<div id="def:realization" class="definition">
+<p><strong>Definition 3</strong> (Realization data).  Fix a domain <span class="math inline">\(d\)</span>. A <em>realization datum</em> of level <span class="math inline">\(\alpha\)</span> consists of: an <em>abstraction</em> functor <span class="math inline">\(\Phi:\mathsf{Math}_d\to\mathcal{A}\)</span> into a category <span class="math inline">\(\mathcal{A}\)</span> of abstract physical-information objects; a <em>realization</em> functor <span class="math inline">\(\mathrm{Real}_\alpha:\mathcal{A}\to\mathsf{Phys}\)</span>; and an <em>observation</em> functor <span class="math inline">\(\mathrm{Obs}:\mathsf{Phys}\to\mathcal{M}\)</span> into a category <span class="math inline">\(\mathcal{M}\)</span> of measurement data. The <em>pipeline of level <span class="math inline">\(\alpha\)</span></em> is the composite functor <span class="math display">\[\mathrm{Obs}_\alpha \;:=\; \mathrm{Obs}\circ\mathrm{Real}_\alpha\circ\Phi \;:\; \mathsf{Math}_d\longrightarrow\mathcal{M}.\]</span></p>
+</div>
+<div id="thm:pipeline-functor" class="theorem">
+<p><strong>Theorem 4</strong> (The pipeline is a composite of functors).  <em>With the data of <a href="#def:realization" data-reference-type="ref+label" data-reference="def:realization">3</a>, <span class="math inline">\(\mathrm{Obs}_\alpha\)</span> is a functor, and its formation is associative and unital: for composable domain refinements the restriction functors compose (up to coherent isomorphism), and the identity refinement acts as the identity functor. Consequently the master formula <a href="#eq:master" data-reference-type="eqref" data-reference="eq:master">[eq:master]</a> is the object-level shadow of a genuine composition of morphisms in <span class="math inline">\(\mathsf{Cat}\)</span>, and Part I’s closure operation “composition of compatible translations” is the composition law of the category <span class="math inline">\(\mathsf{Cat}\)</span> of categories.</em></p>
+</div>
+<div class="proof">
+<p><em>Proof.</em> Functors compose: if <span class="math inline">\(F:\mathcal{X}\to\mathcal{Y}\)</span> and <span class="math inline">\(G:\mathcal{Y}\to\mathcal{Z}\)</span> preserve identities and composition, then <span class="math inline">\((G\circ F)(\operatorname{id}_X)=G(\operatorname{id}_{FX})=\operatorname{id}_{GFX}\)</span> and <span class="math inline">\((G\circ F)(g\circ f)=G(Fg\circ Ff)=G(Fg)\circ G(Ff)\)</span>, so <span class="math inline">\(G\circ F\)</span> is a functor. Applying this twice to <span class="math inline">\(\Phi\)</span>, <span class="math inline">\(\mathrm{Real}_\alpha\)</span>, <span class="math inline">\(\mathrm{Obs}\)</span> gives that <span class="math inline">\(\mathrm{Obs}_\alpha\)</span> is a functor. Associativity of <span class="math inline">\(\circ\)</span> in <span class="math inline">\(\mathsf{Cat}\)</span> is inherited from associativity of function composition on objects and on hom-sets; the identity functor <span class="math inline">\(\operatorname{id}_{\mathcal{X}}\)</span> is a two-sided unit for the same reason. The pseudofunctoriality clause of <a href="#def:prestack" data-reference-type="ref+label" data-reference="def:prestack">2</a> states exactly that <span class="math inline">\(u^{*}\circ v^{*}\cong (v\circ u)^{*}\)</span> and <span class="math inline">\((\operatorname{id}_d)^{*}\cong\operatorname{id}\)</span>, which is associativity and unitality up to coherent isomorphism. Reading <a href="#eq:master" data-reference-type="eqref" data-reference="eq:master">[eq:master]</a> on objects, <span class="math inline">\(\mathrm{Obs}_\alpha(M)=\mathrm{Obs}(\mathrm{Real}_\alpha(\Phi(M)))\)</span> is the value of the composite functor at <span class="math inline">\(M\)</span>, i.e. the object component of the composition <span class="math inline">\(\mathrm{Obs}\circ\mathrm{Real}_\alpha\circ\Phi\)</span> in <span class="math inline">\(\mathsf{Cat}\)</span>. ◻</p>
+</div>
+<p><a href="#thm:pipeline-functor" data-reference-type="ref+Label" data-reference="thm:pipeline-functor">4</a> is the reason category theory belongs at Level V of the ladder: the entire library was already, implicitly, a diagram in <span class="math inline">\(\mathsf{Cat}\)</span>. The remaining sections make the ingredients precise and extract the four physical consequences T1–T4. The pipeline as a commuting diagram is: <span class="math display">\[\begin{equation}
+\label{eq:pipeline-cd}
+\begin{tikzcd}[column sep=large, row sep=large]
+\mathsf{Math}_d \arrow[r, &quot;\Phi&quot;] \arrow[rrr, bend left=22, &quot;\mathrm{Obs}_\alpha&quot;]
+&amp; \mathcal{A} \arrow[r, &quot;\mathrm{Real}_\alpha&quot;]
+&amp; \mathsf{Phys}\arrow[r, &quot;\mathrm{Obs}&quot;]
+&amp; \mathcal{M} \\
+\end{tikzcd}
+\end{equation}\]</span></p>
+<h1 data-number="3" id="sec:cat"><span class="header-section-number">3</span> Categories, functors, and natural transformations</h1>
+<h2 data-number="3.1" id="categories-composition-and-identity"><span class="header-section-number">3.1</span> Categories: composition and identity</h2>
+<div id="def:category" class="definition">
+<p><strong>Definition 5</strong> (Category).  A <em>category</em> <span class="math inline">\(\mathcal{C}\)</span> consists of a collection <span class="math inline">\(\operatorname{Ob}(\mathcal{C})\)</span> of <em>objects</em>; for each ordered pair <span class="math inline">\((A,B)\)</span> a set <span class="math inline">\(\operatorname{Hom}_{\mathcal{C}}(A,B)\)</span> of <em>morphisms</em>; a <em>composition</em> operation <span class="math inline">\(\circ:\operatorname{Hom}(B,C)\times\operatorname{Hom}(A,B)\to\operatorname{Hom}(A,C)\)</span>; and for each object <span class="math inline">\(A\)</span> an <em>identity</em> morphism <span class="math inline">\(\operatorname{id}_A\in\operatorname{Hom}(A,A)\)</span>, subject to the two axioms <span class="math display">\[\begin{align}
+\text{(associativity)}\qquad &amp; h\circ(g\circ f)=(h\circ g)\circ f, \label{eq:assoc}\\
+\text{(unit)}\qquad &amp; \operatorname{id}_B\circ f=f=f\circ\operatorname{id}_A \quad\text{for } f:A\to B.
+\label{eq:unit}
+\end{align}\]</span></p>
+</div>
+<p>Physically (status <span class="math inline">\(\mathrm{S/H}\)</span>), objects are systems or state spaces, morphisms <span class="math inline">\(f:A\to B\)</span> are processes or transitions, <span class="math inline">\(g\circ f\)</span> is “do <span class="math inline">\(f\)</span>, then <span class="math inline">\(g\)</span>”, and <span class="math inline">\(\operatorname{id}_A\)</span> is the do-nothing process. <a href="#eq:assoc" data-reference-type="eqref" data-reference="eq:assoc">[eq:assoc]</a> says that grouping of a process chain is physically immaterial; <a href="#eq:unit" data-reference-type="eqref" data-reference="eq:unit">[eq:unit]</a> says that inserting a trivial step changes nothing. These two laws are the entire content of “composition and identity” at the <span class="math inline">\(1\)</span>-categorical level.</p>
+<div id="ex:BG" class="example">
+<p><strong>Example 6</strong> (Groups and representations as one-object categories).  A monoid <span class="math inline">\(M\)</span> is a category with one object <span class="math inline">\(\ast\)</span> and <span class="math inline">\(\operatorname{Hom}(\ast,\ast)=M\)</span>, with composition the monoid product and identity the unit. A group <span class="math inline">\(G\)</span> is such a category in which every morphism is invertible—a one-object groupoid, written <span class="math inline">\(BG\)</span> (the <em>delooping</em>). A linear representation <span class="math inline">\(\rho:G\to GL(V)\)</span> is exactly a functor <span class="math inline">\(BG\to\mathsf{Vect}\)</span>: it sends the unique object to <span class="math inline">\(V\)</span> and each group element to an invertible linear map, and functoriality <span class="math inline">\(\rho(gh)=\rho(g)\rho(h)\)</span>, <span class="math inline">\(\rho(e)=\operatorname{id}_V\)</span> is the definition of a representation. This is the first place the slogan “a physical theory is a functor” becomes literal: a symmetry action <em>is</em> a functor out of a delooping.</p>
+</div>
+<div id="ex:examples" class="example">
+<p><strong>Example 7</strong> (Preorders, spaces, and <span class="math inline">\(\mathsf{FdHilb}\)</span>).  (i) A preorder <span class="math inline">\((P,\le)\)</span> is a category with at most one morphism <span class="math inline">\(A\to B\)</span>, present iff <span class="math inline">\(A\le B\)</span>; composition is transitivity, identities are reflexivity. (ii) <span class="math inline">\(\mathsf{Set}\)</span> has sets as objects and functions as morphisms; <span class="math inline">\(\mathsf{Vect}\)</span> has vector spaces and linear maps; <span class="math inline">\(\mathsf{FdHilb}\)</span> has finite-dimensional Hilbert spaces and linear maps. (iii) The bordism category <span class="math inline">\(\mathsf{Bord}_n\)</span> has closed <span class="math inline">\((n{-}1)\)</span>-manifolds as objects and <span class="math inline">\(n\)</span>-dimensional cobordisms (up to diffeomorphism) as morphisms; a TQFT is a functor <span class="math inline">\(\mathsf{Bord}_n\to\mathsf{Vect}\)</span> (<a href="#ex:examples" data-reference-type="ref+label" data-reference="ex:examples">7</a> feeds <a href="#sec:monoidal" data-reference-type="ref+label" data-reference="sec:monoidal">4</a>).</p>
+</div>
+<div class="definition">
+<p><strong>Definition 8</strong> (Isomorphism, groupoid).  A morphism <span class="math inline">\(f:A\to B\)</span> is an <em>isomorphism</em> if there is <span class="math inline">\(g:B\to A\)</span> with <span class="math inline">\(g\circ f=\operatorname{id}_A\)</span> and <span class="math inline">\(f\circ g=\operatorname{id}_B\)</span>; then <span class="math inline">\(g\)</span> is unique and written <span class="math inline">\(f^{-1}\)</span>. A <em>groupoid</em> is a category in which every morphism is an isomorphism. Physically (status <span class="math inline">\(\mathrm{S}\)</span>) an isomorphism is a reversible equivalence: “the same structure in different coordinates.”</p>
+</div>
+<h2 data-number="3.2" id="functors-translation-between-worlds"><span class="header-section-number">3.2</span> Functors: translation between worlds</h2>
+<div id="def:functor" class="definition">
+<p><strong>Definition 9</strong> (Functor).  A <em>functor</em> <span class="math inline">\(F:\mathcal{C}\to\mathcal{D}\)</span> assigns to each object <span class="math inline">\(A\)</span> an object <span class="math inline">\(FA\)</span> and to each morphism <span class="math inline">\(f:A\to B\)</span> a morphism <span class="math inline">\(Ff:FA\to FB\)</span>, preserving identities and composition: <span class="math display">\[\begin{equation}
+\label{eq:functor-laws}
+F(\operatorname{id}_A)=\operatorname{id}_{FA},\qquad F(g\circ f)=Fg\circ Ff.
+\end{equation}\]</span></p>
+</div>
+<p>A functor is the structure-preserving translation of the composition/identity laws from one world to another; a physical theory, a quantization, or a realization channel <span class="math inline">\(\mathrm{Real}_\alpha\)</span> is such a translation (status <span class="math inline">\(\mathrm{S}\)</span> for TQFT; <span class="math inline">\(\mathrm{S/H}\)</span> for a general realization functor). <a href="#eq:functor-laws" data-reference-type="eqref" data-reference="eq:functor-laws">[eq:functor-laws]</a> is precisely what makes <a href="#eq:pipeline-cd" data-reference-type="eqref" data-reference="eq:pipeline-cd">[eq:pipeline-cd]</a> commute stagewise.</p>
+<div id="def:nat" class="definition">
+<p><strong>Definition 10</strong> (Natural transformation).  Given functors <span class="math inline">\(F,G:\mathcal{C}\to\mathcal{D}\)</span>, a <em>natural transformation</em> <span class="math inline">\(\eta:F\Rightarrow G\)</span> is a family of morphisms <span class="math inline">\(\eta_A:FA\to GA\)</span> (its <em>components</em>) such that for every <span class="math inline">\(f:A\to B\)</span> the <em>naturality square</em> commutes: <span class="math display">\[\begin{equation}
+\label{eq:naturality}
+\begin{tikzcd}[column sep=large, row sep=large]
+FA \arrow[r, &quot;\eta_A&quot;] \arrow[d, &quot;Ff&quot;&#39;] &amp; GA \arrow[d, &quot;Gf&quot;] \\
+FB \arrow[r, &quot;\eta_B&quot;&#39;] &amp; GB
+\end{tikzcd}
+\qquad\Longleftrightarrow\qquad
+Gf\circ\eta_A=\eta_B\circ Ff.
+\end{equation}\]</span> If each <span class="math inline">\(\eta_A\)</span> is an isomorphism, <span class="math inline">\(\eta\)</span> is a <em>natural isomorphism</em> and <span class="math inline">\(F\cong G\)</span>. Physically (status <span class="math inline">\(\mathrm{S/H}\)</span>) a natural transformation is a uniform deformation of one translation into another—a field redefinition or theory equivalence that acts coherently on all systems at once.</p>
+</div>
+<div id="def:functor-cat" class="definition">
+<p><strong>Definition 11</strong> (Functor category).  For categories <span class="math inline">\(\mathcal{C},\mathcal{D}\)</span>, the <em>functor category</em> <span class="math inline">\([\mathcal{C},\mathcal{D}]\)</span> has functors <span class="math inline">\(\mathcal{C}\to\mathcal{D}\)</span> as objects and natural transformations as morphisms, with <em>vertical composition</em> <span class="math inline">\((\theta\cdot\eta)_A=\theta_A\circ\eta_A\)</span> and identity the identity natural transformation. There is also <em>horizontal composition</em> <span class="math inline">\(\ast\)</span> of natural transformations along a composite of functors.</p>
+</div>
+<h2 data-number="3.3" id="interchange-and-eckmannhilton"><span class="header-section-number">3.3</span> Interchange and Eckmann–Hilton</h2>
+<p>In the functor <span class="math inline">\(2\)</span>-category <span class="math inline">\(\mathsf{Cat}\)</span>, objects are categories, <span class="math inline">\(1\)</span>-morphisms are functors, and <span class="math inline">\(2\)</span>-morphisms are natural transformations. These <span class="math inline">\(2\)</span>-morphisms carry two composition laws. Their compatibility is the single most important coherence in the module, because “composition and identity” now appears twice—two compositions sharing one family of identities.</p>
+<div id="prop:interchange" class="proposition">
+<p><strong>Proposition 12</strong> (Interchange law).  <em>In any <span class="math inline">\(2\)</span>-category, for <span class="math inline">\(2\)</span>-morphisms arranged so that both sides are defined, <span class="math display">\[\begin{equation}
+\label{eq:interchange}
+(\theta&#39;\cdot\theta)\ast(\eta&#39;\cdot\eta)=(\theta&#39;\ast\eta&#39;)\cdot(\theta\ast\eta),
+\end{equation}\]</span> where <span class="math inline">\(\cdot\)</span> is vertical and <span class="math inline">\(\ast\)</span> is horizontal composition. In particular horizontal and vertical composition of natural transformations satisfy <a href="#eq:interchange" data-reference-type="eqref" data-reference="eq:interchange">[eq:interchange]</a>.</em></p>
+</div>
+<div class="proof">
+<p><em>Proof.</em> Both sides are computed by evaluating components and using naturality <a href="#eq:naturality" data-reference-type="eqref" data-reference="eq:naturality">[eq:naturality]</a>. Writing the horizontal composite of <span class="math inline">\(\eta:F\Rightarrow G\)</span> (along <span class="math inline">\(\mathcal{C}\to\mathcal{D}\)</span>) with <span class="math inline">\(\eta&#39;:F&#39;\Rightarrow G&#39;\)</span> (along <span class="math inline">\(\mathcal{D}\to\mathcal{E}\)</span>) as <span class="math inline">\((\eta&#39;\ast\eta)_A=\eta&#39;_{GA}\circ F&#39;\eta_A
+=G&#39;\eta_A\circ\eta&#39;_{FA}\)</span> (the two expressions agree by naturality of <span class="math inline">\(\eta&#39;\)</span> at <span class="math inline">\(\eta_A\)</span>), one expands both sides of <a href="#eq:interchange" data-reference-type="eqref" data-reference="eq:interchange">[eq:interchange]</a> on an object <span class="math inline">\(A\)</span> and finds each equal to the common diagonal of the evident commuting square; the equality is forced by the naturality of the four transformations. A full component computation is standard <span class="citation">[<a href="#ref-1" class="citation-link">1</a>]</span>. ◻</p>
+</div>
+<div id="prop:eckmann-hilton" class="proposition">
+<p><strong>Proposition 13</strong> (Eckmann–Hilton).  <em>Let a set <span class="math inline">\(S\)</span> carry two unital binary operations <span class="math inline">\(\cdot\)</span> and <span class="math inline">\(\ast\)</span> sharing a common unit <span class="math inline">\(e\)</span> and satisfying the interchange law <span class="math inline">\((a\ast b)\cdot(c\ast d)=(a\cdot c)\ast(b\cdot d)\)</span>. Then the two operations coincide, are associative, and are commutative.</em></p>
+</div>
+<div class="proof">
+<p><em>Proof.</em> First <span class="math inline">\(e=e\ast e=e\cdot e\)</span>. Interchange gives, for all <span class="math inline">\(a,b\)</span>, <span class="math display">\[a\ast b=(a\cdot e)\ast(e\cdot b)=(a\ast e)\cdot(e\ast b)=a\cdot b,\]</span> so <span class="math inline">\(\ast=\cdot\)</span>; call it <span class="math inline">\(\times\)</span>. Then <span class="math inline">\(a\times b=(e\ast a)\times(b\ast e)=(e\times b)\ast(a\times e)=b\times a\)</span>, giving commutativity, and interchange collapses to associativity. ◻</p>
+</div>
+<div id="rem:eh" class="remark">
+<p><em>Remark 14</em> (Why this belongs to a module titled “composition and identity”).  <a href="#prop:eckmann-hilton" data-reference-type="ref+Label" data-reference="prop:eckmann-hilton">13</a> is the algebraic reason that the second homotopy group of a space is abelian, and in HoTT it is the statement that the higher identity types <span class="math inline">\(\Omega^2\)</span> (paths between paths) are commutative: the two ways to compose <span class="math inline">\(2\)</span>-dimensional identities—horizontally and vertically—share the constant identity and interchange, hence agree and commute. Thus “composition” and “identity” are not two topics but one: at each new dimension the identity laws constrain how compositions may interact, and Eckmann–Hilton is the first nontrivial constraint. This directly forecasts the higher-identity content of <a href="#sec:hott" data-reference-type="ref+label" data-reference="sec:hott">5</a>.</p>
+</div>
+<h2 data-number="3.4" id="yoneda-a-system-is-known-by-its-probes"><span class="header-section-number">3.4</span> Yoneda: a system is known by its probes</h2>
+<div id="lem:yoneda" class="lemma">
+<p><strong>Lemma 15</strong> (Yoneda).  <em>For a locally small category <span class="math inline">\(\mathcal{C}\)</span>, an object <span class="math inline">\(A\in\mathcal{C}\)</span>, and a functor <span class="math inline">\(F:\mathcal{C}^{\mathrm{op}}\to\mathsf{Set}\)</span>, there is a bijection natural in both <span class="math inline">\(A\)</span> and <span class="math inline">\(F\)</span>, <span class="math display">\[\begin{equation}
+\label{eq:yoneda}
+\mathrm{Nat}\bigl(\operatorname{Hom}_{\mathcal{C}}(-,A),\,F\bigr)\;\cong\;F(A),
+\qquad \eta\mapsto\eta_A(\operatorname{id}_A).
+\end{equation}\]</span> In particular the <em>Yoneda embedding</em> <span class="math inline">\(\mathsf{y}\!:\mathcal{C}\hookrightarrow
+[\mathcal{C}^{\mathrm{op}},\mathsf{Set}]\)</span>, <span class="math inline">\(A\mapsto\operatorname{Hom}_{\mathcal{C}}(-,A)\)</span>, is full and faithful, so <span class="math inline">\(A\cong B\)</span> iff <span class="math inline">\(\operatorname{Hom}(-,A)\cong\operatorname{Hom}(-,B)\)</span>.</em></p>
+</div>
+<div class="proof">
+<p><em>Proof.</em> Given a natural transformation <span class="math inline">\(\eta:\operatorname{Hom}(-,A)\Rightarrow F\)</span>, set <span class="math inline">\(u:=\eta_A(\operatorname{id}_A)\in F(A)\)</span>. Naturality at any <span class="math inline">\(f:X\to A\)</span> (viewed as an element of <span class="math inline">\(\operatorname{Hom}(X,A)\)</span>) forces <span class="math inline">\(\eta_X(f)=F(f)(u)\)</span>, so <span class="math inline">\(\eta\)</span> is determined by <span class="math inline">\(u\)</span>; and any <span class="math inline">\(u\in F(A)\)</span> defines a natural <span class="math inline">\(\eta\)</span> by this formula. The two assignments are mutually inverse, giving <a href="#eq:yoneda" data-reference-type="eqref" data-reference="eq:yoneda">[eq:yoneda]</a>. Naturality in <span class="math inline">\(A,F\)</span> is a direct check. Taking <span class="math inline">\(F=\operatorname{Hom}(-,B)\)</span> yields <span class="math inline">\(\mathrm{Nat}(\operatorname{Hom}(-,A),\operatorname{Hom}(-,B))\cong\operatorname{Hom}(A,B)\)</span>, i.e. full faithfulness of <span class="math inline">\(\mathsf{y}\)</span>; reflection of isomorphisms follows because full and faithful functors reflect isomorphisms. ◻</p>
+</div>
+<p>Physically (status <span class="math inline">\(\mathrm{S/H}\)</span>) the Yoneda lemma is the statement that a system is completely determined by the totality of its responses to all probes: knowing <span class="math inline">\(\operatorname{Hom}(-,A)\)</span>—all ways of mapping into <span class="math inline">\(A\)</span>—determines <span class="math inline">\(A\)</span> up to isomorphism. This is the categorical form of an operational/measurement-based identity criterion and reappears as the “univalence for representables” motif in <a href="#sec:hott" data-reference-type="ref+label" data-reference="sec:hott">5</a>.</p>
+<h1 data-number="4" id="sec:monoidal"><span class="header-section-number">4</span> Monoidal and dagger-compact structure</h1>
+<p>Parallel composition of systems—putting two experiments side by side—is not captured by <span class="math inline">\(\circ\)</span> alone. It is captured by a tensor product, and the reversal of processes by a dagger. These structures make <span class="math inline">\(\mathsf{FdHilb}\)</span> into the ambient category of finite quantum mechanics and give the string-diagram calculus used in Part VI.</p>
+<div id="def:monoidal" class="definition">
+<p><strong>Definition 16</strong> (Monoidal category).  A <em>monoidal category</em> is a category <span class="math inline">\(\mathcal{C}\)</span> with a functor <span class="math inline">\(\otimes:\mathcal{C}\times\mathcal{C}\to\mathcal{C}\)</span>, a unit object <span class="math inline">\(I\)</span>, and natural isomorphisms <span class="math inline">\(\alpha_{A,B,C}:(A\otimes B)\otimes C\to A\otimes(B\otimes
+C)\)</span>, <span class="math inline">\(\lambda_A:I\otimes A\to A\)</span>, <span class="math inline">\(\rho_A:A\otimes I\to A\)</span> satisfying Mac Lane’s pentagon and triangle coherence axioms. It is <em>symmetric</em> if it also has a natural isomorphism <span class="math inline">\(\sigma_{A,B}:A\otimes B\to B\otimes A\)</span> with <span class="math inline">\(\sigma_{B,A}\circ\sigma_{A,B}=\operatorname{id}\)</span> and the hexagon coherence.</p>
+</div>
+<p>That <span class="math inline">\(\otimes\)</span> is a <em>bifunctor</em> means it respects composition in each argument and satisfies the interchange law <span class="math inline">\((g\otimes g&#39;)\circ(f\otimes
+f&#39;)=(g\circ f)\otimes(g&#39;\circ f&#39;)\)</span>: sequential and parallel composition of processes commute, which is the algebra of quantum circuits. Physically (status <span class="math inline">\(\mathrm{S}\)</span>) <span class="math inline">\(A\otimes B\)</span> is the composite system, <span class="math inline">\(I\)</span> is the trivial system, and <span class="math inline">\(\sigma\)</span> is the swap—bosonic-like exchange when it squares to the identity, anyonic braiding when it does not.</p>
+<div id="def:dagger" class="definition">
+<p><strong>Definition 17</strong> (Compact closed and dagger-compact category).  A <em>compact closed</em> category is a symmetric monoidal category in which every object <span class="math inline">\(A\)</span> has a dual <span class="math inline">\(A^{*}\)</span> equipped with a <em>unit</em> <span class="math inline">\(\eta_A:I\to A^{*}\otimes A\)</span> (coevaluation, a “cup”) and <em>counit</em> <span class="math inline">\(\varepsilon_A:A\otimes A^{*}\to I\)</span> (evaluation, a “cap”) satisfying the <em>snake</em> (zig-zag) equations <span class="math display">\[\begin{equation}
+\label{eq:snake}
+(\varepsilon_A\otimes\operatorname{id}_A)\circ(\operatorname{id}_A\otimes\eta_A)=\operatorname{id}_A,\qquad
+(\operatorname{id}_{A^{*}}\otimes\varepsilon_A)\circ(\eta_A\otimes\operatorname{id}_{A^{*}})=\operatorname{id}_{A^{*}}.
+\end{equation}\]</span> A <em>dagger-compact</em> category adds an involutive, identity-on-objects, contravariant functor <span class="math inline">\((-)^{\dagger}\)</span> that is monoidal and compatible with the compact structure, so that <span class="math inline">\(\varepsilon_A=\eta_A^{\dagger}\circ\sigma\)</span> up to the canonical isomorphisms. Physically <span class="math inline">\((-)^{\dagger}\)</span> is the adjoint/time-reversal.</p>
+</div>
+<div id="ex:fdhilb" class="example">
+<p><strong>Example 18</strong> (<span class="math inline">\(\mathsf{FdHilb}\)</span> as the arena of finite quantum mechanics).  <span class="math inline">\(\mathsf{FdHilb}\)</span> is dagger-compact: <span class="math inline">\(\otimes\)</span> is the tensor product of Hilbert spaces, <span class="math inline">\(I=\mathbb{C}\)</span>, <span class="math inline">\(A^{*}\)</span> is the dual space, <span class="math inline">\(\eta_A(1)=\sum_i e_i\otimes e_i\)</span> is the (unnormalized) Bell state, <span class="math inline">\(\varepsilon_A\)</span> is the pairing, and <span class="math inline">\((-)^{\dagger}\)</span> is the Hermitian adjoint. The snake equations <a href="#eq:snake" data-reference-type="eqref" data-reference="eq:snake">[eq:snake]</a> are the statement that a maximally entangled pair can be created and then partially annihilated to yield an identity wire—the diagrammatic engine of quantum teleportation <span class="citation">[<a href="#ref-4" class="citation-link">4</a>, <a href="#ref-3" class="citation-link">3</a>]</span>.</p>
+</div>
+<p>The snake equation admits the string-diagram reading in which a cup followed by a cap straightens a bent wire: <span class="math display">\[\begin{equation}
+\label{eq:snake-cd}
+\begin{tikzcd}[column sep=large, row sep=large]
+A \arrow[r, &quot;\operatorname{id}_A\otimes\eta_A&quot;] \arrow[dr, &quot;\operatorname{id}_A&quot;&#39;] &amp; A\otimes A^{*}\otimes A \arrow[d, &quot;\varepsilon_A\otimes\operatorname{id}_A&quot;] \\
+&amp; A
+\end{tikzcd}
+\end{equation}\]</span></p>
+<h1 data-number="5" id="sec:hott"><span class="header-section-number">5</span> Homotopy type theory: identity as path</h1>
+<p>We now pass from composition (category theory) to identity proper. HoTT is a dependent type theory in which the identity type is interpreted homotopically and Voevodsky’s univalence axiom governs identity of structures.</p>
+<h2 data-number="5.1" id="types-terms-and-dependent-types"><span class="header-section-number">5.1</span> Types, terms, and dependent types</h2>
+<p>We use the judgement <span class="math inline">\(a:A\)</span> (“<span class="math inline">\(a\)</span> is a term of type <span class="math inline">\(A\)</span>”). A <em>dependent type</em> <span class="math inline">\(B:A\to\mathcal{U}\)</span> (a type family) assigns a type <span class="math inline">\(B(x)\)</span> to each <span class="math inline">\(x:A\)</span>. From it we form the dependent pair and function types <span class="math display">\[\begin{equation}
+\label{eq:sigmapi}
+\sum_{x:A}B(x)\quad(\text{total space}),\qquad
+\prod_{x:A}B(x)\quad(\text{space of sections}).
+\end{equation}\]</span> Physically (status <span class="math inline">\(\mathrm{S/H}\)</span>), <span class="math inline">\(A\)</span> is a space of states or possibilities, <span class="math inline">\(a:A\)</span> a witnessing state, <span class="math inline">\(B(x)\)</span> a fibre of field data over the base point <span class="math inline">\(x\)</span>, <span class="math inline">\(\sum_{x:A}B(x)\)</span> the total configuration space, and <span class="math inline">\(\prod_{x:A}B(x)\)</span> the space of fields (sections) assigning data at every point.</p>
+<h2 data-number="5.2" id="identity-types-and-path-induction"><span class="header-section-number">5.2</span> Identity types and path induction</h2>
+<div id="def:idtype" class="definition">
+<p><strong>Definition 19</strong> (Identity type).  For <span class="math inline">\(A:\mathcal{U}\)</span> and <span class="math inline">\(a,b:A\)</span> there is a type <span class="math inline">\(\mathsf{Id}_A(a,b)\)</span>, written <span class="math inline">\(a=b\)</span>, whose terms are <em>identifications</em> (paths) from <span class="math inline">\(a\)</span> to <span class="math inline">\(b\)</span>. It is generated by the constructor <span class="math inline">\(\mathsf{refl}_a:a=a\)</span>, subject to the following induction principle.</p>
+</div>
+<div id="def:J" class="definition">
+<p><strong>Definition 20</strong> (Path induction, the J-rule).  To define a section of a family <span class="math inline">\(C:\prod_{x,y:A}(x=y)\to\mathcal{U}\)</span> it suffices to define it on reflexivity: given <span class="math inline">\(c:\prod_{x:A}C(x,x,\mathsf{refl}_x)\)</span> there is a unique (up to identification) term <span class="math display">\[\mathsf{J}(c):\prod_{x,y:A}\prod_{p:x=y}C(x,y,p)
+\qquad\text{with}\qquad \mathsf{J}(c)(x,x,\mathsf{refl}_x)\equiv c(x).\]</span> Path induction is the <em>only</em> elimination rule for identity types.</p>
+</div>
+<div id="lem:transport" class="lemma">
+<p><strong>Lemma 21</strong> (Transport).  <em>For any <span class="math inline">\(B:A\to\mathcal{U}\)</span> and <span class="math inline">\(p:a=b\)</span> there is an equivalence <span class="math inline">\(\mathsf{transport}^{B}(p):B(a)\xrightarrow{\ \sim\ }B(b)\)</span>, with <span class="math inline">\(\mathsf{transport}^{B}(\mathsf{refl}_a)=\operatorname{id}_{B(a)}\)</span>, and <span class="math inline">\(\mathsf{transport}^{B}\)</span> is functorial: <span class="math inline">\(\mathsf{transport}^{B}(q\cdot p)=\mathsf{transport}^{B}(q)\circ\mathsf{transport}^{B}(p)\)</span> for <span class="math inline">\(p:a=b\)</span>, <span class="math inline">\(q:b=c\)</span>.</em></p>
+</div>
+<div class="proof">
+<p><em>Proof.</em> Apply <a href="#def:J" data-reference-type="ref+label" data-reference="def:J">20</a> to the family <span class="math inline">\(C(x,y,p):=\bigl(B(x)\to B(y)\bigr)\)</span> with <span class="math inline">\(c(x):=\operatorname{id}_{B(x)}\)</span>; this yields <span class="math inline">\(\mathsf{transport}^{B}(p):B(a)\to B(b)\)</span> with <span class="math inline">\(\mathsf{transport}^{B}(\mathsf{refl}_a)\equiv\operatorname{id}\)</span>. That each <span class="math inline">\(\mathsf{transport}^{B}(p)\)</span> is an equivalence follows by path induction on <span class="math inline">\(p\)</span> (it holds at <span class="math inline">\(\mathsf{refl}\)</span>, hence everywhere), with inverse <span class="math inline">\(\mathsf{transport}^{B}(p^{-1})\)</span>. Functoriality is again path induction: fix <span class="math inline">\(p\)</span> and induct on <span class="math inline">\(q\)</span>; the case <span class="math inline">\(q=\mathsf{refl}_b\)</span> reduces to <span class="math inline">\(\mathsf{transport}^{B}(p)=\mathsf{transport}^{B}(p)\circ\operatorname{id}\)</span>, which holds definitionally. ◻</p>
+</div>
+<div id="lem:ap" class="lemma">
+<p><strong>Lemma 22</strong> (Action on paths).  <em>Every function <span class="math inline">\(f:A\to B\)</span> acts on identifications: there is <span class="math inline">\(\mathsf{ap}_f:(a=a&#39;)\to(f(a)=f(a&#39;))\)</span> with <span class="math inline">\(\mathsf{ap}_f(\mathsf{refl}_a)=\mathsf{refl}_{f(a)}\)</span>, respecting inverses and concatenation. Thus functions automatically preserve identity—the type-theoretic counterpart of functoriality <a href="#eq:functor-laws" data-reference-type="eqref" data-reference="eq:functor-laws">[eq:functor-laws]</a>.</em></p>
+</div>
+<div class="proof">
+<p><em>Proof.</em> Path induction on the family <span class="math inline">\(C(x,y,p):=(f(x)=f(y))\)</span> with <span class="math inline">\(c(x):=\mathsf{refl}_{f(x)}\)</span>. Preservation of concatenation and inverses is a further path induction. ◻</p>
+</div>
+<h2 data-number="5.3" id="equivalence-and-univalence"><span class="header-section-number">5.3</span> Equivalence and univalence</h2>
+<div id="def:equiv" class="definition">
+<p><strong>Definition 23</strong> (Equivalence).  A function <span class="math inline">\(f:A\to B\)</span> <em>is an equivalence</em>, written <span class="math inline">\(\mathsf{isEquiv}(f)\)</span>, if its fibres are contractible; equivalently if it has a two-sided homotopy-inverse. The type of equivalences is <span class="math inline">\(A\simeq B:=\sum_{f:A\to B}\mathsf{isEquiv}(f)\)</span>. The canonical map <span class="math display">\[\begin{equation}
+\label{eq:idtoequiv}
+\mathsf{idtoequiv}:(A=B)\longrightarrow(A\simeq B)
+\end{equation}\]</span> sends <span class="math inline">\(\mathsf{refl}_A\)</span> to the identity equivalence (by path induction).</p>
+</div>
+<div id="def:univalence" class="definition">
+<p><strong>Definition 24</strong> (Univalence axiom, Voevodsky).  A universe <span class="math inline">\(\mathcal{U}\)</span> is <em>univalent</em> if for all <span class="math inline">\(A,B:\mathcal{U}\)</span> the map <span class="math inline">\(\mathsf{idtoequiv}\)</span> of <a href="#eq:idtoequiv" data-reference-type="eqref" data-reference="eq:idtoequiv">[eq:idtoequiv]</a> is itself an equivalence: <span class="math display">\[\begin{equation}
+\label{eq:ua}
+\boxed{\;(A=B)\;\simeq\;(A\simeq B)\;.}
+\end{equation}\]</span> Its inverse is written <span class="math inline">\(\mathsf{ua}:(A\simeq B)\to(A=B)\)</span>.</p>
+</div>
+<p>Univalence is the exact formal content of the representation-theoretic slogan “equivalent representations can be treated as the same physical content”: identity of structures and equivalence of structures are themselves identified. It is used in <a href="#sec:results" data-reference-type="ref+label" data-reference="sec:results">6</a> to discharge Part I’s Axiom (Equivalence).</p>
+<div id="def:trunc" class="definition">
+<p><strong>Definition 25</strong> (Truncation levels).  A type <span class="math inline">\(A\)</span> is <em>contractible</em> (level <span class="math inline">\(-2\)</span>) if <span class="math inline">\(\sum_{a:A}\prod_{x:A}(a=x)\)</span> is inhabited; a <em>mere proposition</em> (level <span class="math inline">\(-1\)</span>) if all its terms are identified; a <em>set</em> (level <span class="math inline">\(0\)</span>) if each identity type <span class="math inline">\(a=b\)</span> is a mere proposition; a <em>groupoid</em> (level <span class="math inline">\(1\)</span>) if each <span class="math inline">\(a=b\)</span> is a set; and so on up the <span class="math inline">\(n\)</span>-truncation hierarchy. Each level <span class="math inline">\(n\)</span> carries an idempotent truncation modality <span class="math inline">\(\lVert-\rVert_n\)</span> universally forcing a type to level <span class="math inline">\(n\)</span>.</p>
+</div>
+<div id="ex:circle" class="example">
+<p><strong>Example 26</strong> (The circle).  The higher inductive type <span class="math inline">\(S^1\)</span> is generated by a point <span class="math inline">\(\mathsf{base}:S^1\)</span> and a path <span class="math inline">\(\mathsf{loop}:\mathsf{base}=\mathsf{base}\)</span>. It is a <span class="math inline">\(1\)</span>-type, not a set: its loop space is <span class="math inline">\(\Omega S^1=(\mathsf{base}=\mathsf{base})\simeq\mathbb{Z}\)</span>, so <span class="math inline">\(\pi_1(S^1)=\mathbb{Z}\)</span> is provable synthetically. Physically (status <span class="math inline">\(\mathrm{H}\)</span>) <span class="math inline">\(S^1\)</span> models a phase circle or winding sector, and its integer loop space is the winding number/topological charge.</p>
+</div>
+<h1 data-number="6" id="sec:results"><span class="header-section-number">6</span> Results: the four theorems</h1>
+<p>We now prove the four theorems that give this module its physical payload. T1 and T2 concern identity and translation; T3 and T4 concern quantum information and gauge, feeding Part VI.</p>
+<h2 data-number="6.1" id="t1-univalence-discharges-the-equivalence-axiom"><span class="header-section-number">6.1</span> T1: univalence discharges the Equivalence axiom</h2>
+<div id="thm:univalence" class="theorem">
+<p><strong>Theorem 27</strong> (Univalence respects realization).  <em>Let <span class="math inline">\(\mathcal{U}\)</span> be a univalent universe modelling Part I’s <span class="math inline">\(\mathsf{Math}_d\)</span>, and let <span class="math inline">\(\mathrm{Real}:\mathcal{U}\to\mathsf{Phys}\)</span> be any <em>internally definable</em> realization, i.e. a function definable in the type theory (equivalently, a term <span class="math inline">\(\mathrm{Real}:\prod_{X:\mathcal{U}}\mathsf{Phys}\)</span>). Then for all <span class="math inline">\(A,B:\mathcal{U}\)</span>, <span class="math display">\[(A\simeq B)\ \longrightarrow\ \bigl(\mathrm{Real}(A)=\mathrm{Real}(B)\bigr),\]</span> and moreover <span class="math inline">\(\mathsf{transport}^{\mathrm{Real}}\)</span> along the induced path is an equivalence <span class="math inline">\(\mathrm{Real}(A)\simeq\mathrm{Real}(B)\)</span>. Hence any internally definable realization assigns the same physical representation to equivalent mathematical structures: Part I’s Axiom (Equivalence) is a <em>theorem</em>, not a postulate.</em></p>
+</div>
+<div class="proof">
+<p><em>Proof.</em> Let <span class="math inline">\(e:A\simeq B\)</span>. By univalence <a href="#eq:ua" data-reference-type="eqref" data-reference="eq:ua">[eq:ua]</a>, <span class="math inline">\(\mathsf{ua}(e):A=B\)</span> is an identification of <span class="math inline">\(A\)</span> and <span class="math inline">\(B\)</span> in <span class="math inline">\(\mathcal{U}\)</span>. Apply <a href="#lem:ap" data-reference-type="ref+label" data-reference="lem:ap">22</a> to <span class="math inline">\(\mathrm{Real}\)</span>: <span class="math inline">\(\mathsf{ap}_{\mathrm{Real}}(\mathsf{ua}(e)):\mathrm{Real}(A)=\mathrm{Real}(B)\)</span>, which is the required identification of physical representations. To obtain an equivalence we transport along the path <span class="math inline">\(\mathsf{ua}(e):A=B\)</span> <em>in the base <span class="math inline">\(\mathcal{U}\)</span></em>, using the type family <span class="math inline">\(X\mapsto\mathrm{Real}(X)\)</span> (with <span class="math inline">\(\mathsf{Phys}\)</span> read as a universe of types): by <a href="#lem:transport" data-reference-type="ref+label" data-reference="lem:transport">21</a>, <span class="math inline">\(\mathsf{transport}^{X\mapsto\mathrm{Real}(X)}(\mathsf{ua}(e)):\mathrm{Real}(A)\to
+\mathrm{Real}(B)\)</span> is an equivalence, invertible with inverse the transport along <span class="math inline">\(\mathsf{ua}(e)^{-1}=\mathsf{ua}(e^{-1})\)</span>. (Equivalently, applying <span class="math inline">\(\mathsf{idtoequiv}\)</span> to the path <span class="math inline">\(\mathsf{ap}_{\mathrm{Real}}(\mathsf{ua}(e))\)</span> in <span class="math inline">\(\mathsf{Phys}\)</span> yields the same equivalence directly.) Since <span class="math inline">\(\mathsf{ap}_{\mathrm{Real}}(\mathsf{refl}_A)=\mathsf{refl}_{\mathrm{Real}(A)}\)</span>, the construction sends the identity equivalence to reflexivity, so it is the identity on the diagonal, as required for a bona fide discharge of the axiom. ◻</p>
+</div>
+<div id="rem:gauge-invariance" class="remark">
+<p><em>Remark 28</em> (Gauge-dependent vs. gauge-invariant).  <a href="#thm:univalence" data-reference-type="ref+Label" data-reference="thm:univalence">27</a> applies only to <em>internally definable</em> realizations. A realization defined by an <em>external</em> choice—picking a basis, a gauge, or a coordinate patch—need not be a term of the type theory and may fail to respect equivalence. This is exactly the physical distinction between gauge-invariant quantities (internally definable; equivalence-respecting) and gauge-dependent quantities (externally defined; not). Univalence thereby draws the gauge-invariance line as a definability condition, anticipating Part VI’s treatment of gauge redundancy.</p>
+</div>
+<h2 data-number="6.2" id="t2-one-functor-for-logic-code-and-physics"><span class="header-section-number">6.2</span> T2: one functor for logic, code, and physics</h2>
+<div id="thm:chl" class="theorem">
+<p><strong>Theorem 29</strong> (Curry–Howard–Lambek semantics of the pipeline).  <em>Let <span class="math inline">\(T\)</span> be a Martin-Löf dependent type theory with <span class="math inline">\(\Sigma\)</span>-, <span class="math inline">\(\Pi\)</span>-, and identity types, and let <span class="math inline">\(\mathrm{Syn}(T)\)</span> be its syntactic category (objects: contexts; morphisms: substitutions up to definitional equality). For any locally cartesian closed category <span class="math inline">\(\mathcal{C}\)</span> modelling <span class="math inline">\(T\)</span> there is an interpretation functor <span class="math display">\[\mathopen{[\![}-\mathclose{]\!]}:\mathrm{Syn}(T)\longrightarrow\mathcal{C}\]</span> sending types to objects and terms to (global) sections, and it is sound: it preserves the type-forming operations up to canonical isomorphism. Composing with a realization functor <span class="math inline">\(R:\mathcal{C}\to\mathsf{Phys}\)</span> yields a single composite <span class="math display">\[\mathrm{Syn}(T)\xrightarrow{\ \mathopen{[\![}-\mathclose{]\!]}\ }\mathcal{C}
+\xrightarrow{\ R\ }\mathsf{Phys}\]</span> that interprets, simultaneously and by one categorical translation, the logical reading (propositions as types, proofs as terms), the computational reading (programs as terms, evaluation as normalization), and the physical reading (state spaces as types, processes as terms, realization as <span class="math inline">\(R\)</span>).</em></p>
+</div>
+<div class="proof">
+<p><em>Proof.</em> The existence and soundness of <span class="math inline">\(\mathopen{[\![}-\mathclose{]\!]}\)</span> is the Curry–Howard–Lambek/Seely correspondence between Martin-Löf type theory with <span class="math inline">\(\Sigma,\Pi\)</span>, and identity types and locally cartesian closed categories <span class="citation">[<a href="#ref-5" class="citation-link">5</a>, <a href="#ref-1" class="citation-link">1</a>, <a href="#ref-2" class="citation-link">2</a>]</span>: <span class="math inline">\(\Sigma\)</span>-types interpret as dependent sums (left adjoint to pullback), <span class="math inline">\(\Pi\)</span>-types as dependent products (right adjoint to pullback), and identity types as the relevant path objects; functoriality of <span class="math inline">\(\mathopen{[\![}-\mathclose{]\!]}\)</span> is precisely the statement that substitution is interpreted by pullback and composes, i.e. soundness of the substitution calculus. Since functors compose (<a href="#thm:pipeline-functor" data-reference-type="ref+label" data-reference="thm:pipeline-functor">4</a>), <span class="math inline">\(R\circ\mathopen{[\![}-\mathclose{]\!]}\)</span> is a functor. The three readings are three names for the values of this one functor: the logical reading names the objects of <span class="math inline">\(\mathrm{Syn}(T)\)</span> as propositions, the computational reading names its morphisms as programs, and the physical reading names <span class="math inline">\(R\)</span> applied to them as realizations. The equalities among these readings are literal equalities of the functor’s values, which is the content of the “theorem <span class="math inline">\(=\)</span> specification, proof <span class="math inline">\(=\)</span> implementation, physical process <span class="math inline">\(=\)</span> realization” slogan. ◻</p>
+</div>
+<div id="cor:composition" class="corollary">
+<p><strong>Corollary 30</strong> (Composition is quadruply the same law).  <em>Under <a href="#thm:chl" data-reference-type="ref+label" data-reference="thm:chl">29</a>, given <span class="math inline">\(p:A\to B\)</span> and <span class="math inline">\(q:B\to C\)</span>, the composite <span class="math inline">\(q\circ p\)</span> is simultaneously: logical-implication composition, proof/term composition, program composition, and—after <span class="math inline">\(R\)</span>—composition of physical processes. The associativity <a href="#eq:assoc" data-reference-type="eqref" data-reference="eq:assoc">[eq:assoc]</a> of <span class="math inline">\(\circ\)</span> is one law shared by all four readings.</em></p>
+</div>
+<div class="proof">
+<p><em>Proof.</em> Immediate from <a href="#thm:chl" data-reference-type="ref+label" data-reference="thm:chl">29</a>: composition in <span class="math inline">\(\mathrm{Syn}(T)\)</span> is substitution composition, sent by the two functors to composition in <span class="math inline">\(\mathcal{C}\)</span> and then in <span class="math inline">\(\mathsf{Phys}\)</span>; each named reading is the same morphism under a different name, and associativity is inherited from <a href="#def:category" data-reference-type="ref+label" data-reference="def:category">5</a>. ◻</p>
+</div>
+<h2 data-number="6.3" id="t3-no-cloning-forces-encoding"><span class="header-section-number">6.3</span> T3: no cloning forces encoding</h2>
+<div id="thm:nocloning" class="theorem">
+<p><strong>Theorem 31</strong> (Structural no-cloning).  <em>Let <span class="math inline">\(\mathcal{C}\)</span> be a symmetric monoidal category and suppose there is a <em>uniform</em> copying operation: writing <span class="math inline">\(\mathrm{D}:\mathcal{C}\to
+\mathcal{C}\times\mathcal{C}\)</span> for the diagonal functor, a natural transformation <span class="math inline">\(\Delta:\mathrm{Id}_{\mathcal{C}}\Rightarrow\otimes\circ\mathrm{D}\)</span> with components <span class="math inline">\(\Delta_A:A\to A\otimes A\)</span>, together with a natural deleting <span class="math inline">\(\diamond_A:A\to I\)</span>, making each <span class="math inline">\(A\)</span> a cocommutative comonoid compatibly with <span class="math inline">\(\otimes\)</span> and the symmetry. Then <span class="math inline">\(\otimes\)</span> is a categorical product: <span class="math inline">\(\mathcal{C}\)</span> is cartesian monoidal. Consequently, in <span class="math inline">\(\mathsf{FdHilb}\)</span>—where the tensor product is <em>not</em> a categorical product—no such uniform copying exists, and quantum high availability cannot be replication.</em></p>
+</div>
+<div class="proof">
+<p><em>Proof.</em> The hypotheses are exactly Fox’s theorem: a symmetric monoidal category equipped with a natural, coherent, cocommutative comonoid structure <span class="math inline">\((\Delta_A,\diamond_A)\)</span> on every object, compatible with <span class="math inline">\(\otimes\)</span>, is cartesian, with <span class="math inline">\(\otimes\)</span> the product, <span class="math inline">\(I\)</span> the terminal object, <span class="math inline">\(\diamond_A\)</span> the unique map <span class="math inline">\(A\to I\)</span>, and <span class="math inline">\(\Delta_A\)</span> the diagonal; naturality of <span class="math inline">\(\Delta\)</span> and <span class="math inline">\(\diamond\)</span> supplies the universal property of the product on morphisms. Now suppose, for contradiction, that <span class="math inline">\(\mathsf{FdHilb}\)</span> admitted such a uniform copying. Then its monoidal product <span class="math inline">\(\otimes\)</span> would be the categorical product. But the categorical product (equivalently, in <span class="math inline">\(\mathsf{FdHilb}\)</span>, the biproduct) of Hilbert spaces is the direct sum <span class="math inline">\(\oplus\)</span>, with <span class="math inline">\(\dim(A\oplus B)=\dim A+\dim B\)</span>, whereas <span class="math inline">\(\dim(A\otimes B)=\dim A\cdot\dim B\)</span>. For <span class="math inline">\(\dim A=\dim B=2\)</span> these are <span class="math inline">\(4\)</span> and <span class="math inline">\(4\)</span> only coincidentally; taking <span class="math inline">\(\dim A=\dim B=3\)</span> gives <span class="math inline">\(6\ne 9\)</span>, so <span class="math inline">\(\otimes\not\cong\times\)</span> as bifunctors. This contradiction shows no uniform natural copying exists in <span class="math inline">\(\mathsf{FdHilb}\)</span>: the no-cloning theorem. Because copying is unavailable, protecting a quantum state cannot proceed by replication; the only representational option is an embedding <span class="math inline">\(\iota:\mathcal{H}_{\mathrm{logical}}\hookrightarrow\mathcal{H}_{\mathrm{phys}}\)</span> into a larger physical Hilbert space—encoding—which is precisely Part VI’s quantum high-availability construction <span class="math inline">\(\mathcal{H}_{\mathrm{phys}}\simeq
+\mathcal{H}_{\mathrm{logical}}\otimes\mathcal{H}_{\mathrm{gauge}}
+\oplus\mathcal{H}_{\mathrm{error}}\)</span>. ◻</p>
+</div>
+<div id="rem:classical" class="remark">
+<p><em>Remark 32</em> (Classical structures as the copiable objects).  The objects of a dagger-compact category that <em>do</em> admit natural copying are exactly the <em>classical structures</em>: special commutative dagger-Frobenius algebras, whose comultiplication is a copying map. In <span class="math inline">\(\mathsf{FdHilb}\)</span> these correspond to a choice of orthonormal basis—the “classical” pointer states one may copy. Thus T3 also explains <em>why</em> classical high availability (replication) works for classical data and fails for genuinely quantum data: only basis states are copiable <span class="citation">[<a href="#ref-4" class="citation-link">4</a>]</span>.</p>
+</div>
+<h2 data-number="6.4" id="t4-groupoid-quotients-are-finer-than-set-quotients"><span class="header-section-number">6.4</span> T4: groupoid quotients are finer than set quotients</h2>
+<div id="thm:truncation" class="theorem">
+<p><strong>Theorem 33</strong> (Truncation reconstruction of “stacks retain gauge information”).  <em>Let <span class="math inline">\(G\)</span> be a <span class="math inline">\(0\)</span>-type (a set carrying a group structure) acting on a <span class="math inline">\(0\)</span>-type (set) <span class="math inline">\(X\)</span>. Form the <em>groupoid quotient</em> (a higher inductive type) <span class="math inline">\(X/\!/G\)</span>, whose points are those of <span class="math inline">\(X\)</span>, with a path <span class="math inline">\(x=g\cdot x\)</span> for each <span class="math inline">\(g:G\)</span>, subject to the groupoid coherences. Then:</em></p>
+<ol>
+<li><p><em><span class="math inline">\(X/\!/G\)</span> is a <span class="math inline">\(1\)</span>-type, and for each <span class="math inline">\(x\)</span> the loop space <span class="math inline">\(\Omega_x(X/\!/G)\simeq\operatorname{Stab}_G(x)\)</span> retains the stabilizer as nontrivial automorphisms;</em></p></li>
+<li><p><em>the set quotient <span class="math inline">\(X/G\)</span> is the <span class="math inline">\(0\)</span>-truncation <span class="math inline">\(\lVert X/\!/G\rVert_0\)</span>, which forgets exactly those stabilizer loops;</em></p></li>
+<li><p><em>hence whenever some stabilizer is nontrivial, <span class="math inline">\(X/\!/G\)</span> is strictly finer than <span class="math inline">\(X/G\)</span>: there is no equivalence <span class="math inline">\(X/\!/G\simeq X/G\)</span>.</em></p></li>
+</ol>
+<p><em>This is a purely type-theoretic reconstruction of the source proposition “stacks retain gauge information” (<span class="math inline">\(\operatorname{Aut}_{[X/G]}(x)\simeq\operatorname{Stab}_G(x)\)</span>) and of Part III’s finer-moduli phenomenon.</em></p>
+</div>
+<div class="proof">
+<p><em>Proof.</em> (a) By construction the only generating paths of <span class="math inline">\(X/\!/G\)</span> at a point <span class="math inline">\(x\)</span> are the <span class="math inline">\(g\cdot(-)\)</span> loops, and the higher inductive coherences make loop concatenation match group multiplication; the loops fixing <span class="math inline">\(x\)</span> are precisely those <span class="math inline">\(g\)</span> with <span class="math inline">\(g\cdot x=x\)</span>, i.e. <span class="math inline">\(\operatorname{Stab}_G(x)\)</span>, giving <span class="math inline">\(\Omega_x(X/\!/G)\simeq\operatorname{Stab}_G(x)\)</span>. Since <span class="math inline">\(G\)</span> is a <span class="math inline">\(0\)</span>-type, each stabilizer <span class="math inline">\(\operatorname{Stab}_G(x)\subseteq G\)</span> is a set, so every loop space is a set and <span class="math inline">\(X/\!/G\)</span> is <span class="math inline">\(1\)</span>-truncated; here the set hypotheses on <span class="math inline">\(X\)</span> and <span class="math inline">\(G\)</span> are exactly what bounds <span class="math inline">\(X/\!/G\)</span> at truncation level <span class="math inline">\(1\)</span> (a <span class="math inline">\(G\)</span> with higher homotopy, such as a delooped Lie group, would raise the level regardless of stabilizers). (b) The set quotient is defined as the <span class="math inline">\(0\)</span>-truncation of <span class="math inline">\(X/\!/G\)</span> (equivalently the quotient of <span class="math inline">\(X\)</span> by the orbit equivalence relation), and <span class="math inline">\(0\)</span>-truncation identifies all parallel paths, so all stabilizer loops collapse to reflexivity, retaining only orbits. (c) If some <span class="math inline">\(\operatorname{Stab}_G(x)\ne\{e\}\)</span> then <span class="math inline">\(\Omega_x(X/\!/G)\)</span> is a nontrivial set while the corresponding loop space in the <span class="math inline">\(0\)</span>-type <span class="math inline">\(X/G\)</span> is contractible; an equivalence <span class="math inline">\(X/\!/G\simeq X/G\)</span> would induce an equivalence on loop spaces (equivalences preserve all homotopy structure), a contradiction. Reading a stabilizer loop as a residual gauge automorphism of the configuration <span class="math inline">\(x\)</span>, (a)–(c) are exactly the statement <span class="math inline">\(\operatorname{Aut}_{[X/G]}(x)\simeq\operatorname{Stab}_G(x)\)</span> with the coarse quotient forgetting <span class="math inline">\(\operatorname{Aut}\)</span>, which is the source’s “stacks retain gauge information.” ◻</p>
+</div>
+<div id="cor:four-proofs" class="corollary">
+<p><strong>Corollary 34</strong> (One fact, four proofs).  <em>The proposition “passing to the stack/groupoid quotient retains stabilizer data that the coarse quotient forgets” now has a type-theoretic proof (<a href="#thm:truncation" data-reference-type="ref+Label" data-reference="thm:truncation">33</a>) via truncation levels, complementing Part I’s informal gluing argument, Part III’s algebro-geometric moduli argument, and Part VI’s forthcoming descent-theoretic proof. These are one theorem with four proofs at increasing rigor—the headline “closure” motif of the synthesis paper.</em></p>
+</div>
+<p>The truncation tower relating the two quotients is: <span class="math display">\[\begin{equation}
+\label{eq:trunc-cd}
+\begin{tikzcd}[column sep=large, row sep=large]
+X \arrow[r, &quot;\text{quotient}&quot;] \arrow[dr, &quot;\text{orbit map}&quot;&#39;] &amp; X/\!/G \arrow[d, &quot;\lVert-\rVert_0&quot;] \\
+&amp; X/G
+\end{tikzcd}
+\end{equation}\]</span></p>
+<h1 data-number="7" id="sec:dictionary"><span class="header-section-number">7</span> The category-theory and HoTT representation dictionary</h1>
+<p>We collect the core dictionary entries with S/H/P labels; the full longtables are in <a href="#app:library" data-reference-type="ref+label" data-reference="app:library">12</a>. The discipline is that of the whole series: an entry is <span class="math inline">\(\mathrm{S}\)</span> when it is a standard mathematical fact used verbatim in mathematical physics, and <span class="math inline">\(\mathrm{S/H}\)</span> or <span class="math inline">\(\mathrm{H}\)</span> when its <em>physical</em> reading is a heuristic layer.</p>
+<div class="center">
+<div class="table-scroll">
+<table class="paper-table">
+<thead><tr>
+<th><strong>Category theory</strong></th>
+<th><strong>Physical representation</strong></th>
+<th><strong>Status</strong></th>
+</tr></thead>
+<tbody>
+<tr><td>Object</td><td>Physical system / state space</td><td>S/H</td></tr>
+<tr><td>Morphism <span class="math inline">\(f:A\to B\)</span></td><td>Process, transition, evolution</td><td>S</td></tr>
+<tr><td>Composition <span class="math inline">\(g\circ f\)</span></td><td>Sequential process</td><td>S</td></tr>
+<tr><td>Identity morphism</td><td>Do-nothing process</td><td>S</td></tr>
+<tr><td>Isomorphism</td><td>Reversible equivalence</td><td>S</td></tr>
+<tr><td>Equivalence of categories</td><td>Same theory, dual descriptions</td><td>S</td></tr>
+<tr><td>Functor</td><td>Physical theory / quantization</td><td>S</td></tr>
+<tr><td>Natural transformation</td><td>Uniform field redefinition</td><td>S/H</td></tr>
+<tr><td>Monoidal product <span class="math inline">\(\otimes\)</span></td><td>Parallel composition of systems</td><td>S</td></tr>
+<tr><td>Dagger-compact category</td><td>Quantum process calculus</td><td>S</td></tr>
+<tr><td>Trace</td><td>Feedback / partition function</td><td>S/H</td></tr>
+<tr><td>Yoneda lemma</td><td>System known by its probes</td><td>S/H</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="center">
+<div class="table-scroll">
+<table class="paper-table">
+<thead><tr>
+<th><strong>HoTT / type theory</strong></th>
+<th><strong>Physical representation</strong></th>
+<th><strong>Status</strong></th>
+</tr></thead>
+<tbody>
+<tr><td>Type <span class="math inline">\(A\)</span></td><td>Space of states / possibilities</td><td>S/H</td></tr>
+<tr><td>Term <span class="math inline">\(a:A\)</span></td><td>State / event / witness</td><td>S/H</td></tr>
+<tr><td>Dependent type <span class="math inline">\(B(x)\)</span></td><td>Field / fibre over base point</td><td>S/H</td></tr>
+<tr><td>Identity type <span class="math inline">\(a=b\)</span></td><td>Path / equivalence of states</td><td>S/H</td></tr>
+<tr><td>Transport</td><td>Parallel transport / coordinate change</td><td>S/H</td></tr>
+<tr><td>Equivalence <span class="math inline">\(A\simeq B\)</span></td><td>Duality / gauge-equivalent description</td><td>H</td></tr>
+<tr><td>Univalence</td><td>Equivalent systems identified</td><td>S/H</td></tr>
+<tr><td><span class="math inline">\(0\)</span>-truncation</td><td>Classical coarse-graining</td><td>H</td></tr>
+<tr><td>Groupoid quotient <span class="math inline">\(X/\!/G\)</span></td><td>Gauge configuration space</td><td>S/H</td></tr>
+<tr><td>Circle HIT <span class="math inline">\(S^1\)</span></td><td>Winding / phase sector</td><td>H</td></tr>
+<tr><td>Cohesive HoTT</td><td>Synthetic geometry for fields</td><td>S/H</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+<h1 data-number="8" id="sec:haskell"><span class="header-section-number">8</span> Haskell formalization</h1>
+<p>The package <code>src/category-theory-hott-composition/</code> encodes the composition/identity structures of <a href="#sec:cat,sec:monoidal" data-reference-type="ref+label" data-reference="sec:cat,sec:monoidal">[sec:cat,sec:monoidal]</a> and the groupoid-vs-set quotient of <a href="#thm:truncation" data-reference-type="ref+Label" data-reference="thm:truncation">33</a>. We reproduce the type-class skeleton; the runnable <code>Main.hs</code> exercises the identity/associativity laws, a functor, a natural-transformation naturality check, a dagger-compact no-cloning obstruction, and the two quotients.</p>
+<blockquote>
+<p>class Category cat where<br />
+identity :: cat a a<br />
+compose  :: cat b c -&gt; cat a b -&gt; cat a c<br />
+class (Category c, Category d) =&gt; CFunctor c d f where<br />
+fmapC :: c a b -&gt; d (f a) (f b)<br />
+newtype NatTrans d f g = NatTrans component :: forall a. d (f a) (g a)</p>
+</blockquote>
+<p>Here <code>NatTrans</code> is parameterized by the <em>target category</em> <code>d</code>, so a natural transformation’s components are morphisms in <code>d</code>—not hardcoded Haskell functions—which keeps the encoding honest for non-<code>Hask</code> targets such as <span class="math inline">\(\mathsf{FdHilb}\)</span> or <span class="math inline">\(\mathsf{Bord}_n\)</span>.</p>
+<p><code>Main.hs</code> checks numerically that <code>compose identity f == f == compose f identity</code> for a concrete category (functions), that a chosen functor preserves composition, that a naturality square commutes, that the tensor-vs-biproduct dimension mismatch of <a href="#thm:nocloning" data-reference-type="ref+Label" data-reference="thm:nocloning">31</a> holds (<span class="math inline">\(2\cdot2=4\)</span> but <span class="math inline">\(3\cdot3=9\ne
+6\)</span>), and that the groupoid quotient retains a stabilizer that the set quotient discards. The whole package compiles with <code>ghc</code>.</p>
+<h1 data-number="9" id="sec:lean"><span class="header-section-number">9</span> Lean formalization (best-effort sketch)</h1>
+<p>The directory <code>lean/category-theory-hott-composition/</code> contains an idiomatic Lean 4 sketch capturing the category, functor, and identity-law types, plus signatures for T1 and T4. It reuses Mathlib’s <code>CategoryTheory</code> where convenient and states the physics-facing wrappers (a <code>PhysicalCategory</code> interpretation, a univalence-respects-realization signature, and a groupoid-quotient-finer-than-set-quotient signature). It is a best-effort sketch, not build-gated.</p>
+<h1 data-number="10" id="sec:discussion"><span class="header-section-number">10</span> Discussion</h1>
+<h4 data-number="10.0.0.1" id="composition-in-the-ladder."><span class="header-section-number">10.0.0.1</span> Composition in the ladder.</h4>
+<p>Parts I–IV produced translations—abstraction, realization, observation, TQFT, homology—each of which is a functor. <a href="#thm:pipeline-functor" data-reference-type="ref+Label" data-reference="thm:pipeline-functor">4</a> shows the library was always a diagram in <span class="math inline">\(\mathsf{Cat}\)</span>; Part V simply names the ambient grammar. The associativity and unit laws <a href="#eq:assoc" data-reference-type="eqref" data-reference="eq:assoc">[eq:assoc]</a>–<a href="#eq:unit" data-reference-type="eqref" data-reference="eq:unit">[eq:unit]</a> are the reason the pipeline may be assembled from stages at all, and <a href="#cor:composition" data-reference-type="ref+Label" data-reference="cor:composition">30</a> shows the same law governs logical, computational, and physical composition.</p>
+<h4 data-number="10.0.0.2" id="identity-in-the-ladder."><span class="header-section-number">10.0.0.2</span> Identity in the ladder.</h4>
+<p>Part I <em>postulated</em> that equivalent representations carry the same physical content (Axiom Equivalence). <a href="#thm:univalence" data-reference-type="ref+Label" data-reference="thm:univalence">27</a> <em>derives</em> it for every internally definable realization, and <a href="#rem:gauge-invariance" data-reference-type="ref+Label" data-reference="rem:gauge-invariance">28</a> reads the residue—realizations that fail it—as exactly the gauge-dependent quantities. This is the module’s central payoff: identity of structures, formalized by univalence, is the correct home for the “same physics, different description” principle that recurs through the series.</p>
+<h4 data-number="10.0.0.3" id="forecasting-part-vi."><span class="header-section-number">10.0.0.3</span> Forecasting Part VI.</h4>
+<p><a href="#thm:nocloning" data-reference-type="ref+Label" data-reference="thm:nocloning">31</a> forces quantum high availability to be encoding, and <a href="#thm:truncation" data-reference-type="ref+Label" data-reference="thm:truncation">33</a> produces the stabilizer-retention phenomenon inside the truncation hierarchy. Both are the categorical/type-theoretic inputs Part VI turns into stacks (groupoid-valued sheaves) and quantum error-correcting codes. <a href="#cor:four-proofs" data-reference-type="ref+Label" data-reference="cor:four-proofs">34</a> records that the stabilizer-retention fact will then have four proofs at increasing rigor—the synthesis paper’s “closure theorem.”</p>
+<h4 data-number="10.0.0.4" id="limitations."><span class="header-section-number">10.0.0.4</span> Limitations.</h4>
+<p>Category theory and HoTT are status S mathematics; their <em>physical</em> readings carry the flags of <a href="#sec:dictionary" data-reference-type="ref+label" data-reference="sec:dictionary">7</a>. We reiterate the series limitations in this module’s terms. (i) We claim no single universal functor <span class="math inline">\(\mathsf{Math}\to\mathsf{Phys}\)</span>; <a href="#thm:pipeline-functor" data-reference-type="ref+Label" data-reference="thm:pipeline-functor">4</a> is domain-indexed by <span class="math inline">\(d\)</span>, matching Part I’s deliberate locality. (ii) The reading of a type as a “space of physical possibilities” is heuristic (status <span class="math inline">\(\mathrm{H}\)</span>). (iii) <a href="#thm:univalence" data-reference-type="ref+Label" data-reference="thm:univalence">27</a> requires a genuinely univalent model and an internally definable realization; externally chosen realizations are outside its scope by design, which is the gauge-dependence caveat, not a defect. (iv) The no-cloning argument is stated for <span class="math inline">\(\mathsf{FdHilb}\)</span>; infinite-dimensional refinements need additional analytic hypotheses. (v) Univalence is a foundational axiom (with computational content in cubical type theory) rather than a physical measurement, so its physical reading remains <span class="math inline">\(\mathrm{S/H}\)</span>.</p>
+<h1 data-number="11" id="sec:conclusion"><span class="header-section-number">11</span> Conclusion</h1>
+<p>Part V isolates the compositional glue of the representation library. Category theory supplies the laws of <em>composition</em>: associativity, units, functoriality, naturality, the interchange law, and (via Eckmann–Hilton) the first constraint linking two compositions through a shared identity. HoTT supplies the theory of <em>identity</em>: identity types as paths, path induction as the sole generator of transport, and univalence as the identification of identity with equivalence. Four theorems give the physics. Univalence turns Part I’s Equivalence axiom into a theorem (T1); the Curry–Howard–Lambek correspondence exhibits one functor interpreting logic, code, and physics (T2); a structural no-cloning theorem forces quantum high availability to be encoding (T3); and the groupoid quotient’s strict refinement of the set quotient reconstructs “stacks retain gauge information” inside the truncation hierarchy (T4). Together they make explicit the universal grammar that Parts I–IV used implicitly and that Part VI will use to build stacks and quantum codes. In the compressed slogans of the series, mathematics is the syntax of physical representation and categories/types are the grammar of its composition and identity.</p>
+<div class="thebibliography">
+<p id="ref-1"><span class="ref-number">[1]</span> S. Mac Lane, <em>Categories for the Working Mathematician</em>, Graduate Texts in Mathematics 5, 2nd ed., Springer, 1998.</p>
+<p id="ref-2"><span class="ref-number">[2]</span> The Univalent Foundations Program, <em>Homotopy Type Theory: Univalent Foundations of Mathematics</em>, Institute for Advanced Study, 2013.</p>
+<p id="ref-3"><span class="ref-number">[3]</span> J. C. Baez and M. Stay, <em>Physics, topology, logic and computation: A Rosetta Stone</em>, arXiv:0903.0340 (2009); <em>Lecture Notes in Physics</em> <strong>813</strong> (2010), 95–172.</p>
+<p id="ref-4"><span class="ref-number">[4]</span> S. Abramsky and B. Coecke, <em>A categorical semantics of quantum protocols</em>, arXiv:quant-ph/0402130 (2004); Proc. 19th IEEE Symposium on Logic in Computer Science (LiCS), 2004.</p>
+<p id="ref-5"><span class="ref-number">[5]</span> J. Lambek and P. J. Scott, <em>Introduction to Higher Order Categorical Logic</em>, Cambridge Studies in Advanced Mathematics 7, Cambridge University Press, 1986.</p>
+<p id="ref-6"><span class="ref-number">[6]</span> J. Lurie, <em>On the classification of topological field theories</em>, arXiv:0905.0465 (2009); <em>Current Developments in Mathematics 2008</em>, 129–280.</p>
+<p id="ref-7"><span class="ref-number">[7]</span> J. Lurie, <em>Higher Topos Theory</em>, Annals of Mathematics Studies 170, Princeton University Press, 2009.</p>
+<p id="ref-8"><span class="ref-number">[8]</span> U. Schreiber, <em>Differential cohomology in a cohesive <span class="math inline">\(\infty\)</span>-topos</em>, arXiv:1310.7930 (2013).</p>
+<p id="ref-9"><span class="ref-number">[9]</span> E. Riehl and D. Verity, <em>Elements of <span class="math inline">\(\infty\)</span>-Category Theory</em>, Cambridge Studies in Advanced Mathematics, Cambridge University Press, 2022.</p>
+<p id="ref-10"><span class="ref-number">[10]</span> M. Atiyah, <em>Topological quantum field theories</em>, <em>Publications Mathématiques de l’IHÉS</em> <strong>68</strong> (1988), 175–186.</p>
+<p id="ref-11"><span class="ref-number">[11]</span> E. Riehl, <em>Category Theory in Context</em>, Aurora: Dover Modern Math Originals, Dover Publications, 2017.</p>
+</div>
+<h1 data-number="12" id="app:library"><span class="header-section-number">12</span> Full category-theory and HoTT representation library</h1>
+<p>The following longtables reproduce the module’s dictionary (source Appendix E), with epistemic status labels carried verbatim. Each row is a representation entry <span class="math inline">\((M,P,\tau,\sigma)\)</span> in the sense of <a href="#def:entry" data-reference-type="ref+label" data-reference="def:entry">1</a>.</p>
+<div class="table-scroll">
+<table class="paper-table">
+<caption>Category theory library (physical representation dictionary).</caption>
+<thead><tr>
+<th><strong>Category theory</strong></th>
+<th><strong>Physical representation</strong></th>
+<th><strong>Semantic meaning</strong></th>
+<th><strong>Status</strong></th>
+</tr></thead>
+<tbody>
+<tr><td>Object</td><td>Physical system / state space</td><td>Thing capable of processes</td><td>S/H</td></tr>
+<tr><td>Morphism <span class="math inline">\(f:A\to B\)</span></td><td>Process, transition, evolution</td><td>Physical transformation</td><td>S</td></tr>
+<tr><td>Composition <span class="math inline">\(g\circ f\)</span></td><td>Sequential process</td><td>One process after another</td><td>S</td></tr>
+<tr><td>Identity morphism</td><td>Do-nothing process</td><td>Persistence / trivial evolution</td><td>S</td></tr>
+<tr><td>Isomorphism</td><td>Reversible equivalence</td><td>Same structure, new coordinates</td><td>S</td></tr>
+<tr><td>Equivalence of categories</td><td>Same theory structurally</td><td>Dual physical descriptions</td><td>S</td></tr>
+<tr><td>Functor</td><td>Translation between worlds</td><td>Physical theory / quantization</td><td>S</td></tr>
+<tr><td>Natural transformation</td><td>Uniform deformation</td><td>Theory equivalence / field redefinition</td><td>S/H</td></tr>
+<tr><td>Category of states</td><td>State-system universe</td><td>Objects systems, arrows evolutions</td><td>H</td></tr>
+<tr><td>Category of observables</td><td>Measurement-algebra universe</td><td>Arrows observable transformations</td><td>H</td></tr>
+<tr><td>Monoidal category</td><td>Parallel composition</td><td>Composite systems</td><td>S</td></tr>
+<tr><td>Tensor product <span class="math inline">\(\otimes\)</span></td><td>Combine systems</td><td>Parallel physical composition</td><td>S</td></tr>
+<tr><td>Unit object <span class="math inline">\(I\)</span></td><td>Vacuum / trivial system</td><td>No-system baseline</td><td>S/H</td></tr>
+<tr><td>Symmetric monoidal</td><td>Exchangeable systems</td><td>Bosonic-like swap symmetry</td><td>S/H</td></tr>
+<tr><td>Braided monoidal</td><td>Nontrivial exchange</td><td>Anyonic / braided statistics</td><td>S</td></tr>
+<tr><td>Ribbon category</td><td>Braiding plus twist</td><td>Topological quantum computation</td><td>S</td></tr>
+<tr><td>Compact closed</td><td>Dualizable inputs/outputs</td><td>Process–state duality</td><td>S</td></tr>
+<tr><td>Dagger category</td><td>Reversal / adjoint</td><td>Quantum adjoint, time reversal</td><td>S</td></tr>
+<tr><td>Dagger-compact</td><td>Quantum process calculus</td><td>Teleportation, cups/caps</td><td>S</td></tr>
+<tr><td>String diagram</td><td>Diagrammatic process</td><td>Circuit / Feynman grammar</td><td>S</td></tr>
+<tr><td>Trace</td><td>Feedback loop</td><td>Closed process, partition function</td><td>S/H</td></tr>
+<tr><td>Dual object <span class="math inline">\(A^{*}\)</span></td><td>Antisystem / dual space</td><td>Bra/ket, particle/antiparticle</td><td>S/H</td></tr>
+<tr><td>Evaluation map</td><td>Pairing</td><td>Measurement, annihilation</td><td>S/H</td></tr>
+<tr><td>Coevaluation map</td><td>Pair creation</td><td>Entangled pair / vacuum insertion</td><td>S/H</td></tr>
+<tr><td>Limit</td><td>Universal compatible solution</td><td>Constraint satisfaction</td><td>S</td></tr>
+<tr><td>Colimit</td><td>Universal gluing</td><td>Global system from parts</td><td>S</td></tr>
+<tr><td>Pullback</td><td>Fibered constraint</td><td>Simultaneous conditions</td><td>S</td></tr>
+<tr><td>Pushout</td><td>Gluing along boundary</td><td>Coupled systems</td><td>S</td></tr>
+<tr><td>Adjunction <span class="math inline">\(F\dashv G\)</span></td><td>Dual translation pair</td><td>Free/forgetful, prep/measure</td><td>S/H</td></tr>
+<tr><td>Monad</td><td>Dynamics with effects</td><td>State update, computation effect</td><td>S/H</td></tr>
+<tr><td>Comonad</td><td>Context extraction</td><td>Observation / coarse environment</td><td>H</td></tr>
+<tr><td>Algebra over monad</td><td>System obeying effects</td><td>Dynamics closed under update</td><td>H</td></tr>
+<tr><td>Coalgebra</td><td>State-transition system</td><td>Observable unfolding / branching</td><td>S/H</td></tr>
+<tr><td>Operad</td><td>Multi-input composition law</td><td>Interaction vertices / couplings</td><td>S</td></tr>
+<tr><td>PROP</td><td>Multi-in/out network</td><td>Circuit / Feynman process algebra</td><td>S</td></tr>
+<tr><td>Enriched category</td><td>Structured hom-spaces</td><td>Distances, probabilities, Hilbert homs</td><td>S/H</td></tr>
+<tr><td>2-category</td><td>Objects, processes, transformations</td><td>Theories, defects, transformations</td><td>S</td></tr>
+<tr><td><span class="math inline">\(\infty\)</span>-category</td><td>All higher coherences</td><td>Histories, higher gauge data</td><td>S</td></tr>
+<tr><td>Higher category</td><td>Nested process hierarchy</td><td>Particles, strings, branes, defects</td><td>S</td></tr>
+<tr><td><span class="math inline">\(n\)</span>-category</td><td><span class="math inline">\(n\)</span>-level process system</td><td>Extended TQFT codimension</td><td>S</td></tr>
+<tr><td>Topos</td><td>Universe of variable sets</td><td>Contextual world of observation</td><td>H</td></tr>
+<tr><td>Sheaf topos</td><td>Local-to-global universe</td><td>Observer-dependent gluing</td><td>S/H</td></tr>
+<tr><td>Internal language</td><td>Logic of a category</td><td>Native reasoning of a universe</td><td>H</td></tr>
+<tr><td>Yoneda lemma</td><td>Object known by probes</td><td>System determined by observations</td><td>S/H</td></tr>
+</tbody>
+</table>
+</div>
+<div class="table-scroll">
+<table class="paper-table">
+<caption>Homotopy type theory library (physical representation dictionary).</caption>
+<thead><tr>
+<th><strong>HoTT / type theory</strong></th>
+<th><strong>Physical representation</strong></th>
+<th><strong>Semantic meaning</strong></th>
+<th><strong>Status</strong></th>
+</tr></thead>
+<tbody>
+<tr><td>Type <span class="math inline">\(A\)</span></td><td>Space of states / propositions</td><td>Domain of possible inhabitants</td><td>S/H</td></tr>
+<tr><td>Term <span class="math inline">\(a:A\)</span></td><td>State / event / witness</td><td>Actual instance of a possibility</td><td>S/H</td></tr>
+<tr><td>Dependent type <span class="math inline">\(B(x)\)</span></td><td>Fibre over configuration</td><td>Field degrees over base point</td><td>S/H</td></tr>
+<tr><td><span class="math inline">\(\Sigma\)</span>-type</td><td>Total space</td><td>Configuration plus dependent data</td><td>S</td></tr>
+<tr><td><span class="math inline">\(\Pi\)</span>-type</td><td>Space of sections</td><td>Field assigning data everywhere</td><td>S</td></tr>
+<tr><td>Identity type <span class="math inline">\(a=b\)</span></td><td>Path from <span class="math inline">\(a\)</span> to <span class="math inline">\(b\)</span></td><td>Equivalence / evolution of states</td><td>S/H</td></tr>
+<tr><td>Higher identity type</td><td>Homotopy between paths</td><td>Coherence between evolutions</td><td>S/H</td></tr>
+<tr><td>Path induction</td><td>Reasoning from identity</td><td>Transport laws from equivalence</td><td>S/H</td></tr>
+<tr><td>Transport</td><td>Move structure along path</td><td>Parallel transport / coordinate change</td><td>S/H</td></tr>
+<tr><td>Equivalence <span class="math inline">\(A\simeq B\)</span></td><td>Same physics, new representation</td><td>Duality / gauge equivalence</td><td>H</td></tr>
+<tr><td>Univalence</td><td>Equivalence treated as identity</td><td>Equivalent systems identified</td><td>S/H</td></tr>
+<tr><td>Universe <span class="math inline">\(\mathcal U\)</span></td><td>Type of systems / theories</td><td>Meta-space of descriptions</td><td>H</td></tr>
+<tr><td>Higher inductive type</td><td>Generated points/paths/cells</td><td>Synthetic topological spaces</td><td>S/H</td></tr>
+<tr><td>Circle HIT <span class="math inline">\(S^1\)</span></td><td>Generated loop space</td><td>Winding sector / phase circle</td><td>H</td></tr>
+<tr><td>Sphere HIT <span class="math inline">\(S^n\)</span></td><td>Generated <span class="math inline">\(n\)</span>-charge carrier</td><td>Higher topological charge</td><td>H</td></tr>
+<tr><td>Pushout type</td><td>Glued system</td><td>Boundary coupling / fusion</td><td>S/H</td></tr>
+<tr><td>Pullback type</td><td>Constraint-matched system</td><td>Simultaneous compatibility</td><td>S/H</td></tr>
+<tr><td>Quotient type</td><td>Identified states</td><td>Gauge quotient / equivalence classes</td><td>H</td></tr>
+<tr><td>Truncation</td><td>Forget higher identity</td><td>Classical approximation</td><td>H</td></tr>
+<tr><td>Mere proposition</td><td>Yes/no observable</td><td>Proof-irrelevant physical fact</td><td>H</td></tr>
+<tr><td>Set-truncation</td><td>Classical state set</td><td>No higher path information</td><td>H</td></tr>
+<tr><td>Groupoid level</td><td>Gauge-state structure</td><td>States plus equivalences</td><td>S/H</td></tr>
+<tr><td><span class="math inline">\(\infty\)</span>-groupoid</td><td>Full homotopy state space</td><td>States, paths, paths-between-paths</td><td>S/H</td></tr>
+<tr><td>Contractible type</td><td>Unique state up to equivalence</td><td>Trivial phase / vacuum sector</td><td>H</td></tr>
+<tr><td>Fiber sequence</td><td>Structured dependency</td><td>Gauge fibre over base</td><td>S/H</td></tr>
+<tr><td>Modal type theory</td><td>Observation / filtering modes</td><td>Coarse-graining, localization</td><td>H</td></tr>
+<tr><td>Cohesive HoTT</td><td>Synthetic smooth geometry</td><td>Internal language for fields</td><td>S/H</td></tr>
+<tr><td>Shape modality</td><td>Underlying homotopy type</td><td>Forget geometry, keep topology</td><td>S/H</td></tr>
+<tr><td>Flat modality</td><td>Discrete / codified form</td><td>Locally constant representation</td><td>H</td></tr>
+<tr><td>Sharp modality</td><td>Codiscrete / crisp form</td><td>Purely formal / global representation</td><td>H</td></tr>
+<tr><td>Differential cohesion</td><td>Smooth infinitesimal structure</td><td>Synthetic differential geometry</td><td>S/H</td></tr>
+</tbody>
+</table>
+</div>

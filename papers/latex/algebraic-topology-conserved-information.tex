@@ -1,0 +1,1600 @@
+\documentclass[12pt]{article}
+
+% ==================== Core math ====================
+\usepackage{amsmath, amssymb, amsthm}
+
+% ==================== Tables ====================
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{longtable}
+\usepackage{aliascnt}
+
+% ==================== Diagrams ====================
+\usepackage{tikz-cd}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta, positioning, calc, fit, backgrounds}
+
+% ==================== References ====================
+\usepackage{hyperref}
+\usepackage{cleveref}
+
+% ==================== Graphics ====================
+\usepackage{graphicx}
+
+% ==================== Page layout ====================
+\usepackage[margin=1in]{geometry}
+% Allow TeX a little extra stretch to eliminate residual sub-1em overfull boxes.
+\setlength{\emergencystretch}{1.5em}
+
+% ==================== GrokRxiv sidebar ====================
+% (Modern LaTeX kernel shipout hooks are used below instead of the deprecated
+%  everypage package.)
+\usepackage{xcolor}
+
+\hypersetup{
+  colorlinks=true,
+  linkcolor=blue!55!black,
+  citecolor=green!45!black,
+  urlcolor=blue!60!black,
+  pdftitle={Algebraic Topology: Conserved Global Information},
+  pdfauthor={Matthew Long}
+}
+
+% ==================== Theorem environments ====================
+% All environments share the theorem counter for unified numbering, but via
+% aliascnt so that cleveref labels each one correctly (Definition/Proposition/...
+% rather than the counter name "Theorem").
+\newtheorem{theorem}{Theorem}[section]
+
+\newaliascnt{proposition}{theorem}
+\newtheorem{proposition}[proposition]{Proposition}
+\aliascntresetthe{proposition}
+
+\newaliascnt{lemma}{theorem}
+\newtheorem{lemma}[lemma]{Lemma}
+\aliascntresetthe{lemma}
+
+\newaliascnt{corollary}{theorem}
+\newtheorem{corollary}[corollary]{Corollary}
+\aliascntresetthe{corollary}
+
+\theoremstyle{definition}
+\newaliascnt{definition}{theorem}
+\newtheorem{definition}[definition]{Definition}
+\aliascntresetthe{definition}
+
+\newaliascnt{example}{theorem}
+\newtheorem{example}[example]{Example}
+\aliascntresetthe{example}
+
+\theoremstyle{remark}
+\newaliascnt{remark}{theorem}
+\newtheorem{remark}[remark]{Remark}
+\aliascntresetthe{remark}
+
+% Explicit cleveref names (belt-and-suspenders with aliascnt).
+\crefname{theorem}{Theorem}{Theorems}
+\Crefname{theorem}{Theorem}{Theorems}
+\crefname{proposition}{Proposition}{Propositions}
+\Crefname{proposition}{Proposition}{Propositions}
+\crefname{lemma}{Lemma}{Lemmas}
+\Crefname{lemma}{Lemma}{Lemmas}
+\crefname{corollary}{Corollary}{Corollaries}
+\Crefname{corollary}{Corollary}{Corollaries}
+\crefname{definition}{Definition}{Definitions}
+\Crefname{definition}{Definition}{Definitions}
+\crefname{example}{Example}{Examples}
+\Crefname{example}{Example}{Examples}
+\crefname{remark}{Remark}{Remarks}
+\Crefname{remark}{Remark}{Remarks}
+
+% ==================== Macros ====================
+\newcommand{\Bord}{\mathrm{Bord}}
+\newcommand{\Vect}{\mathrm{Vect}}
+\newcommand{\Top}{\mathrm{Top}}
+\newcommand{\hTop}{\mathrm{hTop}}
+\newcommand{\GrAb}{\mathrm{GrAb}}
+\newcommand{\Ab}{\mathrm{Ab}}
+\newcommand{\Man}{\mathrm{Man}}
+\newcommand{\Dom}{\mathsf{Dom}}
+\newcommand{\Phys}{\mathsf{Phys}}
+\newcommand{\Math}{\mathsf{Math}}
+\newcommand{\Rep}{\mathsf{Rep}}
+\newcommand{\Real}{\mathrm{Real}}
+\newcommand{\Obs}{\mathrm{Obs}}
+\newcommand{\Info}{\mathrm{Info}}
+\newcommand{\ind}{\mathrm{ind}}
+\newcommand{\ch}{\mathrm{ch}}
+\newcommand{\Ahat}{\widehat{A}}
+\newcommand{\id}{\mathrm{id}}
+\newcommand{\im}{\operatorname{im}}
+\newcommand{\Hom}{\operatorname{Hom}}
+\newcommand{\Aut}{\operatorname{Aut}}
+\newcommand{\Stab}{\operatorname{Stab}}
+\newcommand{\Zm}{\mathbb{Z}}
+\newcommand{\Rm}{\mathbb{R}}
+\newcommand{\Cm}{\mathbb{C}}
+\newcommand{\Qm}{\mathbb{Q}}
+\newcommand{\Umone}{\mathrm{U}(1)}
+\newcommand{\sfd}{^{\mathrm{fd}}}
+\DeclareMathOperator{\rk}{rk}
+\newcommand{\Sfont}{\textnormal{\sffamily\bfseries S}}
+\newcommand{\Hfont}{\textnormal{\sffamily\bfseries H}}
+\newcommand{\Pfont}{\textnormal{\sffamily\bfseries P}}
+\newcommand{\st}[1]{\ensuremath{[\,#1\,]}}
+
+% GrokRxiv rotated sidebar (page 1 only), via the modern shipout hook.
+\definecolor{grokgray}{RGB}{110,110,110}
+\AddToHook{shipout/foreground}{%
+  \ifnum\value{page}=1
+    \begin{tikzpicture}[remember picture, overlay]
+      \node[
+        rotate=90,
+        anchor=south,
+        font=\Large\sffamily\bfseries\color{grokgray},
+        inner sep=0pt
+      ] at ([xshift=38pt, yshift=0.52\paperheight]current page.south west)
+      {GrokRxiv:2026.07.algebraic-topology-conserved-information\quad
+       [\,math.AT\,]\quad
+       04 Jul 2026};
+    \end{tikzpicture}
+  \fi
+}
+
+\title{\textbf{Algebraic Topology: Conserved Global Information}\\[0.4em]
+\large Part IV of \emph{A Math$\to$Physics Representation Library}}
+
+\author{Matthew Long \\
+\textit{The YonedaAI Collaboration} \\
+\textit{YonedaAI Research Collective} \\
+Chicago, IL \\
+\texttt{research@yonedaai.com} $\cdot$ \url{https://yonedaai.com}}
+
+\date{04 July 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+This is Part~IV of a seven-part \emph{modular} program that formalizes distinct
+mathematical domains as physical-representation modules within a single
+representation-stack framework. Building on Part~I (the representation stack and
+realization pipeline $\Obs_\alpha(M)=\Obs(\Real_\alpha(\Phi(M)))$), Part~II
+(motives, periods, amplitudes), and Part~III (algebraic geometry, spaces of
+physical possibility), we develop the thesis that \emph{algebraic topology is the
+grammar of conserved global information}. We treat (co)homology as the module of
+observables that are stable under continuous deformation, characteristic classes
+as quantized topological information carried by gauge bundles, and topological
+quantum field theory (TQFT) as the first fully rigorous, status-$\Sfont$
+realization of the Part~I pipeline in \emph{functorial} form over a category of
+cobordisms. Our main results are: (T1) that an $n$-dimensional TQFT
+$Z\colon\Bord_n\to\Vect_k$ is exactly a representation entry in the sense of
+Part~I, with its symmetric-monoidal structure discharging the Decomposition
+axiom; (T2) a statement of the cobordism hypothesis as a classification theorem
+for topological realization channels; (T3) a reading of the Atiyah--Singer index
+theorem $\ind(D)=\int_X \Ahat(TX)\wedge\ch(E)$ as a realization-pipeline identity
+$\text{observable}=\Real(\text{abstract structure})$; (T4) that Dijkgraaf--Witten
+theory instantiates the Locality/descent axiom through group cohomology; and (T5)
+a bordism-theoretic classification of anomalies and symmetry-protected
+topological phases. We prove homotopy invariance and functoriality of homology
+in full, formalize a \emph{conserved global information functor}, and carry the
+$\Sfont/\Hfont/\Pfont$ epistemic status discipline of the parent program
+throughout. Companion Haskell code (compiling under GHC) and a best-effort Lean
+sketch encode chain complexes, homology, characteristic classes, and the TQFT
+axioms. Part~IV is the point at which category theory first appears as the
+ambient grammar; it thereby seeds Part~V.
+\end{abstract}
+
+\tableofcontents
+
+% =====================================================================
+\section{Introduction}
+\label{sec:intro}
+
+\subsection{The modular program and where Part~IV sits}
+
+The parent program, \emph{A Math$\to$Physics Representation Library}, advances a
+single organizing claim: many physical quantities are not merely \emph{described
+by} mathematics but are \emph{obtained as realizations} of structured
+mathematical information. The organizing device is the \emph{realization
+pipeline}
+\begin{equation}
+\label{eq:pipeline}
+\begin{gathered}
+  M \;\xrightarrow{\;\Phi\;}\; \Phi(M)
+    \;\xrightarrow{\;\Real_\alpha\;}\; \text{physical representation}
+    \;\xrightarrow{\;\Obs\;}\; \text{measurement data},\\[0.4em]
+  \Obs_\alpha(M) = \Obs\bigl(\Real_\alpha(\Phi(M))\bigr),
+\end{gathered}
+\end{equation}
+together with a three-level epistemic status system that every module must carry:
+\begin{center}
+\small
+\begin{tabular}{c l p{5.1cm}}
+\toprule
+Label & Meaning & Canonical example\\
+\midrule
+$\Sfont$ & standard use in mathematics or physics & TQFT as a functor $\Bord_n\to\Vect$\\
+$\Hfont$ & strong heuristic dictionary entry & motive as ``functional essence''\\
+$\Pfont$ & speculative philosophical ontology & reality as motivic-categorical realization\\
+\bottomrule
+\end{tabular}
+\end{center}
+Composite labels ($\Sfont/\Hfont$, $\Hfont/\Pfont$) appear when a construction is
+standard as pure mathematics but heuristic or speculative in its \emph{physical}
+reading. We use the labels verbatim; they are part of the formalism, not
+decoration.
+
+The program is explicitly \emph{modular} rather than unified: each part is
+readable and defensible on its own, and composition is exhibited as a hierarchical
+building process. The ladder proceeds
+{\small
+\[
+  \underbrace{\text{I}}_{\text{stack}}\to
+  \underbrace{\text{II}}_{\text{periods}}\to
+  \underbrace{\text{III}}_{\text{geometry}}\to
+  \underbrace{\text{IV}^{\!\star}}_{\text{topology}}\to
+  \underbrace{\text{V}}_{\text{cat./HoTT}}\to
+  \underbrace{\text{VI}}_{\text{stacks/gauge/QHA}}\to
+  \text{Synth.},
+\]}%
+where $\text{IV}^{\star}$ denotes the present paper.
+Part~III equips the ``spaces of physical possibility'' (varieties, moduli) with a
+geometry. Part~IV equips those same spaces with \emph{topological invariants}
+stable under continuous deformation, and it is the first place where a
+\emph{genuinely functorial, status-$\Sfont$} instance of the pipeline
+\eqref{eq:pipeline} appears: a topological quantum field theory is literally a
+functor. This is the historical and conceptual bridge to Part~V, where
+functoriality is abstracted into the universal grammar of categories and homotopy
+type theory.
+
+\subsection{Thesis of Part~IV}
+
+We defend, formalize, and where possible prove the slogan
+\begin{center}
+\emph{algebraic topology is the grammar of conserved global information.}
+\end{center}
+Concretely: a homology class is a conserved extended structure; a cohomology
+class is a stable observable insensitive to local deformation; characteristic
+classes encode quantized topological information carried by bundles; bordism
+groups and generalized cohomology classify topological phases and anomalies; and
+TQFT packages all of this as a symmetric monoidal functor from cobordisms to an
+algebraic target. The recurring physical motif is \emph{conservation}: what
+survives continuous deformation is exactly what algebraic topology measures, and
+this is the topological face of the parent program's Decomposition and Locality
+axioms.
+
+\subsection{Contributions}
+
+\begin{enumerate}
+  \item \textbf{A representation-stack account of (co)homology}
+    (\Cref{sec:homology}). We define a \emph{conserved global information functor}
+    $H_\bullet\colon\hTop\to\GrAb$ and prove homotopy invariance and
+    functoriality in full, giving a precise sense in which topological observables
+    are \emph{conserved} under physical deformation (\Cref{thm:homotopy-inv,thm:cons-functor}).
+  \item \textbf{TQFT as a status-$\Sfont$ realization entry} (\Cref{sec:tqft}).
+    We show an $n$-dimensional TQFT is exactly a Part~I representation entry, and
+    that symmetric monoidality is the Decomposition axiom over cobordisms
+    (\Cref{thm:tqft-entry}); we state the cobordism hypothesis as a classification
+    theorem for topological realization channels (\Cref{thm:cobordism-hyp}).
+  \item \textbf{The index theorem as a pipeline identity} (\Cref{sec:char}).
+    We reframe Atiyah--Singer as an instance of
+    $\text{observable}=\Real(\text{abstract structure})$
+    (\Cref{thm:index}), the strongest available status-$\Sfont$ anchor.
+  \item \textbf{Discrete gauge theory and locality} (\Cref{sec:dw}). We show
+    Dijkgraaf--Witten theory instantiates the Locality/descent axiom via a group
+    cocycle, with triangulation independence coming from Pachner-move invariance
+    (\Cref{thm:dw}).
+  \item \textbf{Bordism classification of anomalies and phases}
+    (\Cref{sec:bordism}). We record the Freed--Hopkins classification of
+    invertible field theories and its physical reading as a status-$\Sfont$ /
+    $\Sfont\!/\Hfont$ statement (\Cref{thm:spt}).
+  \item \textbf{Formalization} (\Cref{sec:code}). Companion Haskell code
+    (compiling under GHC) and a Lean sketch encode chain complexes, homology,
+    characteristic classes and TQFT axioms, extending the parent program's
+    formal-verification bridge.
+\end{enumerate}
+
+\subsection{Epistemic status of Part~IV}
+
+Part~IV is unusually rich in status-$\Sfont$ content: TQFT, the index theorem,
+Dijkgraaf--Witten theory, and the bordism classification of invertible field
+theories are all standard mathematics or mathematical physics. The heuristic
+($\Hfont$) content lies in the \emph{physical readings} of dictionary entries
+(e.g.\ ``coboundary $=$ pure gauge''), and the speculative ($\Pfont$) content is
+confined to the ontological framing inherited from the parent program. We flag
+labels at every dictionary entry (\Cref{sec:dict}) and at each theorem.
+
+\subsection{Outline}
+
+\Cref{sec:framework} recalls the representation stack and pipeline from Part~I in
+the precise form used here. \Cref{sec:homology} develops (co)homology as conserved
+global information. \Cref{sec:char} treats characteristic classes and the index
+theorem. \Cref{sec:tqft} develops TQFT and the cobordism hypothesis.
+\Cref{sec:dw} treats Dijkgraaf--Witten theory; \Cref{sec:bordism} treats bordism
+and SPT phases. \Cref{sec:results} collects the main results. \Cref{sec:code}
+describes the companion code. \Cref{sec:discussion} discusses limitations and
+connections to Parts~III and~V, and \Cref{sec:conclusion} concludes.
+\Cref{sec:dict} reproduces the algebraic-topology dictionary with status labels.
+
+% =====================================================================
+\section{Mathematical Framework: the representation stack, recalled}
+\label{sec:framework}
+
+We recall from Part~I only what Part~IV uses, in a self-contained form.
+
+\begin{definition}[Domains and targets]
+\label{def:dom}
+Let $\Dom$ be a (small) category of \emph{mathematical domains}. For each
+$d\in\Dom$ let $\Math_d$ be a category (or higher category) of mathematical
+structures in that domain. Let $\Phys$ be a category of \emph{physical
+representation targets}: state spaces, observable algebras, process categories,
+gauge moduli, quantum code spaces, and measurement outcomes. In Part~IV the
+relevant domains are $\Top$ (topological spaces), $\Man_n$ (closed manifolds and
+cobordisms), and the associated $\Bord_n$.
+\end{definition}
+
+\begin{definition}[Representation entry]
+\label{def:entry}
+A \emph{representation entry} is a quadruple $E=(M,P,\tau,\sigma)$ where
+$M\in\Math_d$ is a mathematical structure, $P\in\Phys$ a physical representation,
+$\tau$ a semantic translation datum (a functor, a natural transformation, or a
+weaker relation), and $\sigma$ is the epistemic status label ($\Sfont$, $\Hfont$,
+or $\Pfont$).
+\end{definition}
+
+\begin{definition}[Realization pipeline]
+\label{def:pipeline}
+A \emph{realization pipeline} on categories $M\xrightarrow{\Phi}I
+\xrightarrow{\Real_\alpha}R\xrightarrow{\Obs}O$ is a composable triple of
+functors; the associated \emph{observable functor} is
+$\Obs_\alpha := \Obs\circ\Real_\alpha\circ\Phi$, and we write
+$\Obs_\alpha(M)=\Obs(\Real_\alpha(\Phi(M)))$ as in \eqref{eq:pipeline}. The
+index $\alpha$ ranges over \emph{realization channels}; in Part~IV the channels
+of interest are \emph{topological}: singular/de~Rham (co)homology, characteristic
+classes, TQFT evaluation, and the analytic index.
+\end{definition}
+
+Part~I isolates four axioms. We restate the two that Part~IV discharges
+concretely.
+
+\begin{definition}[Locality and descent axiom]
+\label{ax:locality}
+Physical representations must be locally assignable and globally coherent; a
+failure of descent is an obstruction, an anomaly, or a missing boundary datum.
+\end{definition}
+
+\begin{definition}[Decomposition axiom]
+\label{ax:decomp}
+Compositional or period-like observables admit a decomposition operation
+(boundary, coproduct, coaction, spectral sequence, factorization, or gluing)
+revealing lower-level informational pieces.
+\end{definition}
+
+The master diagram of Part~I, in the form we use, is
+\[
+\begin{tikzcd}[column sep=1.6em, row sep=large]
+M' \arrow[d, dashed, "\sim"', "\text{gauge / equiv.\ / duality}"] & & &\\
+M \arrow[r, "\Phi"] & \Phi(M) \arrow[r, "\Real_\alpha"] & \text{physical rep.} \arrow[r, "\Obs"] & \text{observable}
+\end{tikzcd}
+\]
+The dashed identification $M\sim M'$ encodes the Equivalence axiom: mathematical
+descriptions related by a gauge or equivalence relation determine the same
+physical content at the chosen observational level. Part~IV realizes the dashed
+arrow twice: as homotopy of spaces (\Cref{sec:homology}) and as coboundary shift
+of a Dijkgraaf--Witten cocycle (\Cref{sec:dw}).
+
+\begin{remark}[Status of the framework]
+\label{rem:framework-status}
+\Cref{def:dom,def:entry,def:pipeline} are status-$\Sfont$ as pure category theory;
+their \emph{physical} interpretation carries the label of the individual entry.
+Part~IV's contribution is to populate the framework with entries whose $\tau$ is
+an \emph{actual functor}, i.e.\ status-$\Sfont$ entries, in contrast to the
+heuristic entries that dominate Parts~II--III.
+\end{remark}
+
+% =====================================================================
+\section{(Co)homology as conserved global information}
+\label{sec:homology}
+
+We now develop the core of Part~IV: algebraic topology as the module of
+observables conserved under continuous deformation. We proceed from chain
+complexes to homology, prove functoriality and homotopy invariance, dualize to
+cohomology, and read the results physically.
+
+\subsection{Chain complexes and the boundary operator}
+
+\begin{definition}[Chain complex]
+\label{def:chain}
+A \emph{chain complex} of abelian groups is a sequence
+\[
+\begin{tikzcd}[column sep=2.1em]
+\cdots \arrow[r, "\partial_{n+1}"] & C_n \arrow[r, "\partial_n"] & C_{n-1}
+  \arrow[r, "\partial_{n-1}"] & \cdots \arrow[r, "\partial_1"] & C_0 \arrow[r, "\partial_0"] & 0
+\end{tikzcd}
+\]
+of abelian groups $C_n$ ($n\ge 0$) and homomorphisms $\partial_n\colon C_n\to
+C_{n-1}$ satisfying the \emph{fundamental relation}
+\begin{equation}
+\label{eq:d2}
+  \partial_{n}\circ\partial_{n+1}=0\qquad\text{for all }n .
+\end{equation}
+Elements of $Z_n:=\ker\partial_n$ are \emph{$n$-cycles}; elements of
+$B_n:=\im\partial_{n+1}$ are \emph{$n$-boundaries}. A morphism of chain complexes
+(a \emph{chain map}) $f_\bullet\colon C_\bullet\to D_\bullet$ is a family
+$f_n\colon C_n\to D_n$ with $\partial^D_n f_n = f_{n-1}\partial^C_n$.
+\end{definition}
+
+\begin{lemma}[Boundaries are cycles]
+\label{lem:BsubZ}
+For every chain complex, $B_n\subseteq Z_n$, so $H_n:=Z_n/B_n$ is a well-defined
+abelian group.
+\end{lemma}
+
+\begin{proof}
+Let $b\in B_n$, say $b=\partial_{n+1}c$ for some $c\in C_{n+1}$. Then by
+\eqref{eq:d2},
+$\partial_n b = \partial_n\partial_{n+1}c = 0$, so $b\in\ker\partial_n=Z_n$.
+Hence $B_n\subseteq Z_n$. As $C_n$ is abelian, $B_n$ is a (normal) subgroup of
+$Z_n$ and the quotient $Z_n/B_n$ is an abelian group.
+\end{proof}
+
+\begin{definition}[Homology]
+\label{def:homology}
+The \emph{$n$-th homology group} of $C_\bullet$ is $H_n(C_\bullet):=Z_n/B_n$. The
+class of a cycle $z\in Z_n$ is written $[z]$. A chain complex is \emph{exact} at
+$C_n$ if $H_n(C_\bullet)=0$, i.e.\ $Z_n=B_n$.
+\end{definition}
+
+For a topological space $X$ we take $C_\bullet=C_\bullet(X)$ the singular chain
+complex, with $C_n(X)$ the free abelian group on continuous maps
+$\sigma\colon\Delta^n\to X$ and $\partial_n\sigma=\sum_{i=0}^n(-1)^i\,\sigma\!\mid_{[v_0,\dots,\hat v_i,\dots,v_n]}$
+the alternating face sum. Then $H_n(X):=H_n(C_\bullet(X))$ is singular homology.
+
+\begin{lemma}[Singular boundary squares to zero]
+\label{lem:sing-d2}
+The singular boundary satisfies $\partial_n\partial_{n+1}=0$, so $C_\bullet(X)$ is
+a chain complex in the sense of \Cref{def:chain}.
+\end{lemma}
+
+\begin{proof}
+It suffices to check on a single simplex $\sigma\colon\Delta^{n+1}\to X$. Writing
+$\sigma_{[\hat i]}$ for the $i$-th face,
+\[
+  \partial_n\partial_{n+1}\sigma
+  = \sum_{i=0}^{n+1}(-1)^i\,\partial_n\sigma_{[\hat i]}
+  = \sum_{i=0}^{n+1}\sum_{j=0}^{n}(-1)^i(-1)^j\,(\sigma_{[\hat i]})_{[\hat j]} .
+\]
+The face maps satisfy the simplicial identity $(\sigma_{[\hat i]})_{[\hat j]}
+=(\sigma_{[\hat j]})_{[\widehat{i-1}]}$ for $j<i$. Splitting the double sum into
+$j<i$ and $j\ge i$ and applying this identity shows the two pieces cancel term by
+term after reindexing, giving $0$.
+\end{proof}
+
+\subsection{Functoriality: the conserved-information functor}
+
+\begin{proposition}[Homology is functorial]
+\label{prop:H-functor}
+A continuous map $f\colon X\to Y$ induces a chain map $f_\#\colon C_\bullet(X)\to
+C_\bullet(Y)$ by $f_\#(\sigma)=f\circ\sigma$, hence homomorphisms
+$f_*\colon H_n(X)\to H_n(Y)$ for all $n$. This assignment satisfies
+$(\id_X)_*=\id$ and $(g\circ f)_*=g_*\circ f_*$; thus $H_n(-)$ is a functor
+$\Top\to\Ab$.
+\end{proposition}
+
+\begin{proof}
+For a singular simplex $\sigma\colon\Delta^n\to X$ and $0\le i\le n$ we have
+$(f\circ\sigma)_{[\hat i]}=f\circ\sigma_{[\hat i]}$, so $f_\#$ commutes with the
+face maps and hence with $\partial$; thus $f_\#$ is a chain map. A chain map sends
+cycles to cycles and boundaries to boundaries, so it descends to
+$f_*\colon H_n(X)\to H_n(Y)$. Functoriality of $(-)_\#$ is immediate from
+$(g\circ f)\circ\sigma=g\circ(f\circ\sigma)$ and passes to homology.
+\end{proof}
+
+The physical content of Part~IV rests on the fact that $H_n$ is not merely
+functorial but \emph{homotopy invariant}: it cannot distinguish continuously
+deformable maps. This is precisely ``conservation under deformation.''
+
+\begin{definition}[Chain homotopy]
+\label{def:chain-homotopy}
+Two chain maps $f_\bullet,g_\bullet\colon C_\bullet\to D_\bullet$ are
+\emph{chain homotopic} if there is a family $P_n\colon C_n\to D_{n+1}$ with
+\begin{equation}
+\label{eq:chain-htpy}
+  \partial^D_{n+1}P_n + P_{n-1}\partial^C_n = g_n - f_n\qquad\text{for all }n .
+\end{equation}
+\end{definition}
+
+\begin{lemma}[Chain homotopy $\Rightarrow$ equality on homology]
+\label{lem:chainhtpy-homology}
+If $f_\bullet$ and $g_\bullet$ are chain homotopic, then $f_*=g_*$ on homology.
+\end{lemma}
+
+\begin{proof}
+Let $z\in Z_n$, so $\partial z=0$. Applying \eqref{eq:chain-htpy},
+\[
+  (g_n-f_n)(z) = \partial_{n+1}P_n(z) + P_{n-1}\partial_n(z)
+  = \partial_{n+1}\bigl(P_n(z)\bigr) + P_{n-1}(0)
+  = \partial_{n+1}\bigl(P_n(z)\bigr)\in B_n .
+\]
+Hence $g_n(z)$ and $f_n(z)$ differ by a boundary, so $[g_n(z)]=[f_n(z)]$ in
+$H_n(D_\bullet)$; that is, $g_*=f_*$.
+\end{proof}
+
+\begin{theorem}[Homotopy invariance of homology]
+\label{thm:homotopy-inv}
+If $f,g\colon X\to Y$ are homotopic continuous maps, then $f_*=g_*\colon
+H_n(X)\to H_n(Y)$ for all $n$. Consequently a homotopy equivalence induces
+isomorphisms on all homology groups, and $H_n$ descends to a functor
+\[
+  H_n\colon \hTop \longrightarrow \Ab
+\]
+on the homotopy category $\hTop$ (spaces and homotopy classes of maps).
+\end{theorem}
+
+\begin{proof}
+A homotopy $F\colon X\times[0,1]\to Y$ from $f$ to $g$ induces a chain homotopy
+between $f_\#$ and $g_\#$ via the \emph{prism operator}
+$P_n\colon C_n(X)\to C_{n+1}(Y)$ obtained by subdividing the prism
+$\Delta^n\times[0,1]$ into $(n+1)$-simplices $[v_0,\dots,v_i,w_i,\dots,w_n]$
+(with $v_j=(x,0)$, $w_j=(x,1)$ vertices) and setting
+$P_n(\sigma)=\sum_{i=0}^n(-1)^i F\circ(\sigma\times\id)\!\mid_{[v_0,\dots,v_i,w_i,\dots,w_n]}$.
+A direct computation of $\partial P + P\partial$ using the simplicial identities
+yields $g_\# - f_\#$, i.e.\ \eqref{eq:chain-htpy}. By
+\Cref{lem:chainhtpy-homology}, $f_*=g_*$. If $f$ is a homotopy equivalence with
+inverse $h$, then $f_*h_*=(fh)_*=(\id)_*=\id$ and similarly $h_*f_*=\id$, so
+$f_*$ is an isomorphism. Since $H_n$ agrees on homotopic maps, it factors through
+$\hTop$.
+\end{proof}
+
+We package this as the central object of Part~IV.
+
+\begin{definition}[Conserved global information functor]
+\label{def:cgi}
+The \emph{conserved global information functor} is
+\[
+  H_\bullet \colon \hTop \longrightarrow \GrAb,
+  \qquad X\longmapsto \bigl(H_n(X)\bigr)_{n\ge 0},
+\]
+valued in graded abelian groups, assembled from \Cref{thm:homotopy-inv}. A
+\emph{topological observable} of $X$ is an element of $H^n(X)$ (see
+\Cref{def:cohomology}); its value on a cycle is a \emph{conserved charge}.
+\end{definition}
+
+\begin{theorem}[Conservation principle]
+\label{thm:cons-functor}
+Let $\{X_t\}_{t\in[0,1]}$ be a continuous family of spaces realized as the fibers
+of a fibration $E\to[0,1]$ over the contractible base $[0,1]$. Then for all $n$
+the groups $H_n(X_t)$ are canonically isomorphic, and any topological observable
+$\omega\in H^n(X_0)$ has a unique continuation $\omega_t\in H^n(X_t)$ with
+$\langle\omega_t,[z_t]\rangle$ independent of $t$ for a continuously varying cycle
+class $[z_t]$. In this precise sense topological observables are conserved under
+continuous physical deformation.
+\end{theorem}
+
+\begin{proof}
+A fibration over a contractible base is fiber-homotopy equivalent to the trivial
+fibration $X_0\times[0,1]\to[0,1]$; in particular any two fibers $X_s,X_t$ are
+homotopy equivalent, and parallel transport along $[0,1]$ furnishes a canonical
+homotopy class of equivalence $X_0\simeq X_t$. By \Cref{thm:homotopy-inv} the
+induced maps $H_n(X_0)\xrightarrow{\ \cong\ }H_n(X_t)$ are isomorphisms;
+dualizing (\Cref{prop:coho-functor}) gives the corresponding isomorphisms on
+$H^n$ and hence the continuation $\omega_t$. The pairing
+$\langle\omega_t,[z_t]\rangle$ is preserved because both $\omega_t$ and $[z_t]$
+are images of $\omega_0,[z_0]$ under the same transport isomorphism, which is
+compatible with the (co)homology pairing (\Cref{def:pairing}). Thus the pairing is
+constant in $t$.
+\end{proof}
+
+\subsection{Cohomology, closed and exact forms, and gauge}
+
+\begin{definition}[Singular cohomology]
+\label{def:cohomology}
+For an abelian group $A$, the \emph{singular cochain complex} of $X$ is
+$C^n(X;A):=\Hom(C_n(X),A)$ with coboundary
+$\delta^n=\Hom(\partial_{n+1},A)$, i.e.\ $(\delta\varphi)(c)=\varphi(\partial c)$.
+Then $\delta^{n+1}\delta^n=0$ (dual to \eqref{eq:d2}), and the \emph{$n$-th
+cohomology group} is $H^n(X;A):=\ker\delta^n/\im\delta^{n-1}$. Cocycles are
+$Z^n$, coboundaries are $B^n$.
+\end{definition}
+
+\begin{proposition}[Cohomology is a contravariant functor]
+\label{prop:coho-functor}
+$H^n(-;A)\colon\hTop^{\mathrm{op}}\to\Ab$ is a functor: a map $f\colon X\to Y$
+induces $f^*=\Hom(f_\#,A)\colon H^n(Y;A)\to H^n(X;A)$, with $(\id)^*=\id$,
+$(gf)^*=f^*g^*$, and $f^*$ depending only on the homotopy class of $f$.
+\end{proposition}
+
+\begin{proof}
+$\Hom(-,A)$ is a contravariant additive functor, so it sends the chain map $f_\#$
+to a cochain map $f^*$ and reverses composition; homotopy invariance is dual to
+\Cref{thm:homotopy-inv} because $\Hom(-,A)$ sends a chain homotopy \eqref{eq:chain-htpy}
+to a cochain homotopy.
+\end{proof}
+
+\begin{definition}[Evaluation pairing]
+\label{def:pairing}
+The \emph{Kronecker pairing} $\langle-,-\rangle\colon H^n(X;A)\times H_n(X)\to A$
+is $\langle[\varphi],[z]\rangle:=\varphi(z)$. It is well defined: if
+$\varphi=\delta\psi$ then $\varphi(z)=\psi(\partial z)=0$ for a cycle $z$, and if
+$z=\partial w$ then $\varphi(z)=(\delta\varphi)(w)=0$ for a cocycle $\varphi$.
+\end{definition}
+
+The de~Rham incarnation makes the ``conserved field'' reading transparent.
+
+\begin{definition}[de~Rham cohomology]
+\label{def:derham}
+For a smooth manifold $X$, let $\Omega^n(X)$ be the smooth $n$-forms with exterior
+derivative $d\colon\Omega^n\to\Omega^{n+1}$, $d^2=0$. A form is \emph{closed} if
+$d\omega=0$ and \emph{exact} if $\omega=d\alpha$. The \emph{de~Rham cohomology} is
+$H^n_{\mathrm{dR}}(X):=\ker(d\!\mid_{\Omega^n})/\im(d\!\mid_{\Omega^{n-1}})$.
+\end{definition}
+
+\begin{proposition}[Conservation and gauge, de~Rham form]
+\label{prop:derham-gauge}
+Let $\omega\in\Omega^n(X)$ be a field strength. Then:
+\begin{enumerate}
+  \item[(i)] $d\omega=0$ (a conservation law / Bianchi identity) is the statement
+    that $\omega$ is a cocycle; its class $[\omega]\in H^n_{\mathrm{dR}}(X)$ is a
+    deformation-invariant observable.
+  \item[(ii)] a shift $\omega\mapsto\omega+d\alpha$ leaves the class $[\omega]$
+    unchanged, so $[\omega]$ is the gauge-invariant flux and an exact part
+    $d\alpha$ carries the topologically trivial class $[\,d\alpha\,]=0$ (status
+    $\Hfont$). We caution that this is \emph{global} cohomological triviality: at
+    the level of a potential $A$ with $\omega=dA$, the genuine local gauge
+    redundancy is $A\mapsto A+d\lambda$, which leaves $\omega$ pointwise
+    invariant, whereas a nonzero exact field strength $d\alpha$ need not vanish
+    pointwise. Thus ``pure gauge'' here means null in cohomology, not $\omega=0$.
+  \item[(iii)] For a closed oriented $n$-cycle $\Gamma$, the flux
+    $\Phi(\Gamma):=\int_\Gamma\omega$ depends only on $[\omega]$ and the homology
+    class $[\Gamma]$, by Stokes' theorem; it is the conserved charge measured over
+    $\Gamma$.
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+(i)--(ii) are immediate from \Cref{def:derham}: $d\omega=0$ means $\omega$ is a
+de~Rham cocycle, and $d(\omega+d\alpha)=d\omega=0$ with
+$[\omega+d\alpha]=[\omega]$ since $d\alpha$ is exact. (iii): if $\omega'=\omega+d\alpha$
+and $\Gamma'=\Gamma+\partial S$, then by Stokes
+$\int_{\Gamma'}\omega'=\int_\Gamma\omega+\int_\Gamma d\alpha+\int_{\partial S}\omega+\int_{\partial S}d\alpha$,
+and each correction integral vanishes because $\Gamma$ is closed
+($\int_\Gamma d\alpha=\int_{\partial\Gamma}\alpha=0$), $\omega$ is closed
+($\int_{\partial S}\omega=\int_S d\omega=0$), and likewise for the last term.
+Thus $\Phi$ descends to $H^n_{\mathrm{dR}}\times H_n$.
+\end{proof}
+
+By the de~Rham theorem, $H^n_{\mathrm{dR}}(X)\cong H^n(X;\Rm)$ with the pairing of
+\Cref{def:pairing} matching integration; so the de~Rham and singular pictures are
+the same status-$\Sfont$ observable module in two realization channels.
+
+\subsection{Exact sequences: conservation and obstruction bookkeeping}
+
+\begin{proposition}[Long exact sequence of a pair]
+\label{prop:les}
+For a pair $(X,B)$ there is a natural long exact sequence
+\[
+\begin{tikzcd}[column sep=1.6em]
+\cdots \arrow[r] & H_n(B) \arrow[r, "i_*"] & H_n(X) \arrow[r, "j_*"] &
+H_n(X,B) \arrow[r, "\partial"] & H_{n-1}(B) \arrow[r] & \cdots
+\end{tikzcd}
+\]
+in which $\im i_* = \ker j_*$, $\im j_*=\ker\partial$, and
+$\im\partial=\ker i_*$. Physically, $\partial$ is the boundary/defect
+charge-transfer map: a bulk class with nontrivial $\partial$ deposits conserved
+charge on the boundary $B$.
+\end{proposition}
+
+\begin{proof}
+This is the homology long exact sequence associated to the short exact sequence of
+chain complexes $0\to C_\bullet(B)\to C_\bullet(X)\to C_\bullet(X,B)\to 0$, where
+$C_\bullet(X,B):=C_\bullet(X)/C_\bullet(B)$. Exactness is the standard homological
+snake lemma / zig-zag construction: the connecting map $\partial$ sends the class
+of a relative cycle $c$ (so $\partial c\in C_{n-1}(B)$) to $[\partial c]\in
+H_{n-1}(B)$, and the three exactness statements are verified by diagram chase.
+Naturality follows because a map of pairs induces a map of the short exact
+sequences.
+\end{proof}
+
+\begin{proposition}[Mayer--Vietoris: reconstructing global physics from patches]
+\label{prop:mv}
+If $X=U\cup V$ with $U,V$ open, there is a long exact sequence
+\[
+\begin{tikzcd}[column sep=1.35em]
+\cdots \arrow[r] & H_n(U\cap V) \arrow[r] & H_n(U)\oplus H_n(V) \arrow[r] &
+H_n(X) \arrow[r, "\partial"] & H_{n-1}(U\cap V) \arrow[r] & \cdots
+\end{tikzcd}
+\]
+This is the topological form of the Locality/descent axiom
+(\Cref{ax:locality}): global conserved information on $X$ is reconstructed from
+local information on $U$, $V$ together with the gluing data on the overlap
+$U\cap V$; the connecting map $\partial$ is the obstruction to naive gluing.
+\end{proposition}
+
+\begin{proof}
+Apply the homology long exact sequence to the short exact sequence
+$0\to C_\bullet(U\cap V)\xrightarrow{(i,-j)}C_\bullet(U)\oplus C_\bullet(V)
+\xrightarrow{k+l}C_\bullet(U+V)\to 0$, and use that the inclusion
+$C_\bullet(U+V)\hookrightarrow C_\bullet(X)$ of sums of chains supported in $U$ or
+$V$ induces isomorphisms on homology (small-simplices / barycentric-subdivision
+theorem). Exactness is again the zig-zag lemma.
+\end{proof}
+
+\begin{remark}[Descent reading]
+\label{rem:mv-descent}
+\Cref{prop:mv} is exactly a descent statement: the sequence exhibits $H_\bullet(X)$
+as glued from $H_\bullet(U),H_\bullet(V)$ along $H_\bullet(U\cap V)$, up to the
+correction measured by $\partial$. When $\partial=0$ the local data glue on the
+nose (a \emph{sheaf}-like situation); when $\partial\ne 0$ they glue only up to
+the obstruction (a \emph{stack}-like situation). This is the first appearance in
+the ladder of the sheaf/stack dichotomy that Part~VI makes precise.
+\end{remark}
+
+\subsection{Poincar\'e duality and cup product}
+
+\begin{theorem}[Poincar\'e duality]
+\label{thm:pd}
+Let $X$ be a closed oriented $n$-manifold with fundamental class $[X]\in H_n(X)$.
+Then cap product with $[X]$ is an isomorphism
+\[
+  -\frown[X]\colon H^k(X)\xrightarrow{\ \cong\ }H_{n-k}(X)\qquad(0\le k\le n).
+\]
+Physically: a codimension-$k$ defect (a class in $H_{n-k}$) is equivalent data to
+a degree-$k$ field-strength observable (a class in $H^k$); defects and dual field
+strengths carry the same conserved information.
+\end{theorem}
+
+\begin{proof}
+This is the classical Poincar\'e duality theorem; we recall the mechanism. Cap
+product $\frown\colon H^k(X)\otimes H_n(X)\to H_{n-k}(X)$ is defined on the chain
+level by $\varphi\frown\sigma=\varphi(\sigma\!\mid_{\text{front }k})\,\sigma\!\mid_{\text{back }n-k}$
+and descends to (co)homology. For a closed oriented manifold, capping with the
+fundamental class is shown to be an isomorphism by the standard local-to-global
+argument, which is naturally phrased using \emph{compactly supported} cohomology
+$H^k_c$: unlike ordinary cohomology (which has $H^n(\Rm^n)=0$), one has
+$H^k_c(\Rm^n)\cong\Zm$ concentrated in degree $k=n$, and the duality
+$H^k_c(\Rm^n)\cong H_{n-k}(\Rm^n)$ holds for $\Rm^n$ and half-spaces (where both
+sides are computable). One then propagates along a good cover by an induction
+using the Mayer--Vietoris sequences (\Cref{prop:mv}) on both sides and the five
+lemma; the naturality of $\frown$ makes the induction squares commute. For the
+closed manifold $X$ one has $H^k_c(X)=H^k(X)$, yielding the stated form.
+\end{proof}
+
+\begin{definition}[Cup product]
+\label{def:cup}
+The \emph{cup product} $\smile\colon H^k(X;R)\otimes H^\ell(X;R)\to H^{k+\ell}(X;R)$
+is induced by $(\varphi\smile\psi)(\sigma)=\varphi(\sigma\!\mid_{\text{front}})\cdot
+\psi(\sigma\!\mid_{\text{back}})$, making $H^\bullet(X;R)$ a graded-commutative
+ring. Physically the cup product is the \emph{interaction} of two charge/flux
+observables, and its graded commutativity $\alpha\smile\beta=(-1)^{|\alpha||\beta|}\beta\smile\alpha$
+$(\Sfont/\Hfont)$ encodes the statistics of the corresponding excitations.
+\end{definition}
+
+\begin{example}[Conserved charge on the torus]
+\label{ex:torus}
+For $X=T^2=S^1\times S^1$ one has $H^1(T^2;\Zm)\cong\Zm^2$ generated by classes
+$a,b$ dual to the two circles, with $a\smile a=b\smile b=0$ and $a\smile b=-b\smile a$
+generating $H^2(T^2;\Zm)\cong\Zm$. Two \emph{distinct} conserved observables live
+here and must not be confused.
+\begin{enumerate}
+  \item[(i)] A \emph{flat} gauge field ($F=0$) is classified up to gauge by its
+    two holonomies, i.e.\ by a class in $H^1(T^2;\Umone)\cong\Umone\times\Umone$
+    (Wilson loops around the two cycles). Such a connection has vanishing
+    curvature and hence \emph{trivial} first Chern number; the moduli space of
+    flat connections detects only the $H^1$-data.
+  \item[(ii)] A generally \emph{non-flat} complex line bundle $L\to T^2$ carries a
+    quantized magnetic flux, the first Chern number
+    $\int_{T^2}\tfrac{F}{2\pi}=\langle c_1(L),[T^2]\rangle\in\Zm$ with
+    $c_1(L)\in H^2(T^2;\Zm)\cong\Zm$; a nonzero value \emph{forces} $F\neq 0$, so
+    this observable is disjoint from case (i).
+\end{enumerate}
+It is precisely the nondegenerate cup pairing
+$\langle a\smile b,[T^2]\rangle=1$ that makes $H^2(T^2;\Zm)\cong\Zm$
+one-dimensional and thereby able to host the integer flux of case (ii). Both are
+toy models underlying the quantum-Hall and surface-code phenomenology revisited in
+Part~VI.
+\end{example}
+
+% =====================================================================
+\section{Characteristic classes and the index theorem}
+\label{sec:char}
+
+Characteristic classes are the module of \emph{quantized} topological information:
+they assign to a gauge bundle a cohomology class of its base, natural under
+pullback, and their integrals are integer- or rational-valued conserved charges.
+
+\subsection{Classifying spaces and characteristic classes}
+
+\begin{definition}[Principal bundle and classifying space]
+\label{def:bundle}
+A \emph{principal $G$-bundle} over $X$ is a fiber bundle $\pi\colon P\to X$ with a
+free, fiber-transitive right $G$-action. Isomorphism classes of principal
+$G$-bundles over a paracompact $X$ are in natural bijection with homotopy classes
+of maps $[X,BG]$, where $BG$ is the \emph{classifying space} (the base of the
+universal bundle $EG\to BG$); the bijection sends $f\colon X\to BG$ to the
+pullback $f^*EG$.
+\end{definition}
+
+\begin{definition}[Characteristic class]
+\label{def:charclass}
+A \emph{characteristic class} for $G$-bundles with coefficients in $R$ is a natural
+transformation $c\colon [-,BG]\Rightarrow H^*(-;R)$; equivalently, by
+\Cref{def:bundle} and the Yoneda lemma, an element $c\in H^*(BG;R)$, with the
+class of a bundle $f^*EG$ given by $c(f^*EG)=f^*c$.
+\end{definition}
+
+\begin{proposition}[Naturality is conservation]
+\label{prop:char-nat}
+For any continuous $g\colon Y\to X$ and any principal $G$-bundle $P\to X$,
+$c(g^*P)=g^*c(P)$. In particular characteristic numbers $\int_X c(P)$ of closed
+manifolds are homotopy/cobordism invariants: they are conserved under continuous
+deformation of the bundle and of the base.
+\end{proposition}
+
+\begin{proof}
+Naturality is \Cref{def:charclass} directly: if $P=f^*EG$ then
+$g^*P=(f\circ g)^*EG$ has class $(f\circ g)^*c=g^*f^*c=g^*c(P)$. The characteristic
+number statement follows because $\int_X\colon H^n(X)\to R$ (for $X$ closed
+oriented $n$-manifold) is a homotopy invariant of the pair $(X,\text{class})$ by
+\Cref{thm:homotopy-inv} and \Cref{prop:coho-functor}.
+\end{proof}
+
+\begin{example}[Chern classes and quantized flux]
+\label{ex:chern}
+For $G=\mathrm{U}(k)$ one has the polynomial ring
+\[
+  H^*(B\mathrm{U}(k);\Zm)=\Zm[c_1,\dots,c_k],\qquad c_i\in H^{2i},
+\]
+whose generators $c_i$ are the \emph{Chern classes}. For a complex line bundle
+$L\to X$, $c_1(L)\in H^2(X;\Zm)$ is the quantized first Chern number; over a closed
+surface $\Sigma$, $\int_\Sigma c_1(L)=\frac{1}{2\pi}\int_\Sigma F\in\Zm$ is the
+Dirac-quantized magnetic monopole charge / total flux. The \emph{Chern character}
+\[
+  \ch(E)=\rk(E)+c_1+\tfrac12(c_1^2-2c_2)+\cdots\in H^{\mathrm{even}}(X;\Qm)
+\]
+is a ring homomorphism $\ch\colon K^0(X)\to H^{\mathrm{even}}(X;\Qm)$ turning
+$K$-theory charges into cohomological ones. All entries here are status-$\Sfont$.
+\end{example}
+
+\begin{example}[Stiefel--Whitney classes and spin]
+\label{ex:sw}
+For $G=\mathrm{O}(k)$, the \emph{Stiefel--Whitney classes}
+$w_i\in H^i(X;\Zm/2)$ obstruct structure: $w_1(TX)=0$ iff $X$ is orientable, and
+(given $w_1=0$) $w_2(TX)=0$ iff $X$ admits a \emph{spin structure}, the condition
+under which fermions can be globally defined. Thus $w_2$ is a conserved $\Zm/2$
+obstruction whose vanishing is a consistency condition for fermionic matter
+$(\Sfont)$.
+\end{example}
+
+\subsection{The index theorem as a realization-pipeline identity}
+
+\begin{theorem}[Atiyah--Singer as $\text{observable}=\Real(\text{abstract structure})$]
+\label{thm:index}
+Let $X$ be a closed even-dimensional spin manifold with spinor bundle
+$S=S^+\oplus S^-$ (the chiral splitting), and $E\to X$ a complex vector bundle
+with connection; let $D_E^+\colon\Gamma(S^+\otimes E)\to\Gamma(S^-\otimes E)$ be
+the associated chiral twisted Dirac operator. Then the analytic index equals a
+purely topological expression:
+\begin{equation}
+\label{eq:index}
+  \ind(D_E^+) \;=\; \dim\ker D_E^+ - \dim\ker D_E^-
+  \;=\; \int_X \Ahat(TX)\wedge\ch(E)\;\in\;\Zm ,
+\end{equation}
+where $D_E^-$ is the formal adjoint (so $\ker D_E^-=\operatorname{coker}D_E^+$).
+Reading the left side as an \emph{observable} $\Obs$ (a net chiral zero-mode
+count / anomaly coefficient) and the right side as
+$\Real_{\mathrm{top}}\bigl(\Phi(X,E)\bigr)$ with $\Phi(X,E)$ the topological data
+$\Ahat(TX),\ch(E)$, \eqref{eq:index} is an instance of the Part~I master formula
+$\Obs_{\mathrm{top}}(M)=\Obs(\Real_{\mathrm{top}}(\Phi(M)))$ with realization
+channel $\alpha=\mathrm{top}$. Status $\Sfont$.
+\end{theorem}
+
+\begin{proof}
+Equation \eqref{eq:index} is the Atiyah--Singer index theorem
+\cite{AtiyahSinger}, which we do not reprove; we verify only the pipeline reading.
+Set $\Phi(X,E):=(\Ahat(TX),\ch(E))\in H^\bullet(X;\Qm)$, a functor of the
+topological data (natural under bundle pullback by \Cref{prop:char-nat}). Let
+$\Real_{\mathrm{top}}$ be the integration channel
+$\Real_{\mathrm{top}}(\eta)=\int_X\eta$ applied to the top-degree component of the
+product $\Ahat(TX)\wedge\ch(E)$, valued in $\Qm$; and let $\Obs$ be the identity on
+$\Zm\subseteq\Qm$. Then $\Obs(\Real_{\mathrm{top}}(\Phi(X,E)))=\int_X\Ahat(TX)\wedge\ch(E)$,
+which by \eqref{eq:index} equals $\ind(D_E^+)$, the analytic observable. Each of
+$\Phi,\Real_{\mathrm{top}},\Obs$ is functorial (naturality, linearity of the
+integral, inclusion), so $\Obs_{\mathrm{top}}=\Obs\circ\Real_{\mathrm{top}}\circ\Phi$
+is a realization pipeline in the sense of \Cref{def:pipeline}, and \eqref{eq:index}
+is the assertion that it computes the index. Integrality of the right side is a
+nontrivial consequence, exactly the content of the theorem.
+\end{proof}
+
+\begin{remark}[Why the index theorem is the ideal status-$\Sfont$ anchor]
+\label{rem:index-anchor}
+\Cref{thm:index} imports no new mathematics: its physical reading
+(``topology $\to$ analysis: zero modes and anomalies from topology'') \emph{is} the
+theorem. This makes it the least contestable entry in the entire library and the
+model we hold other, more heuristic entries against.
+\end{remark}
+
+% =====================================================================
+\section{Topological quantum field theory: functorial realization}
+\label{sec:tqft}
+
+We now reach the conceptual center of Part~IV. A TQFT is a realization pipeline
+that is \emph{itself a functor} over a category of cobordisms; it is the first
+status-$\Sfont$ instance of the Part~I pipeline in which $\Real_\alpha$ is a
+genuine functor, not a heuristic translation rule. This is precisely why Part~IV
+is where category theory enters the ladder as ambient grammar.
+
+\subsection{The bordism category}
+
+\begin{definition}[Bordism category]
+\label{def:bord}
+Fix $n\ge 1$. The \emph{bordism category} $\Bord_n$ has:
+\begin{itemize}
+  \item \textbf{objects}: closed oriented $(n-1)$-manifolds $\Sigma$;
+  \item \textbf{morphisms} $\Sigma_0\to\Sigma_1$: oriented cobordisms, i.e.\
+    (diffeomorphism classes rel boundary of) compact oriented $n$-manifolds $W$
+    with $\partial W\cong \overline{\Sigma_0}\sqcup\Sigma_1$;
+  \item \textbf{composition}: gluing of cobordisms along the common boundary;
+  \item \textbf{identities}: cylinders $\Sigma\times[0,1]$.
+\end{itemize}
+Disjoint union $\sqcup$ makes $\Bord_n$ a symmetric monoidal category with unit the
+empty $(n-1)$-manifold $\varnothing$.
+\end{definition}
+
+\begin{definition}[TQFT, Atiyah's axioms]
+\label{def:tqft}
+An \emph{$n$-dimensional TQFT} valued in $\Vect_k$ (finite-dimensional
+$k$-vector spaces) is a symmetric monoidal functor $Z\colon\Bord_n\to\Vect_k$.
+Explicitly:
+\begin{enumerate}
+  \item[(Z1)] $Z$ assigns to each closed $(n-1)$-manifold $\Sigma$ a
+    finite-dimensional vector space $Z(\Sigma)$, with $Z(\varnothing)=k$;
+  \item[(Z2)] $Z(\Sigma_0\sqcup\Sigma_1)\cong Z(\Sigma_0)\otimes Z(\Sigma_1)$
+    (monoidality);
+  \item[(Z3)] $Z$ assigns to a cobordism $W\colon\Sigma_0\to\Sigma_1$ a linear map
+    $Z(W)\colon Z(\Sigma_0)\to Z(\Sigma_1)$, with
+    $Z(W'\circ W)=Z(W')\circ Z(W)$ (gluing) and $Z(\Sigma\times[0,1])=\id_{Z(\Sigma)}$;
+  \item[(Z4)] $Z(\overline\Sigma)\cong Z(\Sigma)^*$ (orientation reversal is dual).
+\end{enumerate}
+A closed $n$-manifold $M$ is a cobordism $\varnothing\to\varnothing$, so
+$Z(M)\in\Hom(k,k)=k$ is a numerical invariant (a partition function).
+\end{definition}
+
+\subsection{TQFT is a representation entry}
+
+\begin{theorem}[TQFT realizes the Part~I pipeline; monoidality is the Decomposition axiom]
+\label{thm:tqft-entry}
+An $n$-dimensional TQFT $Z\colon\Bord_n\to\Vect_k$ is precisely a status-$\Sfont$
+representation entry $E=(\Bord_n,\Vect_k,Z,\Sfont)$ in the sense of
+\Cref{def:entry}, realizing the pipeline of \Cref{def:pipeline} with
+\[
+\begin{gathered}
+  \Phi=\text{(inclusion of a closed $(n-1)$-manifold as an object)},\\
+  \Real_\alpha=Z,\qquad
+  \Obs=\dim\ (\text{or trace/partition function}).
+\end{gathered}
+\]
+Moreover the symmetric monoidal structure of $Z$ is exactly the Decomposition
+axiom (\Cref{ax:decomp}) applied to disjoint unions and gluing:
+\begin{equation}
+\label{eq:tqft-decomp}
+  Z(M_1\sqcup M_2)=Z(M_1)\otimes Z(M_2),\qquad
+  Z(W_2\circ W_1)=Z(W_2)\circ Z(W_1).
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+The data of \Cref{def:entry} are: a mathematical structure $M=\Bord_n\in\Math_{\Man}$,
+a physical target $P=\Vect_k\in\Phys$ (state spaces and linear processes), a
+translation datum $\tau=Z$, and a status $\sigma$. Since $Z$ is an
+\emph{actual functor} (Atiyah's axioms), $\tau$ is functorial and the entry is
+status-$\Sfont$ by \Cref{rem:framework-status}. To exhibit the pipeline, note
+$\Phi$ includes an $(n-1)$-manifold $\Sigma$ as an object of $\Bord_n$;
+$\Real_\alpha=Z$ sends it to $Z(\Sigma)\in\Vect_k$; and $\Obs=\dim$ (or, on closed
+$M$, the scalar $Z(M)$) extracts a number. Each is functorial and they compose,
+so $\Obs_\alpha=\Obs\circ Z\circ\Phi$ is a realization pipeline
+(\Cref{def:pipeline}).
+
+Finally, \eqref{eq:tqft-decomp} is the statement that $Z$ is symmetric monoidal
+(Z2) and a functor (Z3). Reading disjoint union as ``parallel composition of
+systems'' and gluing as ``sequential composition of processes,'' \eqref{eq:tqft-decomp}
+says the observable of a composite decomposes into the observables of its pieces
+via $\otimes$ and $\circ$; this is precisely the Decomposition axiom instantiated
+on cobordisms. Uniqueness of the entry follows because a symmetric monoidal
+functor is determined by its action on objects and generating morphisms, which is
+the data specified.
+\end{proof}
+
+\begin{example}[A 2d TQFT is a commutative Frobenius algebra]
+\label{ex:2d-tqft}
+For $n=2$, the classification theorem states that $2$-dimensional TQFTs
+$Z\colon\Bord_2\to\Vect_k$ correspond bijectively to commutative Frobenius
+algebras $A=Z(S^1)$: the pair of pants (a cobordism $S^1\sqcup S^1\to S^1$) gives
+the multiplication $A\otimes A\to A$, the reversed pair of pants gives the
+comultiplication, the disk ($\varnothing\to S^1$) gives the unit
+$\eta\colon k\to A$, and the reversed disk ($S^1\to\varnothing$) gives the counit
+$\varepsilon\colon A\to k$ (the Frobenius trace form). Gluing the two disks yields
+the sphere $S^2$ ($\varnothing\to\varnothing$), which therefore evaluates to the
+scalar $\varepsilon(\eta(1))=\varepsilon(1_A)$; the closed torus $T^2$, obtained
+instead as the trace of $\id_A$ (composition of coevaluation and evaluation),
+evaluates to $\dim_k A$. Associativity, commutativity, and the
+Frobenius relation are
+each a diffeomorphism between glued surfaces, hence forced by functoriality
+\eqref{eq:tqft-decomp}. This is the cleanest illustration that ``the algebra of
+observables $=$ the decomposition law of cobordisms.'' Status $\Sfont$.
+\end{example}
+
+\subsection{The cobordism hypothesis}
+
+\begin{theorem}[Cobordism hypothesis; Baez--Dolan, Lurie]
+\label{thm:cobordism-hyp}
+Let $\mathcal{C}$ be a symmetric monoidal $(\infty,n)$-category with duals. The
+evaluation-at-a-point map
+\[
+  \operatorname{Fun}^{\otimes}\bigl(\Bord_n^{\mathrm{fr}},\mathcal{C}\bigr)
+  \xrightarrow{\ Z\mapsto Z(\mathrm{pt})\ }
+  \mathcal{C}\sfd
+\]
+is an equivalence between the space of fully extended framed $n$-dimensional TQFTs
+valued in $\mathcal{C}$ and the maximal $\infty$-groupoid $\mathcal{C}\sfd$ of
+\emph{fully dualizable} objects of $\mathcal{C}$. Thus a fully extended TQFT is
+determined, up to a contractible space of choices, by a single fully dualizable
+object $Z(\mathrm{pt})$. Status $\Sfont$ (theorem of Lurie; proof sketched at
+length in \cite{Lurie2009}).
+\end{theorem}
+
+\begin{proof}[Proof idea (cited, not reproduced)]
+The full proof \cite{Lurie2009} is an induction on codimension. The key input is
+that $\Bord_n^{\mathrm{fr}}$ is the \emph{free} symmetric monoidal
+$(\infty,n)$-category with duals on a single object $\mathrm{pt}$: every
+cobordism is generated, under composition and duality, by the point together with
+its (higher) evaluation and coevaluation morphisms. A symmetric monoidal functor
+out of a free such category is determined by the image of the generator, subject
+to that image being fully dualizable (so that all the duality data have targets).
+Hence $Z\mapsto Z(\mathrm{pt})$ is an equivalence onto $\mathcal{C}\sfd$.
+Framings can be traded for tangential $G$-structures by taking homotopy fixed
+points of an $O(n)$-action, giving the structured variants.
+\end{proof}
+
+\begin{corollary}[Rigidity of topological realization channels]
+\label{cor:rigidity}
+In the extended setting, the topological realization channel is \emph{rigid}: once
+the point-realization $Z(\mathrm{pt})$ is fixed as a fully dualizable object, all
+higher-codimension observables (line, surface, and defect data) are uniquely
+determined. Physically, fixing how the elementary local excitation realizes fixes
+the entire extended field theory. This is the strongest compositionality statement
+in the ladder and directly motivates Part~V's abstraction of $\mathcal{C}$ into the
+general theory of (higher) categories.
+\end{corollary}
+
+\begin{proof}
+Immediate from \Cref{thm:cobordism-hyp}: the evaluation map is an equivalence, so
+its inverse reconstructs $Z$ (all its values in every codimension) from
+$Z(\mathrm{pt})$ functorially and essentially uniquely.
+\end{proof}
+
+The functorial picture is summarized by the commuting triangle of monoidal
+functors, in which $Z$ factors the Part~I pipeline through the topological
+channel:
+\[
+\begin{tikzcd}[column sep=3.2em, row sep=large]
+\Bord_n \arrow[r, "Z"] \arrow[dr, "\Obs_\alpha"'] & \Vect_k \arrow[d, "\dim\,/\,\mathrm{tr}"]\\
+& k
+\end{tikzcd}
+\qquad\qquad
+\begin{tikzcd}[column sep=2.4em]
+\mathrm{pt} \arrow[r, mapsto, "Z"] & Z(\mathrm{pt})\in\mathcal{C}\sfd
+\end{tikzcd}
+\]
+
+% =====================================================================
+\section{Dijkgraaf--Witten theory: locality from group cohomology}
+\label{sec:dw}
+
+Dijkgraaf--Witten (DW) theory is a concrete, computable TQFT built from a finite
+group and a group cocycle; it is the ideal illustration of the Locality/descent
+axiom, and of the coboundary $=$ gauge reading of the dictionary.
+
+\begin{definition}[Group cohomology and DW data]
+\label{def:dw-data}
+For a finite group $G$ and coefficients $\Rm/\Zm$ (trivial action), the
+\emph{group cohomology} $H^\bullet(G;\Rm/\Zm):=H^\bullet(BG;\Rm/\Zm)$ is computed
+by the bar complex: $n$-cochains are functions $\varphi\colon G^n\to\Rm/\Zm$, with
+\emph{additive} coboundary
+\begin{multline*}
+  (\delta\varphi)(g_1,\dots,g_{n+1})=\varphi(g_2,\dots,g_{n+1})\\
+  +\sum_{i=1}^{n}(-1)^i\,\varphi(g_1,\dots,g_ig_{i+1},\dots,g_{n+1})
+  +(-1)^{n+1}\varphi(g_1,\dots,g_n) .
+\end{multline*}
+Here the leading term $\varphi(g_2,\dots,g_{n+1})$ carries no prefactor precisely
+because the $G$-action on the coefficients $\Rm/\Zm$ is \emph{trivial}; for a
+nontrivial action it would instead read $g_1\!\cdot\!\varphi(g_2,\dots,g_{n+1})$.
+A \emph{Dijkgraaf--Witten datum} in dimension $3$ is a class
+$\omega\in H^3(G;\Rm/\Zm)$; the associated phase $e^{2\pi i\,\omega}\in\Umone$
+recovers the equivalent multiplicative $\Umone$-valued convention.
+\end{definition}
+
+\begin{theorem}[DW theory instantiates the Locality/descent axiom]
+\label{thm:dw}
+Let $G$ be finite and $\omega\in H^3(BG;\Rm/\Zm)$ a $3$-cocycle. The state sum
+\begin{equation}
+\label{eq:dw}
+  Z_\omega(X)=\frac{1}{|G|}\sum_{\phi\in\Hom(\pi_1(X),G)}
+  \exp\!\bigl(2\pi i\,\langle\phi^*\omega,[X]\rangle\bigr)
+\end{equation}
+over a closed oriented $3$-manifold $X$ defines a TQFT
+$Z_\omega\colon\Bord_3\to\Vect_\Cm$; here the pairing
+$\langle\phi^*\omega,[X]\rangle$ lies in $\Rm/\Zm$, so the exponential
+$e^{2\pi i(-)}\in\Umone$ is well typed. The state sum is independent of the
+triangulation (hence well defined and local in the sense of
+\Cref{ax:locality}) precisely because $\omega$ is a cocycle; and a coboundary shift
+$\omega\mapsto\omega+\delta\eta$ changes $Z_\omega$ by nothing, matching the
+``coboundary $=$ pure gauge'' dictionary entry.
+\end{theorem}
+
+\begin{proof}
+Present $X$ by a triangulation $T$ with an ordering of vertices; a discrete
+$G$-connection is a labelling of edges by $G$ compatible on faces, i.e.\ a map
+$\phi\colon\pi_1(X)\to G$ up to gauge. Each tetrahedron contributes a phase
+$\exp\!\bigl(\pm 2\pi i\,\omega(g,h,k)\bigr)$ according to its orientation, and the
+state sum \eqref{eq:dw} is the product of these phases over tetrahedra, averaged
+over connections. Two triangulations of $X$ are related by a finite sequence of
+\emph{Pachner (bistellar) moves}. The invariance of the local weight under each
+Pachner move is \emph{equivalent} to the cocycle condition $\delta\omega=0$: the
+$2$--$3$ Pachner move is exactly the (additive) pentagon/cocycle identity
+\[
+  \omega(h,k,l)-\omega(gh,k,l)+\omega(g,hk,l)-\omega(g,h,kl)+\omega(g,h,k)=0
+  \quad\text{in }\Rm/\Zm .
+\]
+Hence $Z_\omega(X)$ is independent of $T$, establishing locality and gluing. If
+$\omega'=\omega+\delta\eta$ for a $2$-cochain $\eta$, the extra phases are
+associated to faces and their exponents telescope to $0$ (mod $\Zm$) over the
+closed manifold $X$ (each internal face is shared by two tetrahedra with opposite
+orientation), so $Z_{\omega'}(X)=Z_\omega(X)$. Functoriality on cobordisms follows
+because the
+state sum on a manifold with boundary defines a vector in the state space of the
+boundary and gluing corresponds to contracting these vectors.
+\end{proof}
+
+\begin{remark}[Descent and the Equivalence axiom]
+\label{rem:dw-equiv}
+\Cref{thm:dw} realizes the dashed arrow of the Part~I master diagram in a discrete
+setting: the equivalence $\omega\sim\omega+\delta\eta$ (change of cocycle
+representative) is a gauge/equivalence relation under which the physical content
+$Z_\omega$ is invariant. Thus DW theory simultaneously discharges the
+Locality/descent axiom (triangulation independence) and the Equivalence axiom
+(coboundary invariance). Status $\Sfont$.
+\end{remark}
+
+\begin{example}[$G=\Zm/N$, untwisted]
+\label{ex:zn-dw}
+For $\omega=0$, $Z_0(X)=|\Hom(\pi_1(X),\Zm/N)|/N=|H^1(X;\Zm/N)|/N$. On the
+$3$-torus $T^3$ this counts flat $\Zm/N$ connections, $|H^1(T^3;\Zm/N)|=N^3$, so
+$Z_0(T^3)=N^2$; the ground-state degeneracy $N^2$ is the physical signature of
+$\Zm/N$ topological order on the spatial torus, a status-$\Sfont$ topological
+invariant recovered directly from $H^1$.
+\end{example}
+
+% =====================================================================
+\section{Bordism, anomalies, and symmetry-protected topological phases}
+\label{sec:bordism}
+
+The final layer of Part~IV classifies \emph{invertible} topological field
+theories --- the mathematical home of anomalies and symmetry-protected
+topological (SPT) phases --- by bordism-theoretic invariants.
+
+\begin{definition}[Bordism group]
+\label{def:bordism}
+For a tangential structure $H$ (e.g.\ orientation, spin, or a map to $BG$), the
+\emph{bordism group} $\Omega_n^H$ is the abelian group of closed $n$-manifolds
+with $H$-structure modulo the relation $M\sim M'$ iff $M\sqcup\overline{M'}=\partial W$
+for some compact $H$-manifold $W$; addition is disjoint union. By the
+Pontryagin--Thom construction, $\Omega_n^H\cong\pi_n(MTH)$, the $n$-th stable
+homotopy group of the Thom spectrum $MTH$.
+\end{definition}
+
+\begin{definition}[Invertible field theory]
+\label{def:invertible}
+A field theory $Z$ is \emph{invertible} if $Z(\Sigma)$ is invertible in the target
+symmetric monoidal category for every $\Sigma$ (e.g.\ a line in $\Vect$) and each
+$Z(W)$ is an isomorphism. Invertible TQFTs are exactly the fully dualizable
+objects with trivial higher morphisms, hence factor through a spectrum-level map
+by \Cref{thm:cobordism-hyp}.
+\end{definition}
+
+\begin{theorem}[Freed--Hopkins classification of invertible theories; SPT phases]
+\label{thm:spt}
+Reflection-positive invertible $n$-dimensional field theories with tangential
+structure $H$ are classified by the torsion subgroup of
+\[
+  \bigl[MTH,\ \Sigma^{n+1}I\Zm\bigr] \;\cong\; \bigl(I\Zm\bigr)^{n+1}(MTH),
+\]
+the degree-$(n+1)$ Anderson-dual cohomology of the Thom spectrum $MTH$
+(recall $E^k(X)=[X,\Sigma^k E]$, so an $(n+1)$-fold suspension lands in degree
+$n+1$)
+\cite{FreedHopkins}. Consequently, a symmetry-protected topological phase with
+finite symmetry group $G$ in $d$ spacetime dimensions is classified, at the level
+of the relevant (co)bordism invariant, by a summand of
+$\Omega^{H}_{d}(BG)$ or its generalized-cohomology refinement. The pure-mathematics
+classification is status $\Sfont$; the identification of a \emph{specific} lattice
+model's phase with a given bordism invariant is model-dependent, status
+$\Sfont/\Hfont$.
+\end{theorem}
+
+\begin{proof}[Proof idea (cited)]
+By \Cref{def:invertible} an invertible theory is a map of spectra from the
+bordism spectrum $MTH$ to the target; reflection positivity forces the target to
+be the Anderson dual $I\Zm$ of the sphere (Freed--Hopkins \cite{FreedHopkins},
+building on \cite{Freed2014}). The classification is then the computation of the
+homotopy classes $[MTH,\Sigma^{n+1}I\Zm]$, which by definition of Anderson duality
+is the stated generalized cohomology group. Coupling to a background $G$-symmetry
+replaces $MTH$ by $MTH\wedge BG_+$, giving the $\Omega^H_d(BG)$-level statement.
+The physical identification with an SPT phase is via the partition function on
+mapping tori and its response to symmetry defects, which is model-dependent, hence
+the composite label.
+\end{proof}
+
+\begin{remark}[Anomaly as failure of descent]
+\label{rem:anomaly}
+An anomaly of an $n$-dimensional theory is precisely a nontrivial invertible
+$(n+1)$-dimensional theory in which it lives as a boundary --- a failure of the
+partition function to be a number rather than a vector, i.e.\ a failure of the
+Locality/descent axiom (\Cref{ax:locality}) at the top codimension. Bordism
+invariants thus \emph{measure} the obstruction to descent, closing the loop with
+\Cref{rem:mv-descent}: anomalies are the top-dimensional analogue of the
+Mayer--Vietoris connecting map. Status $\Sfont/\Hfont$.
+\end{remark}
+
+% =====================================================================
+\section{Results}
+\label{sec:results}
+
+We collect the principal results of Part~IV and their status labels.
+
+\begin{itemize}
+  \item \textbf{Homotopy invariance (\Cref{thm:homotopy-inv})} and the
+    \textbf{conserved global information functor} $H_\bullet\colon\hTop\to\GrAb$
+    (\Cref{def:cgi}): topological observables are conserved under continuous
+    deformation. Status $\Sfont$; physical reading $\Sfont/\Hfont$.
+  \item \textbf{Conservation principle (\Cref{thm:cons-functor})}: over a
+    contractible parameter base, (co)homology classes and their pairings are
+    constant. Status $\Sfont$.
+  \item \textbf{de~Rham gauge picture (\Cref{prop:derham-gauge})} and
+    \textbf{Poincar\'e duality (\Cref{thm:pd})}: closed forms are conserved
+    fields, exact forms pure gauge, defects dual to field strengths. Status
+    $\Sfont$; readings $\Sfont/\Hfont$.
+  \item \textbf{Index theorem as pipeline identity (\Cref{thm:index})}: the
+    strongest status-$\Sfont$ instance of $\text{observable}=\Real(\text{abstract
+    structure})$.
+  \item \textbf{TQFT as representation entry (\Cref{thm:tqft-entry})}: the first
+    functorial, status-$\Sfont$ realization of the Part~I pipeline; monoidality is
+    the Decomposition axiom.
+  \item \textbf{Cobordism hypothesis (\Cref{thm:cobordism-hyp}, \Cref{cor:rigidity})}:
+    topological realization channels are rigid; the bridge to Part~V. Status
+    $\Sfont$.
+  \item \textbf{Dijkgraaf--Witten (\Cref{thm:dw})}: Locality/descent and
+    Equivalence axioms from a group cocycle. Status $\Sfont$.
+  \item \textbf{Bordism classification (\Cref{thm:spt})}: anomalies and SPT phases
+    as bordism invariants; anomaly as failure of descent (\Cref{rem:anomaly}).
+    Status $\Sfont$ / $\Sfont\!/\Hfont$.
+\end{itemize}
+
+\begin{proposition}[Status statistics of Part~IV]
+\label{prop:status-stats}
+Of the eight headline results above, seven are status-$\Sfont$ as pure
+mathematics (all but the model-specific half of \Cref{thm:spt}); the heuristic
+content is confined to the \emph{physical readings} of dictionary entries, and no
+result is status-$\Pfont$. Part~IV is therefore the most rigorously anchored
+module of the ladder to date.
+\end{proposition}
+
+\begin{proof}
+By inspection of the individual status labels assigned at each theorem: TQFT
+functoriality (\Cref{thm:tqft-entry}), the cobordism hypothesis
+(\Cref{thm:cobordism-hyp}), the index theorem (\Cref{thm:index}), Dijkgraaf--Witten
+theory (\Cref{thm:dw}), homotopy invariance (\Cref{thm:homotopy-inv}), the
+conservation principle (\Cref{thm:cons-functor}), and Poincar\'e duality
+(\Cref{thm:pd}) are each established theorems of algebraic topology or mathematical
+physics; only the model-identification half of \Cref{thm:spt} is $\Sfont/\Hfont$,
+and the ontological framing (inherited, not asserted here) is the only place
+$\Pfont$ occurs in the parent program. No headline result of Part~IV is
+independently $\Pfont$.
+\end{proof}
+
+% =====================================================================
+\section{Companion formalization: Haskell and Lean}
+\label{sec:code}
+
+Following the parent program's formal-verification bridge (``math is code, code is
+math''; Curry--Howard--Lambek), Part~IV ships companion code. The Haskell package
+compiles under GHC and encodes the structures of \Cref{sec:homology,sec:char,sec:tqft};
+the Lean file is a best-effort sketch of the same signatures in a proof-assistant
+idiom.
+
+\subsection{Haskell: chain complexes, homology, and TQFT}
+
+The module \texttt{ChainComplex} realizes \Cref{def:chain,def:homology} over
+$\Zm$-free chain groups with an explicit boundary matrix, computes Betti numbers
+via ranks (Smith-normal-form-free rational homology), and verifies
+$\partial^2=0$. The module \texttt{TQFT} encodes \Cref{def:tqft} as a
+symmetric-monoidal-functor typeclass and instantiates the $2$d Frobenius-algebra
+example (\Cref{ex:2d-tqft}) and the untwisted Dijkgraaf--Witten count
+(\Cref{ex:zn-dw}). The following excerpt shows the core signatures:
+{\small
+\begin{verbatim}
+data ChainComplex = CC { dims :: [Int], boundary :: [Matrix] }
+d2isZero     :: ChainComplex -> Bool
+bettiNumbers :: ChainComplex -> [Int]
+class SymMonFunctor z where
+  fUnit    :: z
+  fTensor  :: z -> z -> z
+  fCompose :: z -> z -> z
+dwUntwisted  :: Int -> Int -> Double   -- (N, b_1 of manifold) -> Z(T^3)
+\end{verbatim}
+}
+The \texttt{Main} module runs all demonstrations: it verifies $\partial^2=0$ and
+prints Betti numbers for the circle, torus, and $2$-sphere (recovering
+$b_\bullet(S^1)=(1,1)$, $b_\bullet(T^2)=(1,2,1)$, $b_\bullet(S^2)=(1,0,1)$), checks
+the Frobenius/TQFT gluing laws, and prints the Dijkgraaf--Witten degeneracy
+$Z_0(T^3)=N^2$ of \Cref{ex:zn-dw}.
+
+\subsection{Lean: chain-complex and homology types}
+
+The Lean sketch \texttt{AlgTop.lean} declares a \texttt{ChainComplex} structure
+with fields \texttt{d} (the boundary map in each degree) and a hypothesis
+\texttt{d\_comp\_d} asserting $\partial_n\circ\partial_{n+1}=0$ for all $n$,
+defines cycles/boundaries/homology as subquotients, and states signatures for the
+\texttt{TQFT} structure (a symmetric monoidal functor $\Bord_n\to\Vect$) and for
+\Cref{thm:index} and \Cref{thm:dw} as \texttt{theorem} statements with
+\texttt{sorry} placeholders. It is best-effort and not build-gated; its purpose is
+to record the intended machine-checkable interface, extending Part~I's Lean
+skeleton to the topological domain.
+
+% =====================================================================
+\section{Discussion}
+\label{sec:discussion}
+
+\subsection{How Part~IV builds on Part~III}
+
+Part~III supplies the geometric ``spaces of physical possibility'' (varieties,
+moduli, positive geometries). Part~IV attaches to each such space its conserved
+global information: (co)homology, characteristic classes, and (via
+compactification and degeneration) a bordism class. The boundary stratification of a
+positive geometry --- ``boundaries of boundaries'' --- is literally a chain complex
+(\Cref{def:chain}), and its homology measures which boundary charges are conserved.
+The variation-of-Hodge-structure and Gauss--Manin data of Part~III are the smooth
+(de~Rham) realization channel of the same cohomology treated here abstractly, so
+Parts~III and~IV are two realization channels ($\alpha=\text{Hodge/de~Rham}$ vs.\
+$\alpha=\text{singular/topological}$) of one observable module, matched by the
+de~Rham theorem.
+
+\subsection{How Part~IV seeds Part~V}
+
+TQFT (\Cref{thm:tqft-entry}) is the first fully rigorous, status-$\Sfont$ instance
+of the Part~I pipeline in which the realization $\Real_\alpha$ is a genuine
+functor. The cobordism hypothesis (\Cref{thm:cobordism-hyp}) then shows the entire
+extended theory is generated by a single fully dualizable object in a symmetric
+monoidal $(\infty,n)$-category $\mathcal{C}$. This forces the ambient grammar of
+the next module to be exactly the theory of (higher) categories with duality:
+Part~V abstracts $\mathcal{C}$, functoriality, and the duality (evaluation /
+coevaluation) data into the general theory of categories, monoidal and
+dagger-compact structure, and homotopy type theory. In particular the ``no natural
+diagonal'' phenomenon behind no-cloning (Part~V/VI) is the categorical shadow of
+the duality data that already organize $\Bord_n$ here.
+
+\subsection{Limitations}
+
+We reproduce and address the parent program's limitations as they bear on Part~IV.
+\begin{enumerate}
+  \item \emph{Not every analogy is a theory.} The dictionary entries of
+    \Cref{sec:dict} carry status labels; the $\Hfont$ entries (e.g.\ ``Postnikov
+    tower $=$ hierarchy of defects'') are heuristic and are flagged as such, not
+    asserted as established physics.
+  \item \emph{No single universal functor $\Math\to\Phys$.} Part~IV constructs
+    \emph{domain-local} functors ($H_\bullet$, $Z$), not one global functor; this
+    is deliberate and consistent with the modular design.
+  \item \emph{Model dependence of SPT identification.} \Cref{thm:spt} is
+    status-$\Sfont$ as a classification but only $\Sfont/\Hfont$ when tied to a
+    specific lattice model; each such claim needs its own citation.
+  \item \emph{Extended/framed subtleties.} \Cref{thm:cobordism-hyp} is stated for
+    framed bordism; structured (oriented, spin, $G$-) variants require homotopy
+    fixed points of an $O(n)$-action and are more delicate. We flag but do not
+    resolve these.
+\end{enumerate}
+
+\subsection{Connections to the synthesis backbone}
+
+Three items recur across modules and are load-bearing for the synthesis paper:
+(i) the realization pipeline \eqref{eq:pipeline}, instantiated here as $Z$ and as
+the index theorem; (ii) homology $H_n$ as conserved cycles, which reappears in
+Part~VI as surface-code logical operators $H_1(\Sigma;\Zm/2)$; and (iii) the
+sheaf/stack (descent) dichotomy, which appears here as the Mayer--Vietoris
+connecting map and the anomaly-as-failed-descent principle (\Cref{rem:mv-descent,rem:anomaly})
+and is made rigorous only in Part~VI.
+
+% =====================================================================
+\section{Conclusion}
+\label{sec:conclusion}
+
+Part~IV formalizes algebraic topology as the grammar of conserved global
+information within the Math$\to$Physics representation library. We proved homotopy
+invariance and functoriality of homology and packaged them as a conserved global
+information functor $H_\bullet\colon\hTop\to\GrAb$; we read closed/exact forms as
+conserved fields/pure gauge and defects as dual field strengths; we reframed the
+Atiyah--Singer index theorem as an instance of
+$\text{observable}=\Real(\text{abstract structure})$; and we exhibited TQFT as the
+first functorial, status-$\Sfont$ realization of the Part~I pipeline, with the
+cobordism hypothesis as its rigidity/classification capstone and Dijkgraaf--Witten
+theory as a computable model of the Locality and Equivalence axioms. The bordism
+classification of invertible theories placed anomalies and SPT phases into the same
+descent-theoretic frame.
+
+The decisive structural fact is that Part~IV is where \emph{functoriality becomes
+achievable in a genuinely topological, status-$\Sfont$ setting}. Every later
+appeal to ``the realization functor'' in the ladder is anchored by the concrete
+functor $Z\colon\Bord_n\to\Vect$ constructed here. This is precisely the bridge to
+Part~V, which abstracts functoriality, monoidal structure, and duality into the
+universal grammar of categories and homotopy type theory. In the four-slogan
+compression of the parent program --- mathematics is syntax, motives are semantics,
+periods are measurements, coalgebras are decomposition laws --- Part~IV supplies the
+missing structural clause: \emph{topology is conservation, and functoriality is its
+law of composition}.
+
+% =====================================================================
+\section*{Acknowledgments}
+This work is Part~IV of a seven-part modular program by the YonedaAI Research
+Collective. We thank the automated peer-review and formatting-review pipelines
+(external reviewers) for iterative feedback incorporated into this version.
+
+% =====================================================================
+\appendix
+\section{Algebraic topology dictionary (with status labels)}
+\label{sec:dict}
+
+The following reproduces the algebraic-topology library with its epistemic status
+labels, verbatim in structure from the parent program's Appendix~D. Composite
+labels are preserved.
+
+{\small
+\begin{longtable}{%
+  >{\raggedright\arraybackslash}p{4.2cm}%
+  >{\raggedright\arraybackslash}p{4.8cm}%
+  >{\raggedright\arraybackslash}p{3.4cm}%
+  c}
+\toprule
+\textbf{Algebraic topology} & \textbf{Physical representation} & \textbf{Semantic meaning} & \textbf{Status}\\
+\midrule
+\endfirsthead
+\multicolumn{4}{l}{\emph{Algebraic topology dictionary (continued)}}\\
+\toprule
+\textbf{Algebraic topology} & \textbf{Physical representation} & \textbf{Semantic meaning} & \textbf{Status}\\
+\midrule
+\endhead
+\midrule
+\multicolumn{4}{r}{\emph{continued on next page}}\\
+\endfoot
+\bottomrule
+\endlastfoot
+Topological space $X$ & Configuration, spacetime, or state space & Domain of possibility & $\Sfont$\\
+Point & State or event & Localized datum & $\Sfont$\\
+Path & Evolution/worldline & Continuous transition & $\Sfont$\\
+Loop & Closed evolution & Holonomy probe & $\Sfont$\\
+Homotopy & Continuous deformation & Physically equivalent path & $\Sfont$\\
+Homotopy class & Topological sector & Deformation-invariant class & $\Sfont$\\
+$\pi_1(X)$ & Winding structure & Monodromy, defect winding & $\Sfont$\\
+$\pi_n(X)$ & Higher holes & Brane/defect charge sectors & $\Sfont/\Hfont$\\
+Homology $H_n(X)$ & Cycles or holes & Conserved extended structures & $\Sfont$\\
+Cohomology $H^n(X)$ & Fields/flux observables & Charge detectors on cycles & $\Sfont$\\
+Boundary operator $\partial$ & Boundary of region & Where conservation appears & $\Sfont$\\
+Cycle $\partial c=0$ & Closed conserved object & Conserved charge carrier & $\Sfont$\\
+Boundary $c=\partial b$ & Trivial conserved object & Pure gauge / null sector & $\Hfont$\\
+Cocycle & Closed field/charge rule & Conservation condition & $\Sfont$\\
+Coboundary & Gauge-exact field & Redundant potential & $\Sfont$\\
+Long exact sequence & Boundary--bulk relation & Charge transfer & $\Sfont$\\
+Mayer--Vietoris & Gluing local regions & Global from patches & $\Sfont$\\
+Cup product & Product of classes & Interaction of observables & $\Sfont/\Hfont$\\
+Cap product & Class $\frown$ cycle & Measurement over region & $\Sfont$\\
+Poincar\'e duality & Cycles to fields & Defects as dual field strengths & $\Sfont$\\
+de~Rham cohomology & Forms mod exact & Gauge-invariant flux & $\Sfont$\\
+Closed form & Conserved field & $d\omega=0$ conservation & $\Sfont$\\
+Exact form & Gauge-trivial field & $\omega=d\alpha$ redundancy & $\Sfont$\\
+Hodge star $\star$ & Dual field operation & EM/geometric duality & $\Sfont$\\
+Fiber bundle & Local d.o.f.\ over base & Internal state per point & $\Sfont$\\
+Principal bundle & Gauge field topology & Gauge choices glued & $\Sfont$\\
+Classifying space $BG$ & Universal classifier & $G$-sector space & $\Sfont$\\
+Characteristic class & Bundle invariant & Quantized charge/anomaly & $\Sfont$\\
+Chern class & Complex bundle invariant & Monopole, quantized flux & $\Sfont$\\
+Chern character & Charge map & Topological response/index & $\Sfont$\\
+Stiefel--Whitney class & Real bundle obstruction & Orientation/spin obstruction & $\Sfont$\\
+Spin structure & Lift of frame data & Fermion consistency & $\Sfont$\\
+Index theorem & Topology to analysis & Zero modes/anomalies & $\Sfont$\\
+$K$-theory & Cohomology of bundles & D-brane/phase charges & $\Sfont$\\
+Spectra & Stable homotopy objects & Generalized charges & $\Sfont$\\
+Generalized cohomology & Beyond ordinary charge & Exotic charges/phases & $\Sfont$\\
+Steenrod operations & Cohomology operations & Constraints on phases & $\Sfont/\Hfont$\\
+Postnikov tower & Layered homotopy data & Hierarchy of defects & $\Hfont$\\
+Loop space $\Omega X$ & Space of closed paths & Recurrence dynamics & $\Sfont/\Hfont$\\
+Suspension $\Sigma X$ & Dimension shift & Dimensional lift of defects & $\Hfont$\\
+Cobordism & Manifold as transition & Spacetime history & $\Sfont$\\
+Bordism group & Manifolds mod boundary & Classification of phases & $\Sfont$\\
+TQFT & Functor $\Bord_n\to\Vect$ & Topology-to-algebra & $\Sfont$\\
+Extended TQFT & Data in all codimensions & Particles, lines, surfaces & $\Sfont$\\
+Fully dualizable object & Point-data of a TQFT & Local seed of global theory & $\Sfont$\\
+Group cohomology & Cohomology of symmetry & Discrete action / SPT data & $\Sfont$\\
+Dijkgraaf--Witten & Finite-group gauge theory & Action from group cocycle & $\Sfont$\\
+\end{longtable}
+}
+
+% =====================================================================
+\begin{thebibliography}{99}
+
+\bibitem{Atiyah1988}
+M.~F. Atiyah,
+\emph{Topological quantum field theories},
+Publications Math\'ematiques de l'IH\'ES \textbf{68} (1988), 175--186.
+
+\bibitem{Lurie2009}
+J.~Lurie,
+\emph{On the classification of topological field theories},
+in \emph{Current Developments in Mathematics 2008}, Int.\ Press, 2009, 129--280;
+arXiv:0905.0465.
+
+\bibitem{Hatcher2002}
+A.~Hatcher,
+\emph{Algebraic Topology},
+Cambridge University Press, 2002.
+
+\bibitem{MilnorStasheff}
+J.~Milnor and J.~D. Stasheff,
+\emph{Characteristic Classes},
+Annals of Mathematics Studies \textbf{76}, Princeton University Press, 1974.
+
+\bibitem{DijkgraafWitten}
+R.~Dijkgraaf and E.~Witten,
+\emph{Topological gauge theories and group cohomology},
+Comm.\ Math.\ Phys.\ \textbf{129} (1990), 393--429.
+
+\bibitem{Freed2014}
+D.~S. Freed,
+\emph{Anomalies and invertible field theories},
+Proc.\ Symp.\ Pure Math.\ \textbf{88} (2015), 25--45; arXiv:1404.7224.
+
+\bibitem{FreedHopkins}
+D.~S. Freed and M.~J. Hopkins,
+\emph{Reflection positivity and invertible topological phases},
+Geom.\ Topol.\ \textbf{25} (2021), 1165--1330; arXiv:1604.06527.
+
+\bibitem{BaezDolan1995}
+J.~C. Baez and J.~Dolan,
+\emph{Higher-dimensional algebra and topological quantum field theory},
+J.\ Math.\ Phys.\ \textbf{36} (1995), 6073--6105.
+
+\bibitem{BaezStay2010}
+J.~C. Baez and M.~Stay,
+\emph{Physics, topology, logic and computation: a Rosetta Stone},
+in \emph{New Structures for Physics}, Lecture Notes in Physics \textbf{813}
+(2010), 95--172; arXiv:0903.0340.
+
+\bibitem{AtiyahSinger}
+M.~F. Atiyah and I.~M. Singer,
+\emph{The index of elliptic operators I},
+Annals of Mathematics \textbf{87} (1968), 484--530.
+
+\bibitem{Kitaev1997}
+A.~Yu. Kitaev,
+\emph{Fault-tolerant quantum computation by anyons},
+Annals of Physics \textbf{303} (2003), 2--30; arXiv:quant-ph/9707021.
+
+\bibitem{GradyPavlov2021}
+D.~Grady and D.~Pavlov,
+\emph{The geometric cobordism hypothesis},
+arXiv:2111.01095 (2021).
+
+\bibitem{KontsevichZagier2001}
+M.~Kontsevich and D.~Zagier,
+\emph{Periods},
+in \emph{Mathematics Unlimited --- 2001 and Beyond}, Springer, 2001, 771--808.
+
+\end{thebibliography}
+
+\end{document}

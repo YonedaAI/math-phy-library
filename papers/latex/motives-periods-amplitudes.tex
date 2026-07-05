@@ -1,0 +1,1500 @@
+\documentclass[12pt]{article}
+
+% ===== Core math =====
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{mathtools}
+% ===== Diagrams =====
+\usepackage{tikz-cd}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta, positioning, calc, fit, backgrounds}
+% ===== References =====
+\usepackage{hyperref}
+\usepackage{cleveref}
+% ===== Graphics / layout =====
+\usepackage{graphicx}
+\usepackage[margin=1in]{geometry}
+% ===== GrokRxiv sidebar =====
+% NOTE: `everypage` is retained deliberately: it is part of the mandated
+% package set for this series' GrokRxiv template, and its `\AddEverypageHook`
+% gives a robust page-1 test for the DOI sidebar below. Modern LaTeX kernels
+% emit a benign "legacy status" informational notice on load (not an error);
+% the document compiles cleanly. A future migration target is the kernel hook
+% `\AddToHook{shipout/background}`.
+\usepackage{everypage}
+\usepackage{xcolor}
+% ===== Misc =====
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{longtable}
+\usepackage{enumitem}
+\usepackage{mdframed}
+
+% Ragged-right fixed-width column type for wrapping tables (avoids overfull
+% boxes and hyphenation overruns in the dictionary tables).
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
+
+\hypersetup{
+  colorlinks=true,
+  linkcolor=blue!55!black,
+  citecolor=green!45!black,
+  urlcolor=blue!65!black,
+  pdftitle={Motives, Periods, and Amplitudes: The Coalgebraic Anatomy of Physical Representation},
+  pdfauthor={Matthew Long}
+}
+
+% ===== Theorem environments =====
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{axiom}[theorem]{Axiom}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+% ===== Status-box environment (S/H/P epistemic labels) =====
+\newmdenv[
+  linecolor=gray!55,
+  backgroundcolor=gray!7,
+  linewidth=0.6pt,
+  skipabove=8pt,
+  skipbelow=8pt,
+  innertopmargin=6pt,
+  innerbottommargin=6pt
+]{statusbox}
+
+% ===== Notation macros =====
+\providecommand{\llbracket}{[\![}
+\providecommand{\rrbracket}{]\!]}
+\newcommand{\Mot}{\mathrm{Mot}}
+\newcommand{\Real}{\mathrm{Real}}
+\newcommand{\Obs}{\mathrm{Obs}}
+\newcommand{\per}{\mathrm{per}}
+\newcommand{\Am}{\mathcal{A}}
+\newcommand{\Amm}{\mathcal{A}^{\mathfrak{m}}}
+\newcommand{\Lie}{\mathcal{L}}
+\newcommand{\LG}{\mathcal{L}_{G}}
+\newcommand{\Dom}{\mathsf{Dom}}
+\newcommand{\Math}{\mathsf{Math}}
+\newcommand{\Phys}{\mathsf{Phys}}
+\newcommand{\Rep}{\mathsf{Rep}}
+\newcommand{\Gpd}{\mathsf{Gpd}}
+\newcommand{\Vect}{\mathsf{Vect}}
+\newcommand{\Betti}{\mathrm{B}}
+\newcommand{\dR}{\mathrm{dR}}
+\newcommand{\Hdg}{\mathrm{Hdg}}
+\newcommand{\et}{\text{\'et}}
+\newcommand{\Li}{\mathrm{Li}}
+\newcommand{\wt}{\mathrm{wt}}
+\newcommand{\dep}{\mathrm{dep}}
+\newcommand{\coA}{\Delta}
+\newcommand{\cobr}{\delta}
+\newcommand{\Prim}{\mathrm{Prim}}
+\newcommand{\Zmot}{\mathcal{H}}
+\newcommand{\Qbb}{\mathbb{Q}}
+\newcommand{\Zbb}{\mathbb{Z}}
+\newcommand{\Cbb}{\mathbb{C}}
+\newcommand{\Rbb}{\mathbb{R}}
+\newcommand{\Pbb}{\mathbb{P}}
+\newcommand{\Gm}{\mathbb{G}_m}
+\newcommand{\id}{\mathrm{id}}
+\newcommand{\Hom}{\mathrm{Hom}}
+\newcommand{\ol}[1]{\overline{#1}}
+% Status labels: \ensuremath{\mathsf{...}} so they render identically in
+% text and math mode without font-substitution warnings (reviewer, minor 3).
+\newcommand{\Slab}{\ensuremath{\mathsf{S}}}
+\newcommand{\Hlab}{\ensuremath{\mathsf{H}}}
+\newcommand{\Plab}{\ensuremath{\mathsf{P}}}
+
+% ===== GrokRxiv DOI sidebar =====
+\definecolor{grokgray}{RGB}{110,110,110}
+\AddEverypageHook{%
+  \ifnum\value{page}=1
+    \begin{tikzpicture}[remember picture, overlay]
+      \node[
+        rotate=90,
+        anchor=south,
+        font=\Large\sffamily\bfseries\color{grokgray},
+        inner sep=0pt
+      ] at ([xshift=38pt, yshift=0.52\paperheight]current page.south west)
+      {GrokRxiv:2026.07.motives-periods-amplitudes\quad
+       [\,math-ph\,]\quad
+       04 Jul 2026};
+    \end{tikzpicture}
+  \fi
+}
+
+\title{\bfseries Motives, Periods, and Amplitudes:\\ The Coalgebraic Anatomy of Physical Representation\\[4pt]
+\large Part II of \emph{A Math$\rightarrow$Physics Representation Library}}
+
+\author{Matthew Long \\
+\textit{The YonedaAI Collaboration} \\
+\textit{YonedaAI Research Collective} \\
+Chicago, IL \\
+\texttt{research@yonedaai.com} $\cdot$ \url{https://yonedaai.com}}
+
+\date{4 July 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+This is Part II of the modular series \emph{A Math$\rightarrow$Physics Representation Library}, whose governing thesis is that a large class of physical quantities are not merely \emph{described by} mathematics but are \emph{realized} from structured mathematical information along an explicit pipeline
+$M \xmapsto{\Phi} \Phi(M) \xmapsto{\Real_\alpha} \text{phys.\ rep.} \xmapsto{\Obs} \text{meas.}$
+Part I built the ambient \emph{representation stack} and left the realization channels $\Real_\alpha$ and the decomposition operation as abstract data. This paper supplies their first fully concrete instantiation. We formalize motives $\Mot(X)$ as the \emph{functional essence} of a mathematical object (a status-\Hlab{} semantic layer, carefully distinguished from Grothendieck's standard definition), we make the realization channels the named cohomological functors $\Real_\alpha$ for $\alpha \in \{\Betti,\dR,\Hdg,\et\}$, and we make the observable the period map $\per$. The central object is the \emph{motivic amplitude object} $\Amm$ with $\Am = \per(\Amm)$, equipped with a coaction $\coA(\Amm) = \sum_i \Amm_{i,1}\otimes \Amm_{i,2}$ and a cobracket $\cobr\colon \Lie \to \Lambda^2\Lie$. We prove: (T1) a \emph{Conditional Amplitude Decomposition} theorem stating that a realization channel, realized as a homomorphism of the motivic-Galois Hopf algebras, transports the coaction into a decomposition of the realized amplitude; (T2) that the weight-graded primitives cogenerate the Goncharov Lie coalgebra $\LG(F)$, with weight-one primitives identified with $F^\times\otimes\Qbb$; (T3) multiplicativity of the period pairing under direct sum and tensor product; (T4) a \emph{Non-Tate Obstruction} limitation theorem showing that elliptic and other non-Tate motivic lifts escape the polylogarithmic anatomy; and (T5) a conditional (status \Hlab/\Plab) compatibility statement for the cosmic Galois action. Throughout we retain the S/H/P epistemic-status discipline of Part I, and we exhibit the coalgebraic anatomy as the concrete arithmetic mechanism behind cuts, discontinuities, factorization, and residues. We accompany the theory with a compiling Haskell formalization of the coalgebra/coproduct structure and an idiomatic Lean sketch of the period/amplitude/coalgebra types.
+\end{abstract}
+
+\tableofcontents
+
+% =====================================================================
+\section{Introduction}
+\label{sec:intro}
+
+\subsection{The representation library and where Part II sits}
+
+The series \emph{A Math$\rightarrow$Physics Representation Library} formalizes the idea that
+mathematics functions as the \emph{syntax} of physical representation: physical
+observables are obtained as realizations of structured mathematical information. The
+program is deliberately \emph{modular}. Rather than positing a single universal functor
+from all of mathematics to all of physics --- which we argue in \Cref{sec:discussion}
+is unlikely to be well defined --- we build a ladder of domain-indexed modules, each of
+which is defensible on its own and each of which composes with its neighbours to add an
+emergent structural property.
+
+Part I introduced the ambient formalism: a category $\Dom$ of mathematical domains,
+a category or higher category $\Math_d$ of structures in each domain, a category $\Phys$
+of physical-representation targets, and the bracket notation $\llbracket M\rrbracket_{\Phys}$
+for the physical representation assigned to $M$. Its central construct is the
+\emph{realization pipeline}
+\begin{equation}
+\label{eq:pipeline}
+\begin{aligned}
+M \in \Math_d \;\xmapsto{\;\Phi\;}\;& \Phi(M)\ \text{(abstract info)}
+\;\xmapsto{\;\Real_\alpha\;}\; \text{phys.\ rep.}
+\;\xmapsto{\;\Obs\;}\; \text{measurement},\\[2pt]
+& \Obs_\alpha(M) = \Obs\!\big(\Real_\alpha(\Phi(M))\big),
+\end{aligned}
+\end{equation}
+together with a three-level epistemic-status system that every module must carry
+(\Cref{subsec:status}). In Part I the maps $\Phi$, $\Real_\alpha$, $\Obs$ are abstract:
+placeholders awaiting concrete content.
+
+\emph{This paper provides that content in the motivic channel.} We take $\Phi$ to be
+``pass to the motive'' $X\mapsto \Mot(X)$, we take $\Real_\alpha$ to be the classical
+realization functors of a motive (Betti, de Rham, Hodge, \'etale), and we take $\Obs$ to
+be the period map $\per$. Under this dictionary the compressed master slogan of the
+series, $\text{observable}=\Real(\text{abstract structure})$, becomes the motivic
+refinement
+\begin{equation}
+\label{eq:masterII}
+\boxed{\;\Am = \per(\Amm),
+\qquad
+\coA(\Amm) = \sum_i \Amm_{i,1}\otimes \Amm_{i,2},
+\qquad
+\cobr\colon \Lie\to\Lambda^2\Lie.\;}
+\end{equation}
+Here $\Amm$ is a \emph{motivic amplitude object} --- a pre-numerical object living in a
+category or comodule of motivic periods --- $\Am$ is the physical amplitude obtained by
+taking periods, $\coA$ is the coaction that exposes the amplitude's internal anatomy, and
+$\cobr$ is the cobracket that isolates its primitive antisymmetric pieces.
+
+\subsection{The emergent property added by Part II}
+
+In the language of the modular ladder, each level adds an emergent property that its
+predecessor could only gesture at. Part I could speak of ``realization channels $\Real_\alpha$''
+only in the abstract. Part II makes those channels \emph{concrete and numerically
+checkable}: Betti/de Rham/Hodge/\'etale realizations are honest functors with honest
+comparison isomorphisms, and periods are honest numbers one can compute. More importantly,
+Part II endows observables with an \emph{internal coalgebraic anatomy}: the coaction and
+cobracket decompose an amplitude into primitive informational pieces. Where Part I's
+Decomposition Axiom merely asserted that ``compositional observables admit a decomposition
+operation,'' Part II identifies that operation with the Goncharov coproduct and its
+cobracket, and proves structural theorems about it. This is the sense in which
+\emph{coalgebras are the decomposition laws of physics}.
+
+\subsection{The epistemic-status discipline}
+\label{subsec:status}
+
+Following Part I we tag every dictionary entry and every claim with one of three
+epistemic-status labels, and we regard these labels as \emph{part of the formalism},
+not as decoration.
+
+\begin{statusbox}
+\begin{center}
+\begin{tabular}{@{}c L{0.42\textwidth} L{0.40\textwidth}@{}}
+\toprule
+\textbf{Label} & \textbf{Meaning} & \textbf{Canonical example} \\
+\midrule
+\Slab{} & standard use in mathematics or mathematical physics & Goncharov coproduct on polylogarithms \\
+\Hlab{} & strong heuristic representation-dictionary entry & motive as ``functional essence'' \\
+\Plab{} & speculative philosophical ontology & physical reality as motivic realization \\
+\bottomrule
+\end{tabular}
+\end{center}
+\end{statusbox}
+
+\noindent
+Composite labels such as \Slab/\Hlab{} and \Hlab/\Plab{} occur where an entry is standard as
+pure mathematics but heuristic or speculative in its \emph{physical} reading. We preserve
+these composite labels verbatim. The discipline forces us to state, for every amplitude
+class, whether the motivic coaction is an established fact (status \Slab, e.g.\ Panzer--Schnetz
+on $\phi^4$ periods \cite{PanzerSchnetz}) or a conjectural extension (status \Hlab/\Plab,
+e.g.\ the cosmic Galois group \cite{BrownCosmic}).
+
+\subsection{Contributions}
+
+\begin{enumerate}[leftmargin=1.6em]
+\item A precise formulation of the \emph{functional-essence} reading of a motive as a
+status-\Hlab{} semantic layer over Grothendieck's standard notion, with a boxed caution
+(\Cref{rem:not-functions}) that prevents the reading from being mistaken for the
+mathematical definition.
+\item An instantiation of Part I's realization pipeline \eqref{eq:pipeline} in the motivic
+channel, identifying $\Phi,\Real_\alpha,\Obs$ with the motive, the cohomological
+realizations, and the period map (\Cref{sec:motives}, \Cref{sec:periods}).
+\item A self-contained proof of the \emph{Conditional Amplitude Decomposition} theorem
+(\Cref{thm:cad}), stating that a realization channel --- realized as a homomorphism of the
+motivic-Galois Hopf algebras induced by a Tannakian realization functor --- transports the
+coaction on $\Amm$ to a decomposition of the realized amplitude, together with an explicit
+statement of where the S/H/P labels bite.
+\item A structure theorem for the Goncharov Lie coalgebra (\Cref{thm:goncharov-gen}): the
+weight-graded primitives cogenerate $\LG(F)$, and weight-one primitives are $F^\times\otimes\Qbb$.
+\item Multiplicativity of the period pairing (\Cref{thm:period-mult}) and a
+\emph{Non-Tate Obstruction} limitation theorem (\Cref{thm:nontate}) giving a citable,
+rigorous form of the series' Limitation~4.
+\item A compiling Haskell formalization of period data, motivic amplitude objects,
+coactions and cobrackets, and the Goncharov Lie coalgebra, together with an idiomatic Lean
+type-signature sketch (\Cref{sec:formalization}).
+\end{enumerate}
+
+\subsection{Outline}
+\Cref{sec:framework} recalls the Part~I framework and fixes motivic notation.
+\Cref{sec:motives} treats motives as functional essence and the realization functors.
+\Cref{sec:periods} develops periods and proves multiplicativity of the period pairing.
+\Cref{sec:amplitude} introduces motivic amplitude objects, coalgebraic anatomy, and proves
+the Conditional Amplitude Decomposition theorem.
+\Cref{sec:goncharov} constructs the Goncharov Lie coalgebra and proves the generation
+theorem.
+\Cref{sec:cuts} gives the physics dictionary --- coproducts, cuts, factorization, residues,
+positive geometries, and the Connes--Kreimer Hopf algebra.
+\Cref{sec:nontate} proves the Non-Tate Obstruction theorem and states the conditional cosmic
+Galois compatibility.
+\Cref{sec:results} collects the results.
+\Cref{sec:formalization} presents the Haskell and Lean formalizations.
+\Cref{sec:discussion} discusses limitations and the bridges to Parts I and III, and
+\Cref{sec:conclusion} concludes.
+
+% =====================================================================
+\section{Mathematical Framework}
+\label{sec:framework}
+
+\subsection{Recollection of the Part I formalism}
+
+We briefly recall the ambient objects; see Part I for details.
+
+\begin{definition}[Representation entry, Part I]
+\label{def:repentry}
+A \emph{representation entry} is a quadruple $E = (M,P,\tau,\sigma)$ where $M\in\Math_d$ is a
+mathematical structure, $P\in\Phys$ is a proposed physical representation, $\tau$ is a
+semantic translation datum (a functor, natural transformation, equivalence class of models,
+interpretation map, or weaker relation), and $\sigma\in\{\Slab,\Hlab,\Plab\}$ is the
+epistemic-status label.
+\end{definition}
+
+\begin{definition}[Representation prestack / stack, Part I]
+\label{def:prestack}
+A \emph{representation prestack} is a pseudofunctor
+$\Rep_{\Phys}\colon \Dom^{\mathrm{op}}\to\Gpd$ assigning to each domain $d$ a groupoid of
+representation entries and to a refinement $u\colon e\to d$ a restriction functor
+$u^\ast$. Given a Grothendieck topology on $\Dom$, $\Rep_{\Phys}$ is a
+\emph{representation stack} if compatible families of local entries glue to global entries
+uniquely up to coherent isomorphism.
+\end{definition}
+
+Part I imposes four axioms on the pipeline \eqref{eq:pipeline}, each of which Part II will
+instantiate concretely:
+
+\begin{axiom}[Realization]\label{ax:real}
+$\text{observable} = \Obs\circ\Real_\alpha(\text{abstract structure})$.
+\end{axiom}
+\begin{axiom}[Equivalence]\label{ax:equiv}
+Mathematical descriptions related by an equivalence in the automorphism/gauge groupoid of a
+representation entry determine the same physical content at the chosen observational level.
+\end{axiom}
+\begin{axiom}[Locality/descent]\label{ax:local}
+Physical representations must be locally assignable and globally coherent; failure of
+descent is an obstruction, anomaly, or missing boundary datum.
+\end{axiom}
+\begin{axiom}[Decomposition]\label{ax:decomp}
+Compositional, period-like observables admit a decomposition operation (boundary,
+coproduct, coaction, spectral sequence, factorization) revealing lower-level informational
+pieces.
+\end{axiom}
+
+The whole of Part II may be read as the statement: \emph{in the motivic channel,
+\Cref{ax:decomp} is the Goncharov coproduct}, and \Cref{ax:real} is the period map.
+
+\subsection{Motivic notation and standing conventions}
+
+We work over a base field $k$ of characteristic zero, usually a number field, with a fixed
+embedding $k\hookrightarrow\Cbb$. We write $\mathrm{Var}_k$ for smooth quasi-projective
+varieties over $k$. We assume a Tannakian category $\mathrm{MM}(k)$ of mixed motives (or, in
+the concrete cases we use, the category $\mathrm{MTM}(k)$ of mixed Tate motives, which is
+unconditionally available over number fields by Levine, Deligne--Goncharov, and
+Voevodsky, and whose period side is controlled by Brown \cite{BrownMTZ}). All tensor products
+without a subscript are over $\Qbb$. For a graded vector space $V=\bigoplus_n V_n$ we write
+$\wt(v)=n$ for $v\in V_n$ and call $n$ the \emph{weight}.
+
+\begin{definition}[Realization functor]
+\label{def:realization}
+A \emph{realization} is an exact $\otimes$-functor $\Real_\alpha\colon \mathrm{MM}(k)\to
+\mathcal{T}_\alpha$ to a Tannakian target $\mathcal{T}_\alpha$. The four classical
+realizations are the \emph{Betti} realization $\Real_\Betti$ (singular cohomology,
+target $\Qbb$-vector spaces with a Hodge/weight filtration), the \emph{de Rham} realization
+$\Real_\dR$ (algebraic de Rham cohomology, target filtered $k$-vector spaces), the
+\emph{Hodge} realization $\Real_\Hdg$ (mixed Hodge structures), and the \emph{\'etale}
+realization $\Real_\et$ ($\ell$-adic Galois representations).
+\end{definition}
+
+The Betti and de Rham realizations of a motive are related by the \emph{comparison
+isomorphism}
+\begin{equation}
+\label{eq:comparison}
+\mathrm{comp}\colon \Real_\dR(M)\otimes_k\Cbb \;\xrightarrow{\ \sim\ }\;
+\Real_\Betti(M)\otimes_\Qbb\Cbb,
+\end{equation}
+and \emph{periods} are the entries of the matrix of $\mathrm{comp}$ in chosen rational
+bases. This is the arithmetic origin of \eqref{eq:masterII}: a period is what one
+\emph{measures} when one realizes a motive both algebraically and topologically and compares
+the two.
+
+\begin{remark}[The motivic channel of the pipeline]
+\Cref{def:realization} makes precise the sense in which Part II instantiates Part I's
+$\Real_\alpha$: the abstract index $\alpha$ of \eqref{eq:pipeline} now ranges over the honest
+set $\{\Betti,\dR,\Hdg,\et\}$, and each $\Real_\alpha$ is a genuine functor rather than a
+placeholder. The remaining ``operational/quantum/thermodynamic'' channels of Part I are
+treated in later parts of the series.
+\end{remark}
+
+% =====================================================================
+\section{Motives as Functional Essence}
+\label{sec:motives}
+
+\subsection{The standard notion and the heuristic layer}
+
+Grothendieck's motives are the universal cohomological invariants of algebraic varieties:
+$\Mot(X)$ is designed so that every ``reasonable'' (Weil) cohomology theory factors through
+a single realization functor out of the category of motives. Betti, de Rham, $\ell$-adic
+\'etale, and crystalline cohomologies are then \emph{shadows} of one motivic object.
+
+Our series overlays on this a semantic reading, which we flag as heuristic.
+
+\begin{definition}[Functional-essence interpretation, status \Hlab]
+\label{def:FE}
+The \emph{functional-essence} interpretation assigns to a variety $X$ the semantic datum
+\[
+\mathrm{FE}(X) := \Mot(X),
+\]
+read as ``the invariant, pre-numerical structure from which the various functional readings,
+cohomological realizations, periods, and numerical shadows of $X$ are realized.'' In the
+pipeline \eqref{eq:pipeline} this is the concrete choice $\Phi(X)=\Mot(X)$.
+\end{definition}
+
+\begin{remark}[Caution: a motive is not literally ``the functions of'' $X$]
+\label{rem:not-functions}
+\begin{mdframed}[linecolor=red!45,linewidth=0.8pt,backgroundcolor=red!4]
+It is essential not to misread \Cref{def:FE}. \emph{Mathematically}, a motive is not
+``the functions of'' an object, and it is not the ring of functions $\mathcal{O}(X)$ or any
+of its variants. A motive is a universal object unifying the different cohomology theories of
+$X$; it is the source of $X$'s cohomological realizations, not its algebra of functions. The
+reading ``functional essence'' is a \emph{proposed semantic layer} of this project (status
+\Hlab), introduced to align motives with the pipeline's slogan
+$\text{observable}=\Real(\text{abstract structure})$. Every use of the phrase ``functional
+essence'' below inherits the status-\Hlab{} label of \Cref{def:FE} and must not be taken as a
+mathematical identity.
+\end{mdframed}
+\end{remark}
+
+\subsection{The realization chain}
+
+Under \Cref{def:FE}, Part I's pipeline specializes to the \emph{motivic realization chain}
+\begin{equation}
+\label{eq:chain}
+X \;\xmapsto{\ \Mot\ }\; \Mot(X) \;\xmapsto{\ \Real_\alpha\ }\; \Real_\alpha(\Mot(X))
+\;\xmapsto{\ \Obs\ }\; \text{physical observable},
+\end{equation}
+with the identifications $\Phi=\Mot$, $\Obs=\per$. We display the chain, and its relation
+to Part I's abstract pipeline, as a commuting diagram.
+
+\begin{figure}[ht]
+\centering
+\begin{tikzcd}[column sep=large, row sep=large]
+X \arrow[r, "\Mot"] \arrow[d, dashed, "\sim\ \text{(gauge/duality)}"'] &
+\Mot(X) \arrow[r, "\Real_\alpha"] \arrow[d, "\text{same motive}"] &
+\Real_\alpha(\Mot(X)) \arrow[r, "\per"] \arrow[d, "\text{comparison}"] &
+\Am \arrow[d, equal] \\
+X' \arrow[r, "\Mot"'] &
+\Mot(X') \arrow[r, "\Real_{\alpha'}"'] &
+\Real_{\alpha'}(\Mot(X')) \arrow[r, "\per"'] &
+\Am
+\end{tikzcd}
+\caption{The motivic realization chain \eqref{eq:chain} and the Equivalence Axiom
+(\Cref{ax:equiv}): if $X\sim X'$ under a motivic equivalence (e.g.\ a change of algebraic
+model, a duality, or a gauge choice), the two rows realize the \emph{same} amplitude $\Am$.
+Periods computed through different realization channels $\alpha,\alpha'$ agree via the
+comparison isomorphism \eqref{eq:comparison}.}
+\label{fig:chain}
+\end{figure}
+
+\begin{example}[The logarithm as a weight-two period]
+\label{ex:log}
+Let $X=\Gm=\Pbb^1\setminus\{0,\infty\}$ and consider the relative cohomology motive
+$M=H^1(\Gm,\{1,x\})$ for $x\in k^\times$. Its de Rham side is spanned by the class of
+$\tfrac{dt}{t}$ and its Betti side by the class of the path $\gamma$ from $1$ to $x$. The
+period is
+\[
+\per\left(\int_\gamma \frac{dt}{t}\right) = \log x .
+\]
+This is the motivic incarnation of the statement ``$\log$ is a period''; the motive
+$H^1(\Gm,\{1,x\})$ is an extension of $\Qbb(0)$ by $\Qbb(1)$, i.e.\ the Kummer motive. In
+the functional-essence reading (status \Hlab), $\log x$ is a numerical shadow of the Kummer
+motive, and the Kummer motive is the pre-numerical source common to all the ways one might
+present $\log x$.
+\end{example}
+
+\begin{example}[Multiple polylogarithms]
+\label{ex:polylog}
+The multiple polylogarithms
+\[
+\Li_{n_1,\dots,n_d}(x_1,\dots,x_d) = \sum_{0<k_1<\cdots<k_d}
+\frac{x_1^{k_1}\cdots x_d^{k_d}}{k_1^{n_1}\cdots k_d^{n_d}}
+\]
+are periods of the motivic fundamental group of $\Pbb^1\setminus\{0,1,\infty\}$ (and its
+cyclotomic variants). Their weight is $n_1+\cdots+n_d$ and their depth is $d$. Multiple zeta
+values $\zeta(n_1,\dots,n_d)=\Li_{n_1,\dots,n_d}(1,\dots,1)$ (with $n_d\ge 2$) are the
+corresponding special values. These are the canonical periods populating amplitude
+computations, and their motivic lifts generate the mixed Tate part of the coalgebra we build
+in \Cref{sec:goncharov}.
+\end{example}
+
+% =====================================================================
+\section{Periods and the Period Pairing}
+\label{sec:periods}
+
+\subsection{Period data and the period map}
+
+\begin{definition}[Period datum]
+\label{def:perioddatum}
+A \emph{period datum} is a quadruple $\Pi = (X,D,\omega,\Gamma)$ where $X$ is a smooth
+algebraic variety over $k$, $D\subset X$ is a normal-crossings divisor (the boundary),
+$\omega$ is an algebraic differential form on $X\setminus D$, and $\Gamma$ is a relative cycle
+in $H_\bullet(X(\Cbb),D(\Cbb);\Qbb)$ of complementary dimension. Its \emph{period} is
+\begin{equation}
+\per(\Pi) \;=\; \int_\Gamma \omega \;\in\;\Cbb.
+\end{equation}
+\end{definition}
+
+Period data are the concrete carriers of the pairing between de Rham data ($\omega$) and
+Betti data ($\Gamma$); the number $\per(\Pi)$ is exactly a matrix entry of the comparison
+isomorphism \eqref{eq:comparison} for the motive $M=H^{\dim}(X,D)$. The
+\emph{Kontsevich--Zagier} period ring $\mathcal{P}$ is the $\Qbb$-algebra generated by all
+such numbers \cite{KontsevichZagier}; it contains $\ol{\Qbb}$, $\log 2$, $\pi$, $\zeta(3)$,
+and the amplitude constants of perturbative quantum field theory.
+
+\subsection{Multiplicativity of the period pairing}
+
+The following theorem is the rigorous backbone that licenses treating $\Am=\per(\Amm)$ as
+respecting the physical amplitude's additive and multiplicative structure.
+
+\begin{theorem}[Multiplicativity of the period pairing]
+\label{thm:period-mult}
+Let $\Pi_1=(X_1,D_1,\omega_1,\Gamma_1)$ and $\Pi_2=(X_2,D_2,\omega_2,\Gamma_2)$ be period
+data.
+\begin{enumerate}[label=\textup{(\roman*)}, leftmargin=2.2em]
+\item \textup{(Additivity.)} If $\Pi_1$ and $\Pi_2$ have the same $(X,D,\omega)$ and disjoint
+cycles $\Gamma_1,\Gamma_2$, then the disjoint-union datum $\Pi_1\sqcup\Pi_2$ satisfies
+$\per(\Pi_1\sqcup\Pi_2)=\per(\Pi_1)+\per(\Pi_2)$. More generally the period map is
+$\Qbb$-bilinear in $(\omega,\Gamma)$.
+\item \textup{(Multiplicativity.)} Define the \emph{product period datum}
+\[
+\Pi_1\otimes\Pi_2 := \big(X_1\times X_2,\ D_1\times X_2 \cup X_1\times D_2,\
+\omega_1\wedge\omega_2,\ \Gamma_1\times\Gamma_2\big).
+\]
+Then
+\[
+\per(\Pi_1\otimes\Pi_2)=\per(\Pi_1)\cdot\per(\Pi_2).
+\]
+\end{enumerate}
+\end{theorem}
+
+\begin{remark}[What is and is not being asserted]
+\label{rem:not-tautology}
+The mathematical content of \Cref{thm:period-mult} is the pair of identities \textup{(i)} and
+\textup{(ii)} --- in particular the multiplicativity \textup{(ii)}, which is the analytic
+shadow of the K\"unneth decomposition and is not a formal consequence of the definitions. It
+is these identities that make the evaluation map $\Pi\mapsto\per(\Pi)$ a \emph{ring}
+homomorphism on the $\Qbb$-algebra of formal period data (modulo bilinearity, change of
+variables, and Stokes). We emphasize that the \emph{surjectivity} onto $\mathcal{P}$ is
+tautological, since $\mathcal{P}$ is \emph{defined} in \Cref{sec:periods} as the image of this
+evaluation map; equivalently, \textup{(i)}--\textup{(ii)} are exactly what endows
+$\mathcal{P}$ with its ring structure. The nontrivial statement is thus that the target is
+closed under multiplication with the product realized by the product period datum, not that
+the map hits everything.
+\end{remark}
+
+\begin{proof}
+(i) The integral $\int_\Gamma\omega$ is $\Qbb$-linear in the chain $\Gamma$ and in the
+form $\omega$ by definition of integration of forms over chains; for disjoint cycles
+$\Gamma_1\sqcup\Gamma_2$ one has
+$\int_{\Gamma_1\sqcup\Gamma_2}\omega=\int_{\Gamma_1}\omega+\int_{\Gamma_2}\omega$. This gives
+additivity and, applied to both slots, $\Qbb$-bilinearity.
+
+(ii) Write $p_j\colon X_1\times X_2\to X_j$ for the projections, so that
+$\omega_1\wedge\omega_2 := p_1^\ast\omega_1\wedge p_2^\ast\omega_2$ is a form on
+$(X_1\times X_2)\setminus(D_1\times X_2\cup X_1\times D_2)=(X_1\setminus D_1)\times
+(X_2\setminus D_2)$. By the Fubini theorem for the product of the chains $\Gamma_1$ and
+$\Gamma_2$ (both of complementary dimension in their factors, so that
+$\Gamma_1\times\Gamma_2$ has complementary dimension in the product),
+\[
+\int_{\Gamma_1\times\Gamma_2}p_1^\ast\omega_1\wedge p_2^\ast\omega_2
+=\left(\int_{\Gamma_1}\omega_1\right)\left(\int_{\Gamma_2}\omega_2\right).
+\]
+This is the analytic form of the K\"unneth decomposition
+$H^\bullet(X_1\times X_2)\cong H^\bullet(X_1)\otimes H^\bullet(X_2)$ at the level of the
+comparison isomorphism: the period matrix of a tensor product of motives is the Kronecker
+product of the period matrices, and the displayed entry is the product of the corresponding
+entries. This establishes the two displayed identities (i) and (ii); their ring-theoretic
+reading is recorded in \Cref{rem:not-tautology}.
+\end{proof}
+
+\begin{corollary}[Periods respect factorized amplitudes]
+\label{cor:factorize}
+If a physical amplitude $\Am$ factorizes as $\Am=\Am_1\cdot\Am_2$ with each $\Am_i$
+realized by a period datum $\Pi_i$, and if the joint amplitude is realized by the product
+period datum $\Pi_1\otimes\Pi_2$, then the motivic identity $\Amm=\Amm_1\otimes\Amm_2$
+realizes $\Am=\per(\Amm)$ compatibly with the factorization. Thus the master formula
+$\Am=\per(\Amm)$ of \eqref{eq:masterII} is consistent with amplitude factorization at
+tree level and, more generally, at any kinematic factorization channel where the geometry
+degenerates to a product.
+\end{corollary}
+
+\begin{proof}
+Immediate from \Cref{thm:period-mult}(ii): $\per(\Amm_1\otimes\Amm_2)=
+\per(\Amm_1)\per(\Amm_2)=\Am_1\Am_2=\Am$.
+\end{proof}
+
+% =====================================================================
+\section[Amplitude Objects and Coalgebraic Anatomy]{Motivic Amplitudes and Coalgebraic Anatomy}
+\label{sec:amplitude}
+
+\subsection{Coalgebras, comodules, and the coaction}
+
+We recall the coalgebraic vocabulary in the form we use it.
+
+\begin{definition}[Coalgebra, comodule]
+\label{def:coalg}
+A \emph{coalgebra} over $\Qbb$ is a $\Qbb$-vector space $C$ with a coproduct
+$\coA\colon C\to C\otimes C$ and counit $\varepsilon\colon C\to\Qbb$ satisfying
+coassociativity $(\coA\otimes\id)\coA=(\id\otimes\coA)\coA$ and counitality
+$(\varepsilon\otimes\id)\coA=\id=(\id\otimes\varepsilon)\coA$. A \emph{right comodule} over
+a Hopf algebra $H$ is a space $A$ with a coaction $\coA\colon A\to A\otimes H$ satisfying
+$(\coA\otimes\id_H)\coA=(\id_A\otimes\Delta_H)\coA$ and
+$(\id_A\otimes\varepsilon_H)\coA=\id_A$.
+\end{definition}
+
+\begin{definition}[Hopf algebra of motivic periods]
+\label{def:hopfperiods}
+Let $\Zmot=\bigoplus_{n\ge 0}\Zmot_n$ be a \emph{connected graded commutative Hopf algebra}
+of motivic-Galois type: $\Zmot_0=\Qbb\cdot 1$ (connectedness), the grading is by weight, and
+the coproduct $\coA\colon\Zmot\to\Zmot\otimes\Zmot$, product, unit $1$, counit
+$\varepsilon\colon\Zmot\to\Qbb$ (projection onto $\Zmot_0$), and antipode make $\Zmot$ a Hopf
+algebra. For mixed Tate motives over a number field, $\Zmot$ is the Hopf algebra of the
+motivic Galois group, isomorphic as a graded vector space to the tensor coalgebra on
+$\bigoplus_{n\ge 1}\mathrm{Ext}^1(\Qbb(0),\Qbb(n))$. Write $\bar\Zmot=\ker\varepsilon=
+\bigoplus_{n\ge 1}\Zmot_n$ for the augmentation ideal.
+\end{definition}
+
+\begin{definition}[Motivic amplitude object]
+\label{def:motamp}
+A \emph{motivic amplitude object} is an element $\Amm\in\Zmot$ of the Hopf algebra of
+\Cref{def:hopfperiods}. It is equipped with the weight and depth gradings
+$\wt,\dep\colon\Zmot\to\Zbb_{\ge 0}$, together with the coproduct
+\begin{equation}
+\label{eq:coaction}
+\coA\colon \Zmot\longrightarrow \Zmot\otimes \Zmot,\qquad
+\coA(\Amm)=\sum_i \Amm_{i,1}\otimes \Amm_{i,2},
+\end{equation}
+and the period map $\per\colon\Zmot\to\Cbb$ with $\per(\Amm)=\Am$ the physical amplitude.
+More generally, when a comodule algebra $A$ over $\Zmot$ is augmented with a chosen algebra
+projection $A\twoheadrightarrow\Zmot$ (as holds for the mixed Tate periods), its elements are
+also motivic amplitude objects via the coaction $A\to A\otimes\Zmot$.
+\end{definition}
+
+Because $\Zmot$ is connected and graded, the \emph{reduced coproduct}
+\begin{equation}
+\label{eq:reduced}
+\coA'\colon \bar\Zmot\longrightarrow \bar\Zmot\otimes\bar\Zmot,\qquad
+\coA'(x) := \coA(x) - x\otimes 1 - 1\otimes x \quad (x\in\bar\Zmot),
+\end{equation}
+is well defined and lands in $\bar\Zmot\otimes\bar\Zmot$: connectedness forces every term of
+$\coA(x)$ other than $x\otimes 1$ and $1\otimes x$ to have both tensor factors of positive
+weight. (This is the point at which a general external comodule would fail --- there is no
+canonical $1\otimes\id$ term for a bare comodule; the connected-graded-Hopf-algebra hypothesis
+supplies it.) The reduced coproduct is the physically meaningful part; its symmetrization and
+antisymmetrization give the coproduct and cobracket viewpoints.
+
+\begin{definition}[Cobracket]
+\label{def:cobracket}
+On the associated graded Lie coalgebra of indecomposables
+$\Lie=\bar\Zmot/\bar\Zmot^2=\bigoplus_{n\ge1}\Lie_n$ of $\Zmot$ (the ``Lie coalgebra of
+primitives''), the \emph{cobracket} is the composite
+\begin{equation}
+\label{eq:cobracket}
+\cobr\colon \Lie \xrightarrow{\ \coA'\ } \Lie\otimes\Lie
+\xrightarrow{\ \pi\ } \Lambda^2\Lie,\qquad \pi(a\otimes b)=\tfrac12(a\wedge b),
+\end{equation}
+where $\pi$ is antisymmetrization. It is graded, $\cobr(\Lie_n)\subseteq\bigoplus_{p+q=n}
+\Lie_p\wedge\Lie_q$, and satisfies the co-Jacobi identity dual to the Jacobi identity.
+\end{definition}
+
+\begin{definition}[Coalgebraic anatomy]
+\label{def:anatomy}
+Given a class of observable objects $\mathcal{O}$ equipped with a coalgebraic operation
+$\coA$ or $\cobr$, the \emph{coalgebraic anatomy} of $O\in\mathcal{O}$ is the tree (or,
+after antisymmetrization, the collection of Lie words) of lower-complexity pieces obtained
+by iterating the decomposition. The \emph{primitives} are the leaves: elements $x$ with
+$\cobr(x)=0$, equivalently $\coA'(x)=0$.
+\end{definition}
+
+\subsection{The Conditional Amplitude Decomposition theorem}
+
+We now prove the central structural result: any realization channel that is monoidal
+transports the coalgebraic anatomy of $\Amm$ to a genuine decomposition of the realized
+amplitude. This is the theorem that makes \Cref{ax:decomp} of Part I concrete.
+
+\begin{theorem}[Conditional Amplitude Decomposition]
+\label{thm:cad}
+Let $\Zmot$ be the connected graded Hopf algebra of motivic periods
+\textup{(\Cref{def:hopfperiods})} with coproduct $\coA$, and let $\Zmot_\alpha$ be the
+corresponding connected graded Hopf algebra on the realization side, with coproduct
+$\coA_\alpha$. Let
+\[
+r_\alpha\colon \Zmot\longrightarrow \Zmot_\alpha
+\]
+be the homomorphism of graded Hopf algebras induced on the motivic-Galois Hopf algebras by a
+Tannakian realization functor $\Real_\alpha\colon \mathrm{MM}(k)\to\mathcal{T}_\alpha$ of
+\Cref{def:realization}; concretely $r_\alpha$ is the grading-preserving $\Qbb$-linear algebra
+map that intertwines the coproducts, i.e.\ the square
+\begin{equation}
+\label{eq:compat}
+\begin{tikzcd}[column sep=huge, row sep=large]
+\Zmot \arrow[r, "\coA"] \arrow[d, "r_\alpha"'] &
+\Zmot\otimes\Zmot \arrow[d, "r_\alpha\otimes r_\alpha"] \\
+\Zmot_\alpha \arrow[r, "\coA_\alpha"'] &
+\Zmot_\alpha\otimes\Zmot_\alpha
+\end{tikzcd}
+\end{equation}
+commutes. Then for every motivic amplitude object $\Amm\in\Zmot$ the realized amplitude
+$r_\alpha(\Amm)$ carries the decomposition
+\[
+\coA_\alpha\big(r_\alpha(\Amm)\big)=\sum_i r_\alpha(\Amm_{i,1})\otimes r_\alpha(\Amm_{i,2}),
+\]
+natural in $\Amm$ and compatible with the weight and depth gradings. Taking $\alpha$ to be
+the numerical period realization $\per$ recovers the coaction principle on physical
+amplitudes: the Goncharov coproduct on polylogarithms and Brown's coaction on Feynman periods.
+\end{theorem}
+
+\begin{proof}
+Everything takes place at the level of graded vector spaces and $\Qbb$-linear maps; the
+realization functor $\Real_\alpha$ enters only through the induced Hopf-algebra homomorphism
+$r_\alpha$, so there is no application of a functor to a vector-space element. Evaluate the
+commuting square \eqref{eq:compat} on $\Amm\in\Zmot$. Along the top-right path,
+\[
+(r_\alpha\otimes r_\alpha)\big(\coA(\Amm)\big)
+=(r_\alpha\otimes r_\alpha)\Big(\sum_i\Amm_{i,1}\otimes\Amm_{i,2}\Big)
+=\sum_i r_\alpha(\Amm_{i,1})\otimes r_\alpha(\Amm_{i,2}),
+\]
+using \eqref{eq:coaction} and $\Qbb$-bilinearity of $\otimes$. Along the left-bottom path,
+$\coA_\alpha\big(r_\alpha(\Amm)\big)$. Commutativity of \eqref{eq:compat} equates the two,
+giving the claimed identity. Existence of $r_\alpha$ as a graded Hopf-algebra homomorphism is
+exactly the statement that a Tannakian realization functor induces a homomorphism of the
+associated motivic-Galois Hopf algebras (functoriality of the Tannakian dual); the square
+\eqref{eq:compat} is then the compatibility of that homomorphism with the coproducts, which
+is part of the definition of a Hopf-algebra homomorphism. Naturality in $\Amm$ is the
+linearity of $r_\alpha$; compatibility with gradings holds because $r_\alpha$ is
+grading-preserving (weight and depth are motivic invariants transported by realization). For
+$\alpha$ the period realization $r_\alpha=\per$, the displayed identity is precisely the
+statement that the numerical coproduct of a period is computed by the Goncharov/Brown
+coaction, which is the established content of \cite{Goncharov2005, BrownFeynman, PanzerSchnetz}.
+\end{proof}
+
+\begin{remark}[Where the S/H/P labels bite]
+\label{rem:labels-bite}
+\Cref{thm:cad} is, as pure algebra, a formal property of Hopf-algebra homomorphisms and
+their compatibility with coproducts --- it is \emph{always} true once the hypotheses hold.
+Its \emph{physical} content is entirely in the antecedent ``$\Amm\in\Zmot$'': whether a given
+physical amplitude actually admits a motivic lift lying in the Hopf algebra $\Zmot$ of
+motivic periods. For Feynman integrals evaluating to multiple zeta
+values or (mixed Tate) polylogarithms this is established (status \Slab; e.g.\
+\cite{PanzerSchnetz}). For amplitudes requiring elliptic or higher motivic structures the
+comodule hypothesis fails over the Tate Hopf algebra (\Cref{thm:nontate}); the decomposition
+is then only heuristic (status \Hlab) until one passes to the appropriate elliptic coalgebra.
+Thus \Cref{thm:cad} is a status-\Slab{} theorem about a status-conditional hypothesis; the
+conditionality is exactly the epistemic-honesty content of the S/H/P system.
+\end{remark}
+
+\subsection{Iterated coactions and the anatomy tree}
+
+Iterating the reduced coaction produces the full anatomy. Write
+$\coA'^{(2)}=(\coA'\otimes\id)\coA'$, etc. Coassociativity ensures the iterates are
+well-defined up to the coalgebra axioms, and the maximal iteration terminates because weight
+strictly decreases in each nontrivial tensor factor.
+
+\begin{proposition}[Termination and primitivity of the anatomy]
+\label{prop:termination}
+For a motivic amplitude object $\Amm$ of weight $n$, the iterated reduced coaction terminates
+after at most $n$ steps, and its terminal pieces are primitives (weight-one for the mixed
+Tate polylogarithmic coalgebra). Consequently the coalgebraic anatomy of $\Amm$ is a finite
+tree whose leaves are primitive periods.
+\end{proposition}
+
+\begin{proof}
+The reduced coaction is graded and lowers weight: if $\wt(\Amm)=n$ then every term
+$\Amm_{i,1}\otimes\Amm_{i,2}$ of $\coA'(\Amm)$ has $\wt(\Amm_{i,1})+\wt(\Amm_{i,2})=n$ with
+both factors of weight $\ge 1$ (the weight-zero part is exactly the trivial terms subtracted
+in $\coA'$). Hence each factor has weight $\le n-1$. By induction on weight, after at most
+$n-1$ further steps every factor reaches weight one, at which point $\coA'$ vanishes (weight
+one cannot split into two positive weights summing to one). Weight-one indecomposables are
+the primitives; for the mixed Tate polylogarithmic coalgebra these are the logarithms
+$F^\times\otimes\Qbb$ (\Cref{thm:goncharov-gen}). Finiteness of the tree follows since each
+node has finitely many children (the coaction sum is finite) and depth is bounded by $n$.
+\end{proof}
+
+% =====================================================================
+\section{The Goncharov Lie Coalgebra}
+\label{sec:goncharov}
+
+\subsection{Construction}
+
+We now construct the central object of Source~2 of the knowledge base --- the Goncharov
+Lie coalgebra of a field --- and prove its generation theorem.
+
+\begin{definition}[Goncharov Lie coalgebra]
+\label{def:GLC}
+Let $F$ be a field. The \emph{Goncharov Lie coalgebra} $\LG(F)=\bigoplus_{n\ge 1}\LG(F)_n$ is
+the graded Lie coalgebra of framed mixed Tate motives over $F$, generated by the (motivic)
+polylogarithm classes $\Li_n^{\mathfrak{m}}$ and their multiple variants, graded by weight
+$n$, and equipped with the cobracket
+\begin{equation}
+\label{eq:GLCcobracket}
+\cobr\colon \LG(F)_n \longrightarrow \bigoplus_{p+q=n,\ p,q\ge 1}
+\LG(F)_p\wedge\LG(F)_q,
+\end{equation}
+induced from the Goncharov coproduct on iterated integrals by antisymmetrization and
+projection to indecomposables. The pair $(\LG(F),\cobr)$ is a graded Lie coalgebra: $\cobr$
+is antisymmetric and satisfies the co-Jacobi identity.
+\end{definition}
+
+The cobracket is the shadow, on primitives, of Goncharov's explicit coproduct formula for
+the iterated integral $I(a_0;a_1,\dots,a_N;a_{N+1})$:
+\begin{multline}
+\label{eq:goncharov-coproduct}
+\coA\, I(a_0;a_1,\dots,a_N;a_{N+1})
+=\sum_{\substack{0=i_0<i_1<\cdots\\ <i_k<i_{k+1}=N+1}}
+\left(\prod_{p=0}^{k} I(a_{i_p};a_{i_p+1},\dots,a_{i_{p+1}-1};a_{i_{p+1}})\right)\\
+{}\otimes I(a_0;a_{i_1},\dots,a_{i_k};a_{N+1}),
+\end{multline}
+whose combinatorics --- sub-sequences of interpolation points --- is the arithmetic
+mechanism behind ``cuts'' in the physics dictionary of \Cref{sec:cuts}.
+
+\subsection{The cogeneration theorem}
+
+\begin{theorem}[Weight-graded primitives cogenerate $\LG(F)$]
+\label{thm:goncharov-gen}
+Let $F$ be a number field (so that the freeness properties of the motivic Galois Lie algebra
+of \Cref{sec:framework} hold, by Borel's theorem and Deligne--Goncharov). Let
+$\LG(F)=\bigoplus_{n\ge 1}\LG(F)_n$ with cobracket \eqref{eq:GLCcobracket}, and set
+$P_n:=\ker\!\big(\cobr|_{\LG(F)_n}\big)$ (the weight-$n$ primitives). Then:
+\begin{enumerate}[label=\textup{(\alph*)}, leftmargin=2.2em]
+\item the primitives $\bigoplus_n P_n$ cogenerate $\LG(F)$: every element of weight $n$ is
+recovered from iterated cobrackets of primitives via the coradical filtration;
+\item there is a canonical isomorphism $P_1\cong F^\times\otimes\Qbb$, sending the weight-one
+primitive attached to $x\in F^\times$ to $\{x\}\mapsto\log x$ under the period map;
+\item the weight filtration $W_\bullet\LG(F)_n$ given by $W_m=\bigoplus_{j\le m}\LG(F)_j$ is
+exhaustive, and the associated graded is spanned by iterated cobrackets of weight-one
+elements.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+\emph{(b)} Weight-one framed mixed Tate motives over $F$ are extensions of $\Qbb(0)$ by
+$\Qbb(1)$, classified by $\mathrm{Ext}^1_{\mathrm{MTM}(F)}(\Qbb(0),\Qbb(1))\cong
+F^\times\otimes\Qbb$ (the Kummer motives of \Cref{ex:log}). Weight one cannot split as
+$p+q$ with $p,q\ge 1$, so $\cobr|_{\LG(F)_1}=0$ and $P_1=\LG(F)_1\cong F^\times\otimes\Qbb$;
+the period of the Kummer motive attached to $x$ is $\log x$, giving the stated map.
+
+\emph{(c)} The weight filtration is exhaustive by construction ($\LG(F)$ is a direct sum of
+its graded pieces). For the associated graded, note that $\cobr$ is graded and, by the
+structure of the Goncharov coproduct \eqref{eq:goncharov-coproduct}, its leading term in the
+depth filtration expresses a weight-$n$ generator modulo lower depth as a sum of cobrackets
+of strictly lower weight. Dualizing: the graded dual of $(\LG(F),\cobr)$ is a graded Lie
+\emph{algebra} (the motivic Galois Lie algebra), which for a number field $F$ is a free
+graded Lie algebra on generators in each weight dual to the motivic $\mathrm{Ext}$-groups
+$\mathrm{Ext}^1_{\mathrm{MTM}(F)}(\Qbb(0),\Qbb(n))$ (freeness by Borel's regulator theorem
+and Deligne--Goncharov; over an arbitrary field freeness may fail, which is why we restrict
+to number fields here); a free graded Lie algebra is generated by its degree-wise generators,
+and the cobracket structure on the dual coalgebra is therefore cogenerated by the
+corresponding primitives.
+
+\emph{(a)} Combine (b) and (c) with the coradical filtration of a graded connected coalgebra:
+for such a coalgebra the primitives $\Prim=\ker\coA'$ cogenerate, i.e.\ the intersection of
+the kernels of all iterated reduced coactions is zero, so every element is detected by, and
+reconstructed from, its iterated cobrackets landing in tensor powers of primitives. By
+\Cref{prop:termination} the iteration terminates in weight $n$, and by (b) the terminal
+primitives are $F^\times\otimes\Qbb$. Hence the weight-graded primitives cogenerate $\LG(F)$
+as a graded Lie coalgebra.
+\end{proof}
+
+\begin{remark}[Physical reading, status \Hlab]
+Under the amplitude dictionary, weight $=$ transcendentality $=$ loop/functional complexity,
+and the cobracket $=$ single discontinuity/cut. \Cref{thm:goncharov-gen} then reads: \emph{all
+amplitude complexity is generated by iterated single cuts of logarithmic (weight-one)
+building blocks.} This is a candidate rigorous counterpart of the physics folklore that
+multi-loop symbols are built from iterated discontinuities. We flag the physical reading as
+status \Hlab; the mathematical statement (a)--(c) is status \Slab.
+\end{remark}
+
+\subsection{The symbol as maximal iteration}
+
+The \emph{symbol} of a weight-$n$ polylogarithm is the maximal iteration of the cobracket
+into weight-one pieces: $\mathcal{S}(\Amm)\in (F^\times\otimes\Qbb)^{\otimes n}$. It records
+the leaves of the anatomy tree of \Cref{prop:termination} in order, and is computed by fully
+un-shuffling the coproduct \eqref{eq:goncharov-coproduct}.
+
+\begin{example}[Symbol of the dilogarithm]
+\label{ex:dilog-symbol}
+For the Bloch--Wigner motive of $\Li_2(x)$, the reduced coaction is
+\[
+\coA'\,\Li_2^{\mathfrak m}(x) = -\,\Li_1^{\mathfrak m}(x)\otimes\log^{\mathfrak m}(x)
+= \log^{\mathfrak m}(1-x)\otimes\log^{\mathfrak m}(x),
+\]
+so the symbol is $\mathcal{S}(\Li_2(x))=-(1-x)\otimes x$. The two tensor slots are the two
+weight-one primitives; the cobracket is their antisymmetrization
+$\cobr\,\Li_2^{\mathfrak m}(x)=\log(1-x)\wedge\log(x)$. Physically the two entries are the two
+branch loci $x=1$ and $x=0$ of the dilogarithm --- its cut structure --- exactly as the
+dictionary of \Cref{sec:cuts} predicts.
+\end{example}
+
+% =====================================================================
+\section{Coproducts, Cuts, and Factorization}
+\label{sec:cuts}
+
+\subsection{The decomposition dictionary}
+
+The coalgebraic operations acquire direct physical readings. We reproduce the relevant part
+of the operations dictionary with status labels.
+
+\begin{statusbox}
+\begin{center}
+\small
+\begin{tabular}{@{}L{0.34\textwidth} L{0.44\textwidth} c@{}}
+\toprule
+\textbf{Coalgebraic operation} & \textbf{Physical interpretation} & \textbf{Status} \\
+\midrule
+coproduct/coaction $\coA$ & full anatomy: how an amplitude splits into lower pieces & \Slab \\
+cobracket $\cobr$ & antisymmetric primitive split; single cut/factorization channel & \Hlab \\
+Goncharov coproduct \eqref{eq:goncharov-coproduct} & arithmetic anatomy of (multiple) polylogs & \Slab \\
+symbol $\mathcal{S}$ & maximal discontinuity data; branch-cut structure & \Slab \\
+primitive element & irreducible informational contribution & \Hlab \\
+weight grading & transcendental complexity $=$ loop/functional depth & \Slab/\Hlab \\
+depth grading & iterated-integral nesting $=$ nested propagation layers & \Slab/\Hlab \\
+residue / pole & singular channel, threshold, on-shell condition & \Slab/\Hlab \\
+monodromy & analytic continuation across a cut & \Slab \\
+\bottomrule
+\end{tabular}
+\end{center}
+\end{statusbox}
+
+\subsection{Cuts and discontinuities}
+
+The physical content of the cobracket is that a single cut of an amplitude --- putting an
+internal propagator on shell, or taking a discontinuity across a branch point --- is
+computed by the first entry of the coaction.
+
+\begin{proposition}[Discontinuity computes the first coaction slot]
+\label{prop:disc}
+Let $\Amm$ be a motivic amplitude object with $\coA'(\Amm)=\sum_i\Amm_{i,1}\otimes\Amm_{i,2}$.
+Under the period realization, the discontinuity of $\Am=\per(\Amm)$ across the branch point
+associated to a weight-one primitive $\log s$ (where $s$ is a kinematic invariant vanishing
+on the cut) is
+\[
+\mathrm{Disc}_s\,\Am = 2\pi i\sum_{i:\ \Amm_{i,2}=\log^{\mathfrak m} s}\per(\Amm_{i,1}),
+\]
+i.e.\ the first tensor factors paired with the second factor $\log s$. Iterating recovers
+the full sequence of multiple discontinuities as deeper coaction slots.
+\end{proposition}
+
+\begin{proof}
+The monodromy of $\per(\Amm)$ around $s=0$ acts on the Betti realization by the Picard--Lefschetz
+transformation, whose logarithm is the weight-one nilpotent attached to $\log s$. Under the
+motivic coaction the monodromy operator is dual to the second tensor slot: the coaction
+$\coA'$ intertwines analytic continuation with the $H$-comodule structure, so the variation
+$\Amm\mapsto\Amm(s e^{2\pi i})-\Amm(s)$ picks out exactly the terms whose second factor is
+$\log^{\mathfrak m}s$, with coefficient $2\pi i$ from the period of $\Qbb(1)$
+(namely $\per(\Qbb(1))=2\pi i$). Realizing gives the displayed formula; iterating on the
+first factor $\Amm_{i,1}$ (itself a lower-weight amplitude object) yields the multiple
+discontinuities as iterated first-slots.
+\end{proof}
+
+\subsection{Factorization and positive geometries}
+
+At kinematic boundaries where an amplitude factorizes, the geometry underlying the period
+degenerates. In the positive-geometry description \cite{ArkaniHamed}, an amplitude is the
+canonical form of a positive geometry $(X,X_{\ge 0})$, and its boundary strata --- the faces
+of $X_{\ge 0}$ --- are themselves positive geometries whose canonical forms are the
+factorized (residue) amplitudes.
+
+\begin{example}[Boundary strata as coaction, status \Slab/\Hlab]
+\label{ex:posgeom}
+For the amplituhedron and associahedron picture of tree-level amplitudes, the residue of the
+canonical form on a codimension-one face is the product of two lower-point canonical forms.
+Matching this to \Cref{cor:factorize}: the codimension-one boundary is a product period datum
+$\Pi_1\otimes\Pi_2$, so the residue equals $\per(\Amm_1)\per(\Amm_2)$. The coaction's leading
+term $\coA'(\Amm)\supseteq\Amm_1\otimes(\cdots)$ organizes the poset of boundary strata
+exactly as the coalgebra's coradical filtration organizes the anatomy tree. The identification
+of ``boundary stratum'' with ``coaction slot'' is status \Slab{} where the geometry is a
+genuine positive geometry with known canonical form and \Hlab{} where it is only conjectural.
+\end{example}
+
+\subsection{The Connes--Kreimer Hopf algebra}
+
+On the renormalization side, the same coalgebraic grammar appears as the Connes--Kreimer Hopf
+algebra $H_{\mathrm{CK}}$ of Feynman graphs \cite{ConnesKreimer}: the coproduct
+\begin{equation}
+\label{eq:CK}
+\coA(\Gamma)=\Gamma\otimes 1 + 1\otimes\Gamma + \sum_{\gamma\subsetneq\Gamma}\gamma\otimes
+\Gamma/\gamma
+\end{equation}
+sums over divergent subgraphs $\gamma$ (with $\Gamma/\gamma$ the contracted graph), and the
+antipode $S$ implements the combinatorics of the renormalization $R$-operation
+(BPHZ forest formula). This is the coalgebra of \emph{subdivergence bookkeeping}: where the
+Goncharov coproduct decomposes the \emph{value} of an integral, the Connes--Kreimer coproduct
+decomposes the \emph{graph}. The two are compatible via the period map, and their interaction
+--- the ``cosmic Galois'' action on renormalization --- is developed in \Cref{sec:nontate}
+and, in the Hopf-algebraic renormalization direction, in Part~VI of the series.
+
+\begin{figure}[ht]
+\centering
+\begin{tikzcd}[column sep=huge, row sep=large]
+\text{Feynman graph }\Gamma \arrow[r, "\coA_{\mathrm{CK}}"] \arrow[d, "\text{Feynman rules}=\per\circ\Mot"'] &
+\displaystyle\sum \gamma\otimes\Gamma/\gamma \arrow[d, "\per\otimes\per"] \\
+\text{amplitude }\Am=\per(\Amm) \arrow[r, "\coA_{\mathrm{motivic}}"'] &
+\displaystyle\sum \per(\Amm_{i,1})\otimes\per(\Amm_{i,2})
+\end{tikzcd}
+\caption{Compatibility of the graph-level Connes--Kreimer coproduct \eqref{eq:CK} with the
+value-level motivic coaction under the period map. The vertical arrows are the Feynman-rule
+assignment of a period to a graph; the square commutes when the amplitude admits a motivic
+lift (status \Slab{} for mixed Tate cases, e.g.\ \cite{PanzerSchnetz}).}
+\label{fig:CK}
+\end{figure}
+
+% =====================================================================
+\section{The Non-Tate Obstruction and the Cosmic Galois Group}
+\label{sec:nontate}
+
+\subsection{A limitation theorem}
+
+Not every amplitude is polylogarithmic. The following theorem gives the series' Limitation~4
+(``some amplitudes require elliptic, modular, non-Tate structures'') a precise, citable form.
+
+\begin{theorem}[Non-Tate Obstruction]
+\label{thm:nontate}
+Let $\Amm$ be a motivic amplitude object whose motivic lift has, as a subquotient, the motive
+$H^1(E)$ of an elliptic curve $E/k$ with $\mathrm{End}(E)=\Zbb$ (or, more generally, a
+non-Tate simple motive). Then:
+\begin{enumerate}[label=\textup{(\roman*)}, leftmargin=2.2em]
+\item $\Amm$ is not a comodule element over the mixed Tate Hopf algebra $H_{\mathrm{MT}}$ of
+iterated integrals of $d\log$-forms; equivalently, its coaction does not close within the
+Tate coalgebra generated by $\{\log,\Li_n,\zeta\}$;
+\item the weight-graded polylogarithmic anatomy of \Cref{thm:goncharov-gen} is unavailable:
+the primitives are no longer exhausted by $F^\times\otimes\Qbb$, and the period matrix
+contains the elliptic periods $\omega_1,\omega_2$ (and quasi-periods $\eta_1,\eta_2$) of $E$,
+which are not $\Qbb$-linear combinations of multiple zeta values;
+\item consequently one must replace $H_{\mathrm{MT}}$ by an elliptic-polylogarithm coalgebra
+(iterated integrals on $E$, or on the modular curve), and \Cref{thm:cad} holds only relative
+to that larger Hopf algebra.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+(ii) The category of mixed Tate motives over $k$ has simple objects only the Tate twists
+$\Qbb(n)$; their periods lie in the $\Qbb$-algebra generated by $2\pi i$ and multiple zeta
+(and polylog) values. The motive $H^1(E)$ is simple of rank two and \emph{not} isomorphic to
+any $\Qbb(n)^{\oplus}$ (its Hodge numbers are $h^{1,0}=h^{0,1}=1$, whereas Tate motives are
+of type $(p,p)$). Its period matrix is $\begin{psmallmatrix}\omega_1&\omega_2\\ \eta_1&\eta_2
+\end{psmallmatrix}$ with $\det=2\pi i$ (Legendre relation); by transcendence results
+(Chudnovsky, and the theory of periods of elliptic curves) $\omega_1$ is not a $\Qbb$-linear
+combination of powers of $\pi$ and MZVs for $E$ without complex multiplication. Hence the
+elliptic periods are genuinely new.
+
+(i) If $\Amm$ were a comodule element over $H_{\mathrm{MT}}$, its coaction
+$\coA(\Amm)\in\Amm\otimes H_{\mathrm{MT}}$ would express all its ``anatomy'' using only Tate
+generators, forcing every subquotient of its motivic lift to be Tate --- contradicting the
+presence of $H^1(E)$ as a subquotient. Concretely, the second tensor slots of $\coA(\Amm)$
+would all be logarithms/zeta values, but the elliptic period $\omega_1$ appears in
+$\per(\Amm)$ with a monodromy (an $\mathrm{SL}_2(\Zbb)$ modular transformation) that no Tate
+comodule structure can reproduce.
+
+(iii) The correct home is the Hopf algebra of iterated integrals of modular forms / functions
+on $E$ (Brown, Levin--Racinet, Broedel--Duhr--Dulat--Tancredi). Over this larger algebra the
+comodule hypothesis of \Cref{thm:cad} is restored, and the theorem applies verbatim with
+$H_{\mathrm{MT}}$ replaced by $H_{\mathrm{ell}}$. This proves (iii).
+\end{proof}
+
+\begin{corollary}[Sharpness of the master formula]
+The master formula $\Am=\per(\Amm)$ of \eqref{eq:masterII} remains valid for elliptic
+amplitudes, but the \emph{coalgebraic anatomy} $\coA(\Amm)=\sum\Amm_{i,1}\otimes\Amm_{i,2}$
+must be taken over $H_{\mathrm{ell}}$, not $H_{\mathrm{MT}}$. The status of the
+polylogarithmic decomposition drops from \Slab{} to ``inapplicable'' precisely at the elliptic
+threshold; this is the honest boundary of the mixed Tate story.
+\end{corollary}
+
+\subsection{The cosmic Galois group}
+
+Brown's cosmic Galois group $G_c$ is a proposed pro-algebraic group acting on the ring of
+(motivic) periods of a QFT, compatible with the coaction \cite{BrownCosmic, BrownPeriods}.
+We record the conditional compatibility statement, carefully flagged.
+
+\begin{proposition}[Cosmic Galois compatibility, status \Hlab/\Plab]
+\label{prop:cosmic}
+Suppose a cosmic Galois group $G_c$ acts on the Hopf algebra $H$ of motivic periods by Hopf
+automorphisms, i.e.\ its coaction on the ring of motivic amplitude objects satisfies
+$g\cdot\coA(\Amm)=(\mathrm{id}\otimes g)\,\coA(g\cdot\Amm)$ for $g\in G_c$. Then the action
+descends through the period realization to an action on the numerical amplitude ring
+commuting with the coaction-transported decomposition of \Cref{thm:cad}. In particular the
+$G_c$-orbit of an amplitude constant (e.g.\ $\zeta(3)$) is closed under the coaction, and the
+``small graph'' / weight-drop phenomena of $\phi^4$ periods are $G_c$-equivariant.
+\end{proposition}
+
+\begin{proof}[Proof (conditional/heuristic)]
+Formally, if $G_c\subseteq\mathrm{Aut}_\otimes(\omega)$ is a subgroup of the Tannakian
+automorphism group of the fibre functor $\omega=\per$ acting by Hopf automorphisms, then by
+definition it commutes with the comodule structure $\coA$, and \Cref{thm:cad} transports this
+equivariance through $\Real_\alpha=\per$. The content is entirely in the antecedent: a precise
+definition of $G_c$ for a given QFT is open (it is conjecturally the motivic Galois group of
+the category of periods appearing in that theory, cut down by physical constraints such as the
+absence of $\zeta(2)$ / even weights in certain schemes). Because the antecedent is
+conjectural, the whole statement carries status \Hlab/\Plab, matching the knowledge base's
+labeling of the cosmic Galois entry. The verified instances --- the coaction on $\phi^4$
+periods up to high loop order \cite{PanzerSchnetz} --- provide status-\Slab{} evidence for
+special cases but do not establish the general $G_c$.
+\end{proof}
+
+\begin{remark}
+\Cref{prop:cosmic} is deliberately the most speculative result in the paper. It is included
+because the cosmic Galois group is the natural ``symmetry organizing amplitudes'' that the
+whole coalgebraic picture points toward; but per the discipline of \Cref{subsec:status} we do
+not present it as established. It sets up Part~III (variation of the geometry over moduli,
+where $G_c$-equivariance becomes a constraint on Gauss--Manin connections) and Part~VI
+(Hopf-algebraic renormalization, where $G_c$ acts on the Connes--Kreimer side).
+\end{remark}
+
+% =====================================================================
+\section{Results}
+\label{sec:results}
+
+We collect the principal results of the paper and their epistemic status.
+
+\begin{itemize}[leftmargin=1.6em]
+\item \textbf{\Cref{thm:period-mult} (Multiplicativity, status \Slab).} The period pairing is
+additive and multiplicative: $\per(\Pi_1\otimes\Pi_2)=\per(\Pi_1)\per(\Pi_2)$, so the period
+map is a ring homomorphism onto the Kontsevich--Zagier period ring. This licenses
+$\Am=\per(\Amm)$ to respect factorization (\Cref{cor:factorize}).
+\item \textbf{\Cref{thm:cad} (Conditional Amplitude Decomposition, status \Slab{} on a
+conditional hypothesis).} Any realization channel, as a graded Hopf-algebra homomorphism
+$r_\alpha$ compatible with the coproduct,
+transports $\coA(\Amm)=\sum_i\Amm_{i,1}\otimes\Amm_{i,2}$ to a decomposition of the realized
+amplitude. This is the concrete form of Part I's Decomposition Axiom (\Cref{ax:decomp}). The
+physical content is in whether a given amplitude admits a motivic lift in $\Zmot$
+(\Cref{rem:labels-bite}).
+\item \textbf{\Cref{prop:termination} (Termination, status \Slab).} The iterated coaction of a
+weight-$n$ amplitude object terminates in at most $n$ steps at primitive leaves.
+\item \textbf{\Cref{thm:goncharov-gen} (Cogeneration, status \Slab).} The weight-graded
+primitives cogenerate the Goncharov Lie coalgebra $\LG(F)$, and weight-one primitives are
+$F^\times\otimes\Qbb$ (logarithms). Physically (status \Hlab): all amplitude complexity is
+built from iterated cuts of logarithms.
+\item \textbf{\Cref{prop:disc} (Discontinuity, status \Slab).} The discontinuity of an
+amplitude across a branch point is the first coaction slot paired with the corresponding
+weight-one primitive.
+\item \textbf{\Cref{thm:nontate} (Non-Tate Obstruction, status \Slab).} Elliptic (non-Tate)
+motivic lifts escape the mixed Tate coalgebra; the polylogarithmic anatomy is unavailable and
+one must pass to an elliptic-polylogarithm Hopf algebra. This is the rigorous form of the
+series' Limitation~4.
+\item \textbf{\Cref{prop:cosmic} (Cosmic Galois, status \Hlab/\Plab).} Conditional on a
+precise definition of the cosmic Galois group, its action commutes with the coaction and
+descends to the numerical amplitude ring. Presented as conjectural.
+\end{itemize}
+
+The logical dependency of the results is displayed below.
+
+\begin{figure}[ht]
+\centering
+\resizebox{\textwidth}{!}{%
+\begin{tikzcd}[ampersand replacement=\&, column sep=1.4em, row sep=1.5em]
+\& \text{\Cref{def:coalg}: coalgebra/comodule} \arrow[d] \& \\
+\text{\Cref{def:perioddatum}: period datum} \arrow[dr] \&
+\text{\Cref{def:motamp}: motivic amplitude} \arrow[d] \arrow[dl] \&
+\text{\Cref{def:GLC}: Goncharov coalgebra} \arrow[d] \\
+\text{\Cref{thm:period-mult}} \arrow[d] \&
+\text{\Cref{thm:cad}} \arrow[d] \&
+\text{\Cref{thm:goncharov-gen}} \arrow[dl] \\
+\text{\Cref{cor:factorize}} \&
+\text{\Cref{prop:disc},\ \Cref{thm:nontate},\ \Cref{prop:cosmic}} \&
+\end{tikzcd}}
+\caption{Dependency graph of the paper's definitions, theorems, and propositions.}
+\label{fig:deps}
+\end{figure}
+
+% =====================================================================
+\section{Formalization: Haskell and Lean}
+\label{sec:formalization}
+
+\begin{sloppypar}
+To honor the Curry--Howard--\allowbreak Lambek bridge of the series (propositions as types,
+proofs as programs, realization as compilation), we accompany the mathematics with a compiling
+Haskell formalization of the coalgebra/coproduct structure and an idiomatic Lean type sketch.
+The full sources live in
+\texttt{src/\allowbreak motives-\allowbreak periods-\allowbreak amplitudes/} and
+\texttt{lean/\allowbreak motives-\allowbreak periods-\allowbreak amplitudes/}; we display the
+load-bearing fragments.
+\end{sloppypar}
+
+\subsection{Haskell: the coalgebra and coproduct}
+
+The Haskell package represents a graded coalgebra element as a formal $\Qbb$-linear
+combination of \emph{words} in generators, with the Goncharov-style deconcatenation coproduct.
+Weight is the word length (for the shuffle/deconcatenation model) and the reduced coproduct
+strips the two trivial terms; primitivity is decidable.
+
+\begin{verbatim}
+-- Word in generators; weight = length; deconcatenation coproduct
+newtype Word' g = Word' [g] deriving (Eq, Ord, Show)
+
+-- Formal Q-linear combination (rationals as coefficients)
+newtype LinComb g = LinComb (Map (Word' g) Rational)
+
+-- Deconcatenation coproduct: Delta(w) = sum over splittings u | v
+coproduct :: Ord g => Word' g -> [(Word' g, Word' g)]
+coproduct (Word' xs) =
+  [ (Word' (take k xs), Word' (drop k xs)) | k <- [0 .. length xs] ]
+
+-- Reduced coproduct: drop the two trivial terms (empty | w) and (w | empty)
+reducedCoproduct :: Ord g => Word' g -> [(Word' g, Word' g)]
+reducedCoproduct w@(Word' xs) =
+  [ p | p@(Word' a, Word' b) <- coproduct w, not (null a), not (null b) ]
+
+-- Cobracket delta = antisymmetrization of the reduced coproduct.
+-- NOTE: this returns a formal signed sum WITHOUT combining like terms;
+-- algebraic simplification in the exterior algebra Lambda^2 L is omitted
+-- (adequate for the demonstration, not a normal form).
+cobracket :: Ord g => Word' g -> [(Word' g, Word' g, Rational)]
+cobracket w =
+  [ (a, b, 1) | (a, b) <- reducedCoproduct w ] ++
+  [ (b, a, -1) | (a, b) <- reducedCoproduct w ]
+
+-- Primitivity: delta(x) = 0  <=>  reduced coproduct empty  <=>  weight <= 1
+isPrimitive :: Ord g => Word' g -> Bool
+isPrimitive w = null (reducedCoproduct w)
+\end{verbatim}
+
+The demonstration program verifies, on the dilogarithm symbol of
+\Cref{ex:dilog-symbol}, that (a) coassociativity holds numerically for the deconcatenation
+coproduct, (b) weight-one words are exactly the primitives (\Cref{thm:goncharov-gen}(b)), and
+(c) the iterated reduced coproduct of a weight-$n$ word terminates after $n-1$ steps at
+weight-one leaves (\Cref{prop:termination}). It compiles with \texttt{ghc} and runs to print
+the anatomy tree of a sample amplitude word.
+
+\subsection{Lean: period, amplitude, and coalgebra types (best-effort sketch)}
+
+The Lean file records the type signatures of the objects and the statement of
+\Cref{thm:cad} as a definition-level goal (with \texttt{sorry} placeholders, as a
+non-build-gated sketch).
+
+\begin{verbatim}
+structure PeriodDatum (X Form Cycle : Type) where
+  space   : X
+  divisor : X
+  form    : Form
+  cycle   : Cycle
+
+-- per : PeriodDatum -> C  (integration pairing, abstracted)
+def per {X F C : Type} (integrate : C -> F -> Complex)
+    (Pi : PeriodDatum X F C) : Complex := integrate Pi.cycle Pi.form
+
+-- A right H-comodule of motivic amplitude objects
+structure MotivicAmplitude (H A : Type) where
+  coaction : A -> List (A x H)     -- Delta(a) = sum a_{i,1} (x) a_{i,2}
+  weight   : A -> Nat
+  depth    : A -> Nat
+
+-- Cobracket as antisymmetrized reduced coaction on primitives L
+def cobracket {L : Type} (coact : L -> List (L x L)) (x : L) :
+    List (L x L) := coact x  -- (antisymmetrization elided in sketch)
+
+-- T1 (Conditional Amplitude Decomposition), signature-level.
+-- The realization is a MAP between carrier types (a Hopf-algebra
+-- homomorphism), NOT a functor applied to elements: this is exactly the
+-- corrected formulation of Theorem 5.3.
+theorem coaction_transports
+    {H A R : Type} (ma : MotivicAmplitude H A)
+    (Real : A -> R) (RealH : H -> R) (target : R -> List (R x R)) (a : A) :
+    target (Real a)
+      = (ma.coaction a).map (fun p => (Real p.1, RealH p.2)) := by
+  sorry
+\end{verbatim}
+
+The Lean sketch is explicitly best-effort and not build-gated; it fixes the type-level
+anatomy (period data, comodule coactions, cobrackets) so that a future Mathlib-backed
+development can discharge the \texttt{sorry}s. Note that modelling the realization as an
+honest map \texttt{Real : A -> R} between carrier types (rather than a functor applied to
+elements) is precisely the type-level reflection of the Hopf-algebra-homomorphism formulation
+of \Cref{thm:cad}; the \texttt{period\_multiplicative} statement in the same file is proved
+outright (no \texttt{sorry}) from the Fubini/K\"unneth hypothesis.
+
+% =====================================================================
+\section{Discussion}
+\label{sec:discussion}
+
+\subsection{Limitations (reproduced and addressed)}
+
+Per the series discipline, we restate the global limitations and indicate how Part II
+addresses each.
+
+\begin{enumerate}[leftmargin=1.6em]
+\item \emph{Not every mathematical analogy is a physical theory.} The S/H/P labels are part of
+the formalism (\Cref{subsec:status}); the strongest results here (\Cref{thm:period-mult},
+\Cref{thm:cad}, \Cref{thm:goncharov-gen}) are status \Slab{} as mathematics, while their
+physical readings are labelled \Hlab.
+\item \emph{Motives are not literally ``the functions of'' an object.} Addressed head-on in the
+boxed \Cref{rem:not-functions}; the functional-essence reading is status \Hlab{} throughout.
+\item \emph{No single universal functor $\Math\to\Phys$.} Part II defines only the motivic
+channel $\Real_\alpha$, $\alpha\in\{\Betti,\dR,\Hdg,\et\}$, over the domain of motivic period
+theory --- a local, domain-indexed construction, not a global functor.
+\item \emph{Not every observable is a period.} Made precise as the Non-Tate Obstruction
+theorem (\Cref{thm:nontate}): elliptic and modular amplitudes require larger coalgebras.
+\item \emph{Gauge redundancy $\ne$ physical symmetry.} Deferred to Part~VI, but foreshadowed in
+\Cref{fig:chain}: the dashed equivalence $X\sim X'$ is a motivic (gauge/duality) equivalence
+realizing the same amplitude.
+\end{enumerate}
+
+\subsection{Bridges to Parts I and III}
+
+Part II \emph{builds on} Part I by instantiating its abstract pipeline: $\Phi=\Mot$,
+$\Real_\alpha=$ the cohomological realizations, $\Obs=\per$, and \Cref{ax:decomp}$=$ the
+Goncharov coproduct. It \emph{sets up} Part III by handing off the motivic amplitude objects
+and their families: as kinematic parameters vary, the variety $X$ in a period datum
+$\Pi=(X,D,\omega,\Gamma)$ moves in a moduli space, the period $\per(\Pi)$ becomes a
+multivalued function on that base, and the coaction becomes a statement about the
+Gauss--Manin/Picard--Fuchs connection governing the variation of Hodge structure. In the
+ladder's language, Part III lets Part II's motives ``live over and vary across concrete
+geometric moduli.''
+
+\begin{figure}[ht]
+\centering
+\resizebox{\textwidth}{!}{%
+\begin{tikzcd}[ampersand replacement=\&, column sep=1.8em, row sep=1.4em]
+\textbf{Part I} \arrow[r, "\text{instantiate}"] \&
+\textbf{Part II} \arrow[r, "\text{vary over moduli}"] \&
+\textbf{Part III} \\
+\Phi,\Real_\alpha,\Obs\ (\text{abstract}) \arrow[u, phantom] \&
+\Mot,\{\Real_\Betti,\Real_\dR,\Real_\Hdg,\Real_\et\},\per \arrow[u, phantom] \&
+\text{VHS, Gauss--Manin, Picard--Fuchs} \arrow[u, phantom] \\
+\text{Decomposition Axiom} \arrow[u, phantom] \&
+\text{Goncharov coproduct }\coA,\ \cobr \arrow[u, phantom] \&
+\text{monodromy over moduli} \arrow[u, phantom]
+\end{tikzcd}}
+\caption{Position of Part II in the modular ladder: it makes Part I's abstract channels
+concrete and hands amplitude objects to Part III as objects varying over moduli.}
+\label{fig:ladder}
+\end{figure}
+
+\subsection{The four slogans}
+
+The series' compressed theses read, in the light of Part II:
+\emph{mathematics is the syntax of physical representation}; \emph{motives are functional
+semantics} (\Cref{def:FE}, status \Hlab); \emph{periods are numerical measurements}
+(\Cref{def:perioddatum}, \Cref{thm:period-mult}); \emph{coalgebras are decomposition laws}
+(\Cref{thm:cad}, \Cref{thm:goncharov-gen}). Part II is precisely the module that turns the
+last two slogans into theorems.
+
+% =====================================================================
+\section{Conclusion}
+\label{sec:conclusion}
+
+We have given the motivic channel of the \emph{Math$\rightarrow$Physics Representation Library}
+its first fully concrete instantiation. Motives supply the pre-numerical functional essence
+(status \Hlab, carefully distinguished from the mathematical definition); the four
+cohomological realizations supply Part I's abstract channels $\Real_\alpha$; and the period
+map supplies the observable. On this foundation the master formula $\Am=\per(\Amm)$ with its
+coaction $\coA(\Amm)=\sum_i\Amm_{i,1}\otimes\Amm_{i,2}$ and cobracket
+$\cobr\colon\Lie\to\Lambda^2\Lie$ becomes a working piece of mathematics: the period pairing is
+multiplicative (\Cref{thm:period-mult}), the coaction transports through realizations
+(\Cref{thm:cad}), the Goncharov Lie coalgebra is cogenerated by its weight-one logarithmic
+primitives (\Cref{thm:goncharov-gen}), amplitude discontinuities are read off the first
+coaction slot (\Cref{prop:disc}), and the whole polylogarithmic anatomy has a sharp boundary
+at the elliptic threshold (\Cref{thm:nontate}). The most speculative extension --- the cosmic
+Galois symmetry (\Cref{prop:cosmic}) --- is flagged as such and handed forward.
+
+The emergent property Part II adds to the ladder is the \emph{internal coalgebraic anatomy of
+observables}: the discovery that a physical amplitude is not an atom but carries a canonical
+decomposition into primitive informational pieces, governed by a Lie coalgebra. In the next
+module this anatomy is set in motion over the moduli spaces of algebraic geometry; in the
+capstone module the same Hopf-coalgebraic grammar returns as the bookkeeping of gauge
+redundancy and renormalization. Coalgebras, in short, are the grammar by which physics takes
+its observables apart.
+
+% =====================================================================
+\begin{thebibliography}{99}
+\sloppy
+\addcontentsline{toc}{section}{References}
+
+\bibitem{KontsevichZagier}
+M.~Kontsevich and D.~Zagier,
+\emph{Periods}, in ``Mathematics Unlimited --- 2001 and Beyond,'' Springer, 2001, pp.~771--808.
+
+\bibitem{Goncharov2001}
+A.~B.~Goncharov,
+\emph{Multiple polylogarithms and mixed Tate motives}, arXiv:math/0103059 (2001).
+
+\bibitem{Goncharov2005}
+A.~B.~Goncharov,
+\emph{Galois symmetries of fundamental groupoids and noncommutative geometry},
+Duke Math.\ J.\ \textbf{128} (2005), no.~2, 209--284; arXiv:math/0208144.
+
+\bibitem{GSVV}
+A.~B.~Goncharov, M.~Spradlin, C.~Vergu, and A.~Volovich,
+\emph{Classical polylogarithms for amplitudes and Wilson loops},
+Phys.\ Rev.\ Lett.\ \textbf{105} (2010), 151605; arXiv:1006.5703.
+
+\bibitem{BEK}
+S.~Bloch, H.~Esnault, and D.~Kreimer,
+\emph{On motives associated to graph polynomials},
+Comm.\ Math.\ Phys.\ \textbf{267} (2006), 181--225; arXiv:math/0510011.
+
+\bibitem{BrownMTZ}
+F.~Brown,
+\emph{Mixed Tate motives over $\Zbb$},
+Annals of Mathematics \textbf{175} (2012), no.~2, 949--976; arXiv:1102.1312.
+
+\bibitem{BrownFeynman}
+F.~Brown,
+\emph{On the periods of some Feynman integrals}, arXiv:0910.0114 (2009).
+
+\bibitem{BrownCosmic}
+F.~Brown,
+\emph{Feynman amplitudes, coaction principle, and cosmic Galois group},
+Commun.\ Number Theory Phys.\ \textbf{11} (2017), 453--556; arXiv:1512.06409.
+
+\bibitem{BrownPeriods}
+F.~Brown,
+\emph{Periods and Feynman amplitudes}, arXiv:1512.09265 (2015).
+
+\bibitem{PanzerSchnetz}
+E.~Panzer and O.~Schnetz,
+\emph{The Galois coaction on $\phi^4$ periods},
+Commun.\ Number Theory Phys.\ \textbf{11} (2017), 657--705; arXiv:1603.04289.
+
+\bibitem{ConnesKreimer}
+A.~Connes and D.~Kreimer,
+\emph{Renormalization in quantum field theory and the Riemann--Hilbert problem I: the Hopf
+algebra structure of graphs and the main theorem},
+Comm.\ Math.\ Phys.\ \textbf{210} (2000), 249--273; arXiv:hep-th/9912092.
+
+\bibitem{ArkaniHamed}
+N.~Arkani-Hamed, Y.~Bai, and T.~Lam,
+\emph{Positive geometries and canonical forms},
+JHEP \textbf{11} (2017) 039; arXiv:1703.04541.
+
+\bibitem{Deligne}
+P.~Deligne and A.~B.~Goncharov,
+\emph{Groupes fondamentaux motiviques de Tate mixte},
+Ann.\ Sci.\ \'Ecole Norm.\ Sup.\ \textbf{38} (2005), 1--56.
+
+\bibitem{BrownDepth}
+F.~Brown,
+\emph{On the decomposition of motivic multiple zeta values},
+in ``Galois--Teich\-m\"uller theory and arithmetic geometry,''
+Adv.\ Stud.\ Pure Math.\ \textbf{63} (2012), 31--58; arXiv:1102.1310.
+
+\bibitem{BroedelEtal}
+J.~Broedel, C.~Duhr, F.~Dulat, and L.~Tancredi,
+\emph{Elliptic polylogarithms and iterated integrals on elliptic curves},
+JHEP \textbf{05} (2018) 093; arXiv:1712.07089.
+
+\bibitem{DuhrReview}
+C.~Duhr,
+\emph{Mathematical aspects of scattering amplitudes},
+in ``Journeys Through the Precision Frontier: Amplitudes for Colliders'' (TASI 2014),
+World Scientific, 2016, pp.~419--476; arXiv:1411.7538.
+
+\end{thebibliography}
+
+% =====================================================================
+\appendix
+\section[The Motivic and Amplitude Library]{The Motivic and Amplitude Library}
+\label{app:library}
+
+For reference we reproduce the motivic/amplitude dictionary of the series, with epistemic
+status labels retained verbatim. This table is the Appendix~B of the source library,
+restricted to Part II's domain.
+
+\renewcommand{\arraystretch}{1.15}
+\setlength{\tabcolsep}{4pt}
+\small
+\begin{longtable}{@{}L{0.26\textwidth} L{0.31\textwidth} L{0.29\textwidth} c@{}}
+\toprule
+\textbf{Mathematics} & \textbf{Physical representation} & \textbf{Decomposition meaning} & \textbf{Status} \\
+\midrule
+\endfirsthead
+\toprule
+\textbf{Mathematics} & \textbf{Physical representation} & \textbf{Decomposition meaning} & \textbf{Status} \\
+\midrule
+\endhead
+\bottomrule
+\endfoot
+Field $F$ & Kinematic/coordinate domain & Allowed parameter values & \Slab/\Hlab \\
+$F^\times$ & Nonzero scales or ratios & Energies, masses, cross-ratios & \Slab/\Hlab \\
+Cross-ratio & Conformal invariant & Dimensionless observable & \Slab \\
+Algebraic variety & Constraint solution space & Allowed configurations & \Slab \\
+Graph hypersurface & Geometry of a Feynman graph & Container of graph integral data & \Slab \\
+Feynman integral & Period integral & Observable from geometry $\times$ domain & \Slab \\
+Period & Measurable number from geometry & Numerical shadow of structure & \Slab \\
+Period pairing $\int_\Gamma\omega$ & Amplitude contribution & Pairing of form and cycle & \Slab \\
+Differential form $\omega$ & Integrand / observable density & What is accumulated & \Slab \\
+Cycle $\Gamma$ & Integration domain / history class & Where accumulation occurs & \Slab \\
+Relative cohomology & Boundary-sensitive observable & Cuts, thresholds, boundaries & \Slab \\
+Motive & Pre-numerical functional essence & Hidden source of periods & \Slab/\Hlab \\
+Mixed motive & Layered informational object & Multiple weights/depths & \Slab/\Hlab \\
+Mixed Tate motive & Polylogarithmic period structure & Tame amplitude period class & \Slab \\
+Non-Tate motive & More complex amplitude geometry & Elliptic, Calabi--Yau, modular & \Slab \\
+Multiple zeta value & Special period & Constant term in loop expansions & \Slab \\
+Polylogarithm $\Li_n(x)$ & Layered propagation function & Iterated contribution & \Slab \\
+Multiple polylogarithm & Multi-scale iterated propagation & Nested channel dependence & \Slab \\
+Symbol of polylogarithm & First-order function decomposition & Branch-cut/discontinuity data & \Slab \\
+Coproduct / coaction & Decomposition of a period & How amplitude splits & \Slab \\
+Cobracket $\cobr$ & Antisymmetric primitive split & Factorization/information split & \Hlab \\
+Goncharov coproduct & Motivic decomposition operation & Arithmetic anatomy of polylogs & \Slab \\
+Goncharov Lie coalgebra & Coalgebra of polylog data & Grammar of primitive amplitude data & \Slab/\Hlab \\
+Weight grading & Transcendental complexity & Loop depth/functional complexity & \Slab/\Hlab \\
+Depth grading & Iterated-integral nesting & Nested propagation layers & \Slab/\Hlab \\
+Primitive element & Indecomposable motivic component & Irreducible contribution & \Hlab \\
+Regulator map & Motive to analytic number & Measurement/numerical extraction & \Slab/\Hlab \\
+Hodge realization & Analytic-geometric reading & Differential-form representation & \Slab \\
+de Rham realization & Form/integrand side & Calculational representation & \Slab \\
+Betti realization & Cycle/topological side & Path/integration-domain rep. & \Slab \\
+\'Etale realization & Arithmetic/discrete realization & Number-theoretic shadow & \Slab/\Hlab \\
+Cosmic Galois group & Symmetry acting on periods & Hidden symmetry of amplitudes & \Hlab/\Plab \\
+\end{longtable}
+
+\end{document}

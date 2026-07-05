@@ -1,0 +1,1464 @@
+\documentclass[12pt]{article}
+
+% ============================================================
+%  Core math
+% ============================================================
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{mathtools}
+\usepackage{array}
+\usepackage{longtable}
+% Ragged-right fixed-width column (avoids underfull-hbox warnings in p-columns)
+\newcolumntype{P}[1]{>{\raggedright\arraybackslash}p{#1}}
+
+% Diagrams
+\usepackage{tikz}
+\usepackage{tikz-cd}
+\usetikzlibrary{arrows.meta, positioning, calc}
+
+% References
+\usepackage{hyperref}
+\usepackage{cleveref}
+
+% Graphics
+\usepackage{graphicx}
+
+% Page layout
+\usepackage[margin=1in]{geometry}
+
+% GrokRxiv sidebar
+\usepackage{everypage}
+\usepackage{xcolor}
+
+\hypersetup{
+  colorlinks=true,
+  linkcolor=blue!55!black,
+  citecolor=green!45!black,
+  urlcolor=blue!55!black
+}
+
+% ============================================================
+%  Theorem environments
+% ============================================================
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{axiom}[theorem]{Axiom}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+% ============================================================
+%  Macros
+% ============================================================
+\newcommand{\Spec}{\operatorname{Spec}}
+\newcommand{\Proj}{\operatorname{Proj}}
+\newcommand{\Mot}{\operatorname{Mot}}
+\newcommand{\Real}{\operatorname{Real}}
+\newcommand{\Obs}{\operatorname{Obs}}
+\newcommand{\Dom}{\mathsf{Dom}}
+\newcommand{\Math}{\mathsf{Math}}
+\newcommand{\Phys}{\mathsf{Phys}}
+\newcommand{\Sch}{\mathsf{Sch}}
+\newcommand{\Set}{\mathsf{Set}}
+\newcommand{\Grpd}{\mathsf{Gpd}}
+\newcommand{\Aff}{\mathsf{Aff}}
+\newcommand{\Ring}{\mathsf{Ring}}
+\newcommand{\CRing}{\mathsf{CRing}}
+\newcommand{\Vect}{\mathsf{Vect}}
+\newcommand{\Ideal}{\mathfrak{a}}
+\newcommand{\Crit}{\operatorname{Crit}}
+\newcommand{\dCrit}{\mathbf{dCrit}}
+\newcommand{\Stab}{\operatorname{Stab}}
+\newcommand{\Aut}{\operatorname{Aut}}
+\newcommand{\Res}{\operatorname{Res}}
+\newcommand{\HH}{\mathbb{H}}
+\newcommand{\CC}{\mathbb{C}}
+\newcommand{\RR}{\mathbb{R}}
+\newcommand{\ZZ}{\mathbb{Z}}
+\newcommand{\QQ}{\mathbb{Q}}
+\newcommand{\PP}{\mathbb{P}}
+\newcommand{\AAf}{\mathbb{A}}
+\newcommand{\Ohm}{\mathcal{O}}
+\newcommand{\per}{\operatorname{per}}
+\newcommand{\Pic}{\operatorname{Pic}}
+\newcommand{\Ext}{\operatorname{Ext}}
+\newcommand{\Hom}{\operatorname{Hom}}
+\newcommand{\rk}{\operatorname{rank}}
+\newcommand{\amp}{\mathcal{A}}
+\newcommand{\coeff}{\mathbb{k}}
+\newcommand{\op}{\mathrm{op}}
+\newcommand{\GM}{\nabla_{\mathrm{GM}}}
+\newcommand{\GMd}{\nabla^{\mathrm{GM}}_{\partial}}
+\newcommand{\Fil}{F^{\bullet}}
+\newcommand{\status}[1]{\textnormal{\textsf{\textbf{[#1]}}}}
+
+% GrokRxiv sidebar
+\definecolor{grokgray}{RGB}{110,110,110}
+\AddEverypageHook{%
+  \ifnum\value{page}=1
+    \begin{tikzpicture}[remember picture, overlay]
+      \node[
+        rotate=90,
+        anchor=south,
+        font=\Large\sffamily\bfseries\color{grokgray},
+        inner sep=0pt
+      ] at ([xshift=38pt, yshift=0.52\paperheight]current page.south west)
+      {GrokRxiv:2026.07.algebraic-geometry-physical-possibility\quad
+       [\,math.AG\,]\quad
+       04 Jul 2026};
+    \end{tikzpicture}
+  \fi
+}
+
+% ============================================================
+\title{\textbf{Algebraic Geometry: Spaces of Physical Possibility}\\[4pt]
+\large Part III of \emph{A Math$\to$Physics Representation Library}}
+
+\author{Matthew Long \\
+\textit{The YonedaAI Collaboration} \\
+\textit{YonedaAI Research Collective} \\
+Chicago, IL \\
+\texttt{research@yonedaai.com} $\cdot$ \url{https://yonedaai.com}}
+
+\date{4 July 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+This is Part III of the modular series \emph{A Math$\to$Physics Representation Library}, which
+formalizes each mathematical domain as a physical-representation module and composes the modules
+hierarchically. Part~I introduced the \emph{representation stack} and the realization pipeline
+$\Obs_\alpha(M) = \Obs(\Real_\alpha(\Phi(M)))$; Part~II gave observables an internal
+\emph{coalgebraic anatomy} through motives, periods, and the Goncharov coproduct. Here we supply
+the geometric \emph{stage} on which those motives and periods live and vary: the theory of schemes,
+moduli spaces and stacks, variations of Hodge structure, and positive geometries. Our organizing
+thesis is that \emph{algebraic geometry is the geometry of physical possibility}: an affine variety
+is a classical solution space, a scheme is a solution space enriched with infinitesimal structure,
+a moduli space is a space of physically distinct configurations, and a moduli \emph{stack} is such a
+space with its gauge automorphisms remembered rather than quotiented away. We work throughout with the
+epistemic status discipline of Part~I, labelling every dictionary entry \status{S} (standard),
+\status{H} (heuristic), or \status{P} (speculative). We prove four theorems that upgrade Part~II's
+per-object realization pipeline to a family-indexed one: (T1) Gauss--Manin flat transport realizes the
+Part~II period functor over an entire moduli family, with amplitudes constrained by the associated
+Picard--Fuchs system; (T2) a moduli stack $[X/G]$ is a strictly finer representation object than its
+coarse space exactly when stabilizers are nontrivial, giving a rigorous algebro-geometric form of
+Part~I's ``stacks retain gauge information'' principle; (T3) the recursive residue structure of a
+positive geometry reproduces a coalgebra-like decomposition tree conjecturally isomorphic to Part~II's
+motivic coaction tree (flagged \status{H}); and (T4) the derived critical locus formalizes the on-shell
+observable algebra $R/I$ at the Batalin--Vilkovisky level, upgrading a heuristic dictionary entry to a
+status-\status{S} statement via shifted symplectic geometry. We accompany the paper with executable
+\textsf{Haskell} encodings of schemes-as-functors-of-points, quotient stacks, variations of Hodge
+structure, and positive geometries, together with a best-effort \textsf{Lean~4} sketch of the same
+type signatures. Part~III thereby sets the geometric foundation on which Part~IV (algebraic topology:
+conserved global information) will build.
+\end{abstract}
+
+\tableofcontents
+
+% ============================================================
+\section{Introduction}
+\label{sec:intro}
+
+\subsection{The series and its modular ladder}
+
+The present paper is the third module of a seven-paper program, \emph{A Math$\to$Physics
+Representation Library}. The program takes as its point of departure the observation that many
+physical quantities are not merely \emph{described by} mathematics but are literally \emph{obtained
+as realizations} of structured mathematical information~\cite{primary}. Rather than assert one
+universal functor from all of mathematics to all of physics --- an object we argue in
+\Cref{sec:limitations} is unlikely to be well defined --- the program is deliberately
+\emph{modular}: each mathematical domain is formalized as its own physical-representation module,
+each module is defensible on its own terms, and the modules are composed hierarchically so that new
+structure and new emergent physical content appear at each level.
+
+The ladder proceeds as follows.
+\begin{itemize}
+  \item \textbf{Part~I (Foundations).} Introduces the category $\Dom$ of mathematical domains, the
+  categories $\Math_d$ of structures in each domain, the target $\Phys$ of physical representations,
+  the notion of a \emph{representation entry} $E=(M,P,\tau,\sigma)$, the \emph{representation
+  prestack} and \emph{representation stack}, the four foundational axioms (Realization,
+  Equivalence, Locality/descent, Decomposition), and the epistemic status system \status{S}/\status{H}/\status{P}.
+  Its central formula is the \emph{realization pipeline}
+  \begin{equation}\label{eq:pipeline}
+    \Obs_\alpha(M) \;=\; \Obs\bigl(\Real_\alpha(\Phi(M))\bigr).
+  \end{equation}
+  \item \textbf{Part~II (Motives, periods, amplitudes).} Makes the abstract realization channels
+  $\Real_\alpha$ of Part~I concrete: Betti, de Rham, Hodge, and \'etale realizations of motives; the
+  period datum $\Pi=(X,D,\omega,\Gamma)$ with $\per(\Pi)=\int_\Gamma\omega$; the motivic amplitude
+  object $\amp^{\mathfrak m}$ with $\per(\amp^{\mathfrak m})=\amp$; and the coalgebraic anatomy
+  encoded by the coproduct $\Delta$ and cobracket $\delta$. Observables acquire an internal
+  \emph{decomposability} into primitive informational pieces.
+  \item \textbf{Part~III (this paper).} Supplies the geometric \emph{stage}. Part~II's motives and
+  periods do not live in a vacuum: a period datum requires $X$ to be an actual algebraic or analytic
+  space, and a \emph{family} of amplitudes over kinematic space is a variation of Hodge structure over
+  a moduli space. We formalize schemes, moduli spaces and stacks, Hodge theory and Gauss--Manin
+  transport, and positive geometries, and we show that Part~II's per-object pipeline extends to a
+  \emph{family} pipeline fibered over the geometry.
+  \item \textbf{Parts~IV--VII.} Algebraic topology (conserved global information), category
+  theory and homotopy type theory (composition and identity), sheaves/stacks/gauge redundancy/quantum
+  high availability, and finally a synthesis paper recomposing the ladder. Part~III sets up Part~IV by
+  producing the varieties and moduli whose topological invariants Part~IV will study.
+\end{itemize}
+
+\subsection{Thesis of Part~III}
+
+Our thesis, following the primary source's algebraic-geometry appendix, is compact:
+\begin{quote}
+\emph{Algebraic geometry is the geometry of physical possibility.}
+\end{quote}
+The word ``possibility'' is meant in a precise, layered sense that the machinery of algebraic
+geometry makes available:
+\begin{enumerate}
+  \item \textbf{Solutions as points.} The set of states satisfying a system of polynomial constraints
+  is an \emph{affine variety} $V(\Ideal)$; its coordinate ring $R/\Ideal$ is the algebra of on-shell
+  observables. \status{S}\ as algebra; the reading ``measurements generate the space of
+  possibilities'' is \status{H}.
+  \item \textbf{Infinitesimal possibility.} Passing from varieties to \emph{schemes} $\Spec R$ retains
+  nilpotent (infinitesimal, off-shell, ghost-like) directions that varieties discard; possibility
+  acquires a tangent/deformation structure.
+  \item \textbf{Families of possibility.} A \emph{moduli space} parametrizes physically distinct
+  configurations; the space itself, its singularities, and its compactification become physical
+  objects (vacua, thresholds, asymptotic sectors).
+  \item \textbf{Possibility modulo redundancy.} A \emph{moduli stack} $[X/G]$ remembers the gauge
+  automorphisms (stabilizers) of each configuration, distinguishing genuine physical states from
+  redundant descriptions --- the geometric incarnation of Part~I's Equivalence axiom.
+  \item \textbf{Possibility varying analytically.} A \emph{variation of Hodge structure} equips a
+  family with a flat Gauss--Manin connection whose flat sections are the Betti cycles; pairing them
+  against the (non-flat) holomorphic form gives the amplitudes across kinematic space, which obey the
+  Picard--Fuchs differential equations.
+  \item \textbf{Possibility with a boundary.} A \emph{positive geometry} carries a canonical form whose
+  boundary residues recursively encode lower-dimensional geometries --- a geometric model of physical
+  factorization and singularity structure.
+\end{enumerate}
+
+\subsection{Contributions}
+
+\begin{enumerate}
+  \item A self-contained formalization (\Cref{sec:framework,sec:schemes}) of the algebraic-geometry
+  layer of the representation library: schemes via the functor of points, ideals as constraints, the
+  on-shell algebra $R/\Ideal$, and the full \status{S}/\status{H}/\status{P}-labelled dictionary of
+  \Cref{sec:dictionary}, reproduced and organized from the primary source.
+  \item Four theorems with proofs (\Cref{sec:theorems}), each of which extends a Part~II construction
+  over a geometric family: Gauss--Manin family realization (\Cref{thm:gm}), stack-vs-coarse strictness
+  (\Cref{thm:stack}), positive-geometry residue/coaction correspondence (\Cref{thm:posgeom},
+  status \status{H}), and the derived critical locus as BV on-shell algebra (\Cref{thm:dcrit}).
+  \item An explicit family realization pipeline (\Cref{sec:family}) generalizing
+  \eqref{eq:pipeline} from a single mathematical object to a moduli-indexed family, together with a
+  status-propagation calculus inherited from Part~I.
+  \item Executable \textsf{Haskell} encodings and a best-effort \textsf{Lean~4} sketch
+  (\Cref{sec:code}) of schemes-as-functors-of-points, quotient stacks with stabilizer data,
+  variations of Hodge structure with Gauss--Manin connections, and positive geometries with recursive
+  residue trees.
+  \item An explicit accounting (\Cref{sec:discussion}) of how Part~III respects the program's five
+  standing limitations, and a list of open problems --- notably the conjectural identification of
+  positive-geometry residue trees with motivic coaction trees --- handed forward to Parts~IV--VII.
+\end{enumerate}
+
+\subsection{Epistemic status discipline}
+\label{sec:status-intro}
+
+We preserve verbatim the three-level status system of Part~I.
+
+\begin{center}
+\begin{tabular}{c P{5.6cm} P{5.4cm}}
+\hline
+\textbf{Label} & \textbf{Meaning} & \textbf{Canonical example} \\
+\hline
+\status{S} & standard use in mathematics or mathematical physics & TQFT as a functor $\mathsf{Bord}_n\to\Vect$ \\
+\status{H} & strong heuristic representation dictionary entry & motive as ``functional essence'' \\
+\status{P} & speculative philosophical ontology & reality as motivic-categorical realization \\
+\hline
+\end{tabular}
+\end{center}
+
+Composite labels (\status{S/H}, \status{H/P}) appear where an entry is standard as pure mathematics
+but heuristic or speculative in its \emph{physical} reading; we preserve these composite labels
+verbatim. This discipline is not decoration: it is the program's central epistemic-honesty device, and
+we take pains in \Cref{sec:theorems} to state precisely which of our four theorems are status-\status{S}
+(established mathematics applied to a physical reading), which are status-\status{H} (heuristically
+plausible, original to this program), and which are status-\status{P}.
+
+% ============================================================
+\section{Mathematical Framework}
+\label{sec:framework}
+
+We recall the ambient framework of Parts~I--II in the compressed form we need, then specialize to the
+algebraic-geometry domain $d = \mathsf{AG}$.
+
+\subsection{Domains, structures, and representation entries}
+
+\begin{definition}[Representation entry, after Part~I]
+\label{def:repentry}
+Fix a category $\Dom$ of mathematical domains and, for each $d\in\Dom$, a (possibly higher) category
+$\Math_d$ of mathematical structures in $d$, together with a category $\Phys$ of physical
+representations. A \emph{representation entry} is a quadruple $E=(M,P,\tau,\sigma)$ where
+$M\in\Math_d$, $P\in\Phys$, $\tau$ is a semantic translation datum (a functor, a natural
+transformation, an equivalence class of models, a physical interpretation map, or a weaker relation),
+and $\sigma\in\{\status{S},\status{H},\status{P}\}$ is the epistemic status label.
+\end{definition}
+
+For this paper $d=\mathsf{AG}$ and $\Math_{\mathsf{AG}}$ is (a chosen full subcategory of) the category
+of schemes, algebraic spaces, and stacks over a fixed base field $\coeff$, together with the auxiliary
+categories of Hodge structures and positive geometries introduced below.
+
+\begin{definition}[Status monoid, after Part~I]
+\label{def:statusmonoid}
+Order the labels by $\status{S} < \status{H} < \status{P}$ and equip $\{\status{S},\status{H},\status{P}\}$
+with the binary operation $\sigma_1\wedge\sigma_2 := \max(\sigma_1,\sigma_2)$ (the \emph{less reliable}
+of the two). This is a commutative monoid with unit $\status{S}$. For composite labels we take the join
+componentwise; e.g.\ $\status{S/H}\wedge\status{S}=\status{S/H}$ and $\status{S/H}\wedge\status{H}=\status{H}$.
+\end{definition}
+
+\begin{remark}
+\Cref{def:statusmonoid} operationalizes Part~I's status system into a calculus: a chain of translations
+is only as reliable as its weakest link, so the status of a composite entry is the $\wedge$-join of the
+component statuses. We use this repeatedly to certify that no theorem in \Cref{sec:theorems} silently
+launders a heuristic step into a standard conclusion.
+\end{remark}
+
+\subsection{The realization pipeline}
+
+Recall the universal formula \eqref{eq:pipeline}. In Part~II the channels $\alpha$ were the
+cohomological realizations $\{\text{Betti},\text{de Rham},\text{Hodge},\text{\'etale}\}$ and the abstract
+information functor was $\Phi = \Mot$, sending a variety to its motive. The realization pipeline for a
+single variety $X$ is the chain
+\begin{equation}\label{eq:motchain}
+  X \;\xmapsto{\ \Mot\ }\; \Mot(X) \;\xmapsto{\ \Real_\alpha\ }\; \Real_\alpha(\Mot(X)) \;\xmapsto{\ \Obs\ }\; \text{observable}.
+\end{equation}
+Part~III's central move is to let $X$ \emph{vary}: we replace the single object $X$ by a family
+$\pi\colon \mathcal X\to S$ over a base scheme (moduli space) $S$ and ask how \eqref{eq:motchain}
+behaves as we move in $S$. The answer, made precise in \Cref{thm:gm}, is that the realization assembles
+into a variation of Hodge structure over $S$: the Betti cycles are the flat sections of the Gauss--Manin
+connection, and the observable is their pairing with the (non-flat) holomorphic form --- a period
+function whose variation is governed by $\GM$ and which satisfies the Picard--Fuchs equations.
+
+\subsection{The master diagram, fibered over a base}
+
+\Cref{fig:master} exhibits the family realization pipeline as a commuting diagram. The top row is
+Part~I's master diagram for a single object; the bottom row is its family version, and the vertical
+arrows are the fibers of the family over a point $s\in S$.
+
+\begin{figure}[!htbp]
+\centering
+\begin{tikzcd}[column sep=large, row sep=large]
+\mathcal X \arrow[r, "\Mot"] \arrow[d, "\pi"'] &
+\underline{\Mot}(\mathcal X/S) \arrow[r, "\Real_\alpha"] \arrow[d] &
+\mathcal H_\alpha \arrow[r, "\Obs=\int_{\gamma}"] \arrow[d, "\text{fiber}"] &
+\text{period } \Pi(s) \arrow[d] \\
+S \arrow[r, equal] & S \arrow[r, equal] & S \arrow[r, "\GM"'] & (\text{Picard--Fuchs})
+\end{tikzcd}
+\caption{The family realization pipeline of Part~III. Over each $s\in S$ the fiber recovers Part~II's
+single-object chain \eqref{eq:motchain}; globally the realization $\Real_\alpha$ produces a variation of
+Hodge structure $\mathcal H_\alpha$ carrying the Gauss--Manin connection $\GM$. The observable
+$\Obs=\int_\gamma$ pairs the (non-flat) holomorphic section of $\mathcal H_\alpha$ against the flat Betti
+cycles $\gamma(s)$, yielding the period functions $\Pi(s)$ --- the amplitudes over kinematic space ---
+which solve the Picard--Fuchs system (\Cref{thm:gm}). The flat sections of $\GM$ are the Betti cycles,
+not the periods.}
+\label{fig:master}
+\end{figure}
+
+% ============================================================
+\section{Schemes as Spaces of Physical Possibility}
+\label{sec:schemes}
+
+\subsection{From constraints to varieties}
+
+\begin{definition}[Affine variety, on-shell algebra]
+\label{def:variety}
+Let $\coeff$ be a field and $R=\coeff[x_1,\dots,x_n]$. For an ideal $\Ideal\subseteq R$ generated by
+polynomials $f_1,\dots,f_r$ (the \emph{constraint equations}), the \emph{affine algebraic set} is the
+zero locus
+\[
+  V(\Ideal) \;=\; \{\, a\in \coeff^n : f_i(a)=0,\ i=1,\dots,r \,\},
+\]
+and the \emph{on-shell observable algebra} is the quotient ring $R/\Ideal$.
+\end{definition}
+
+\begin{remark}[Terminology]
+In the strict algebro-geometric sense an \emph{affine variety} is an \emph{irreducible} affine algebraic
+set, i.e.\ $\Ideal$ is a prime ideal. Throughout this paper we use ``variety'' in the looser, physically
+natural sense of an arbitrary solution space $V(\Ideal)$ (an affine algebraic set), since a physical
+constraint system need not cut out an irreducible locus. Where irreducibility is actually used
+(e.g.\ for a connected smooth family in \Cref{thm:gm}) we say so explicitly.
+\end{remark}
+
+Physically, $V(\Ideal)$ is the space of classical states satisfying the imposed equations of motion or
+conservation constraints, and $R/\Ideal$ is the algebra of functions (observables) modulo those
+constraints: an observable that differs from another by an element of $\Ideal$ takes the same value on
+every physical state, hence \emph{is} the same observable on-shell.
+
+\begin{example}[On-shell observable algebra, primary-source Example, \status{S}/\status{H}]
+\label{ex:onshell}
+Let $R$ be an algebra of fields and coordinates and let $\Ideal$ be the ideal generated by the
+equations of motion or constraints. Then $R/\Ideal$ is the natural algebraic representation of
+observables modulo the imposed physical equations. \emph{Status:} \status{S}\ as pure algebra; the
+ontological reading ``measurements generate the space of physical possibility'' is \status{H}.
+\end{example}
+
+\begin{example}[Free particle constraint surface]
+Take $R=\RR[q,p,E]$ and $\Ideal=(E-\tfrac{1}{2m}p^2)$. Then $V(\Ideal)\subseteq \RR^3$ is the
+paraboloid of on-shell energy-momentum data, and $R/\Ideal\cong \RR[q,p]$: the energy $E$ is not an
+independent observable on-shell but a function of $p$. This is the algebraic content of ``imposing the
+mass-shell condition.''
+\end{example}
+
+\subsection{Schemes and infinitesimal possibility}
+
+Varieties see only reduced structure: they cannot distinguish $V(x)$ from $V(x^2)$, both being the
+single point $\{0\}$. Physics, however, frequently needs the infinitesimal or off-shell data that
+nilpotents encode. Schemes retain this data.
+
+\begin{definition}[Affine scheme]
+\label{def:affsch}
+For a commutative ring $R$, the \emph{affine scheme} $\Spec R$ is the set of prime ideals of $R$
+equipped with the Zariski topology (closed sets $V(\Ideal)=\{\mathfrak p : \Ideal\subseteq\mathfrak
+p\}$) and the structure sheaf $\Ohm_{\Spec R}$ whose stalk at $\mathfrak p$ is the localization
+$R_{\mathfrak p}$.
+\end{definition}
+
+\begin{definition}[Scheme]
+\label{def:scheme}
+A \emph{scheme} is a locally ringed space $(X,\Ohm_X)$ that is locally isomorphic to an affine scheme:
+every point has an open neighbourhood $U$ with $(U,\Ohm_X|_U)\cong (\Spec R,\Ohm_{\Spec R})$ for some
+commutative ring $R$ (see Hartshorne~\cite{hartshorne}, Ch.~II).
+\end{definition}
+
+\begin{remark}[Functor of points]
+\label{rem:fop}
+Equivalently, by Yoneda, a scheme $X$ is determined by its \emph{functor of points}
+$h_X\colon \CRing\to\Set$, $R\mapsto \Hom_{\Sch}(\Spec R, X)$; an $R$-point of $X$ is a
+$\coeff$-algebra homomorphism from the coordinate ring of $X$ to $R$. This viewpoint is the one we
+encode in \textsf{Haskell} and \textsf{Lean} in \Cref{sec:code}: a scheme becomes a rule assigning to
+each ring of ``test parameters'' the set of configurations parametrized by that ring. The nilpotent
+directions are visible precisely because $R$ is allowed to be nonreduced (e.g.\ dual numbers
+$\coeff[\varepsilon]/(\varepsilon^2)$, whose points detect tangent vectors).
+\end{remark}
+
+\begin{example}[Nilpotents as virtual directions, \status{H}]
+The scheme $\Spec\bigl(\coeff[x]/(x^2)\bigr)$ has one point but a nonzero tangent space: its
+$\coeff[\varepsilon]/(\varepsilon^2)$-points are $\{0,\varepsilon\}$, detecting a first-order
+deformation invisible to the underlying variety. In the physical dictionary a nilpotent element is an
+\emph{infinitesimal thickening} --- a virtual, off-shell, or ghost-like direction (status \status{H}).
+This is the algebraic seed of the Batalin--Vilkovisky ghost directions we recover rigorously in
+\Cref{thm:dcrit}.
+\end{example}
+
+\subsection{Projective varieties and scale invariance}
+
+\begin{definition}[Projective variety]
+For a homogeneous ideal $\Ideal\subseteq \coeff[x_0,\dots,x_n]$, the \emph{projective variety}
+$V_+(\Ideal)=\Proj\bigl(\coeff[x_0,\dots,x_n]/\Ideal\bigr)\subseteq \PP^n_\coeff$ is the zero locus of
+$\Ideal$ in projective space, i.e.\ the space of solutions taken modulo the rescaling
+$(x_0,\dots,x_n)\sim (\lambda x_0,\dots,\lambda x_n)$, $\lambda\in\coeff^\times$.
+\end{definition}
+
+Physically a projective variety is a \emph{scale-invariant configuration space}: physical data
+considered modulo an overall rescaling. Cross-ratios and other conformal invariants live naturally on
+projective and Grassmannian geometries; this is the setting in which positive geometries
+(\Cref{sec:posgeom}) are formulated.
+
+% ============================================================
+\section{The Algebraic Geometry Dictionary}
+\label{sec:dictionary}
+
+We reproduce and organize the algebraic-geometry library of the primary source (its Appendix~C),
+preserving every status label. The dictionary is the data of a family of representation entries
+(\Cref{def:repentry}) in the domain $d=\mathsf{AG}$; the theorems of \Cref{sec:theorems} pick out the
+load-bearing rows and prove precise statements about them.
+
+\begin{center}
+\small
+\begin{longtable}{P{3.6cm} P{4.1cm} P{4.1cm} c}
+\caption{Algebraic geometry library (part 1 of 2): schemes, bundles, quotients. Status labels
+preserved verbatim from the primary source.}
+\label{tab:dict1} \\
+\hline
+\textbf{Algebraic geometry} & \textbf{Physical representation} & \textbf{Semantic meaning} & \textbf{Status} \\
+\hline
+\endfirsthead
+\multicolumn{4}{c}{\tablename\ \thetable\ -- \textit{continued from previous page}} \\
+\hline
+\textbf{Algebraic geometry} & \textbf{Physical representation} & \textbf{Semantic meaning} & \textbf{Status} \\
+\hline
+\endhead
+\hline \multicolumn{4}{r}{\textit{continued on next page}} \\
+\endfoot
+\hline
+\endlastfoot
+Affine variety & Classical solution space & Allowed states satisfying polynomial constraints & \status{S} \\
+Projective variety & Scale-invariant configuration space & Physical data modulo rescaling & \status{S} \\
+Scheme & Generalized solution space & Includes infinitesimal/nilpotent structure & \status{S/H} \\
+$\Spec R$ & Space encoded by observables & Observables determine geometry & \status{S/H} \\
+Coordinate ring & Algebra of observables/functions & Measurements generate space & \status{S} \\
+Ideal $\Ideal$ & Constraint equations & Equations of motion/conservation constraints & \status{S/H} \\
+Quotient ring $R/\Ideal$ & On-shell observable algebra & Functions modulo physical constraints & \status{S} \\
+Nilpotent element & Infinitesimal thickening & Virtual/off-shell/ghost-like direction & \status{H} \\
+Sheaf & Locally defined data & Local fields glued into global fields & \status{S} \\
+Stalk & Local data at a point & Infinitesimal local physical information & \status{S/H} \\
+\v{C}ech cocycle & Gluing rule & Gauge transition function & \status{S} \\
+Sheaf cohomology & Obstruction to global gluing & Global anomaly or obstruction & \status{S/H} \\
+Line bundle & Phase/gauge degree over space & $U(1)$-type local phase structure & \status{S} \\
+Vector bundle & Internal degrees over spacetime & Matter or gauge field carrier & \status{S} \\
+Principal $G$-bundle & Gauge configuration & Local symmetry fiber at each point & \status{S} \\
+Connection & Gauge potential & Rule for parallel transport & \status{S} \\
+Curvature & Field strength & Failure of transport to commute & \status{S} \\
+Divisor & Codimension-one locus & Defect, pole, boundary, charge surface & \status{H} \\
+Blowup & Resolution of singularity & Regularization/zooming into divergence & \status{S/H} \\
+Exceptional divisor & New boundary after resolution & Counterterm or hidden boundary sector & \status{H} \\
+Compactification & Add boundary at infinity & Include asymptotic states/IR sectors & \status{S/H} \\
+Moduli space & Space of inequivalent structures & Physically distinct vacua/solutions & \status{S} \\
+Moduli stack & Moduli with automorphisms retained & Gauge quotient preserving stabilizers & \status{S} \\
+Quotient stack $[X/G]$ & Gauge quotient & Physical states modulo symmetry, with isotropy & \status{S} \\
+\end{longtable}
+\end{center}
+
+\begin{center}
+\small
+\begin{longtable}{P{3.6cm} P{4.1cm} P{4.1cm} c}
+\caption{Algebraic geometry library (part 2 of 2): derived, Hodge-theoretic, and positive-geometric
+entries. Status labels preserved verbatim from the primary source.}
+\label{tab:dict2} \\
+\hline
+\textbf{Algebraic geometry} & \textbf{Physical representation} & \textbf{Semantic meaning} & \textbf{Status} \\
+\hline
+\endfirsthead
+\multicolumn{4}{c}{\tablename\ \thetable\ -- \textit{continued from previous page}} \\
+\hline
+\textbf{Algebraic geometry} & \textbf{Physical representation} & \textbf{Semantic meaning} & \textbf{Status} \\
+\hline
+\endhead
+\hline \multicolumn{4}{r}{\textit{continued on next page}} \\
+\endfoot
+\hline
+\endlastfoot
+Derived scheme/stack & Equations plus higher constraints & BV/BRST-style field space with ghosts & \status{S/H} \\
+Derived critical locus & Critical points with obstruction data & Perturbative field theory around action & \status{S/H} \\
+Tangent complex & Linearized deformation data & Fluctuations around a solution & \status{S} \\
+Cotangent complex & Moment/covector deformation data & Phase-space infinitesimals & \status{S/H} \\
+Symplectic variety & Geometric phase space & Classical mechanics structure & \status{S} \\
+Poisson variety & Bracketed observable space & Classical observable algebra & \status{S} \\
+Calabi--Yau variety & Special geometry/compactification & String background or period source & \status{S} \\
+Elliptic curve & Torus-like period geometry & Elliptic Feynman integral sector & \status{S} \\
+Algebraic curve & Spectral curve & Dispersion/integrability data & \status{S} \\
+Jacobian & Torus of line bundles & Abelianized phase/integrable variables & \status{S} \\
+Picard group & Line-bundle classes & Phase sectors or charge classes & \status{S/H} \\
+Hodge structure & Cohomological decomposition & Analytic-topological complexity & \status{S} \\
+Mixed Hodge structure & Layered singular/relative cohomology & Amplitudes with boundaries/degenerations & \status{S} \\
+Variation of Hodge str. & Periods varying over parameters & Amplitudes over kinematic space & \status{S} \\
+Gauss--Manin connection & Transport of cohomology over moduli & Differential equations for amplitudes & \status{S} \\
+Picard--Fuchs equation & Period differential equation & Equation satisfied by integral/amplitude & \status{S} \\
+Riemann--Hilbert corr. & ODEs to monodromy & Dynamics to analytic-continuation data & \status{S} \\
+Monodromy & Transport around singularity & Branch cuts or analytic continuation & \status{S} \\
+Discriminant locus & Degenerate parameter values & Thresholds or singular kinematics & \status{S} \\
+Positive geometry & Region with canonical form & Geometry encoding scattering amplitude & \status{S} \\
+Canonical form & Distinguished differential form & Amplitude or integrand form & \status{S} \\
+Amplituhedron & Positive geometry for amplitudes & Scattering encoded geometrically & \status{S} \\
+Positive Grassmannian & Positive cell geometry & On-shell amplitude combinatorics & \status{S} \\
+Cluster algebra & Mutating coordinate system & Different amplitude charts/channels & \status{S/H} \\
+Tropical geometry & Degeneration or asymptotic geometry & Classical, graph, or boundary regime & \status{S/H} \\
+Toric variety & Combinatorial algebraic geometry & Phase space from polytope data & \status{S} \\
+Newton polytope & Monomial support geometry & Semiclassical/dominant-balance structure & \status{H} \\
+\end{longtable}
+\end{center}
+
+\begin{remark}[Reading the dictionary through the status monoid]
+The dictionary is not a flat list: it is stratified by \Cref{def:statusmonoid}. The purely
+mathematical content of every row is \status{S} (these are standard objects of algebraic geometry);
+the composite labels record that the \emph{physical} reading may drop to \status{H}. For instance,
+``ideal $=$ constraint equations'' is \status{S/H} because the algebra is standard but the claim that
+\emph{every} physical constraint is polynomial is heuristic. When we compose dictionary entries along
+the realization pipeline, \Cref{def:statusmonoid} tells us the composite status; e.g.\ realizing an
+amplitude via a variation of Hodge structure (\status{S}) over a moduli \emph{space} (\status{S}) is
+\status{S}, but reading the resulting object as ``the'' cosmic-Galois-covariant amplitude (a Part~II
+\status{H/P} entry) forces the composite to \status{H/P}.
+\end{remark}
+
+% ============================================================
+\section{Moduli, Stacks, and Gauge-Correct Possibility}
+\label{sec:moduli}
+
+\subsection{Moduli functors and stacks}
+
+The space of ``physically distinct configurations'' of a given type is a \emph{moduli space}. We phrase
+it functorially, which is both the mathematically robust formulation and the one matching our
+functor-of-points encoding (\Cref{rem:fop}).
+
+\begin{definition}[Moduli functor, moduli stack]
+\label{def:moduli}
+A \emph{moduli functor} for a class of objects with a notion of family is a functor
+$\mathcal M\colon \Sch^{\op}\to\Set$ sending a test scheme $T$ to the set of families over $T$ modulo
+isomorphism. If instead one records the isomorphisms (does not quotient by them), one obtains a
+\emph{moduli stack} $\underline{\mathcal M}\colon \Sch^{\op}\to\Grpd$, valued in groupoids. The moduli
+functor is \emph{represented} by a scheme (resp.\ the stack by an algebraic stack) when it satisfies
+effective descent and admits a universal family.
+\end{definition}
+
+\begin{definition}[Quotient stack]
+\label{def:quotstack}
+Let an algebraic group $G$ act on a scheme $X$. The \emph{quotient stack} $[X/G]$ is the stackification
+of the action groupoid $X\times G \rightrightarrows X$ (source and target maps $(x,g)\mapsto x$ and
+$(x,g)\mapsto g\cdot x$). Its $T$-points form the groupoid of principal $G$-bundles $P\to T$ together
+with a $G$-equivariant map $P\to X$. The \emph{coarse space} $X/G$ is the scheme (or algebraic space)
+that best approximates the stack: it is characterized by the universal property of co-representing
+$[X/G]$, i.e.\ it receives a canonical map $[X/G]\to X/G$ that is universal among maps from $[X/G]$ to
+schemes. For a reductive $G$ acting on an affine $X=\Spec A$ it is the GIT quotient
+$X/\!/G = \Spec(A^G)$ of invariants. We stress that $X/G$ is \emph{not} in general the sheafification of
+the orbit presheaf $T\mapsto X(T)/G(T)$: when stabilizers are nontrivial that sheaf need not be
+representable (e.g.\ for $\mathbb G_m\curvearrowright\AAf^1$ by scaling the invariant quotient is a single
+point, whereas the fppf orbit sheaf has two points).
+\end{definition}
+
+The essential invariant retained by the stack but forgotten by the coarse space is the automorphism
+(stabilizer) group of each point.
+
+\begin{proposition}[Stabilizer is the automorphism group of a point in the stack]
+\label{prop:stab}
+For $x\in X$, the automorphism group of the corresponding object of the groupoid $[X/G](\Spec\coeff)$
+is canonically isomorphic to the stabilizer $\Stab_G(x) = \{ g\in G : g\cdot x = x\}$:
+\[
+  \Aut_{[X/G]}(x) \;\cong\; \Stab_G(x).
+\]
+\end{proposition}
+\begin{proof}
+By \Cref{def:quotstack}, morphisms $x\to x'$ in the action groupoid are group elements $g\in G$ with
+$g\cdot x = x'$; automorphisms are therefore $g\in G$ with $g\cdot x = x$, i.e.\ exactly $\Stab_G(x)$.
+Stackification is a $2$-categorical localization that preserves automorphism groups of objects
+(it only adds descent data and formal inverses to already-invertible $1$-morphisms), so the
+automorphism group is unchanged in $[X/G]$.
+\end{proof}
+
+\Cref{prop:stab} is the algebraic-geometry incarnation of the master formula
+$\Aut_{[X/G]}(x)\simeq\Stab_G(x)$ recorded across the whole program. It is the reason a moduli stack is
+``gauge-correct'': it distinguishes a configuration with no gauge automorphisms from one stabilized by a
+residual gauge subgroup, even when the two have the same image in the coarse space.
+
+\subsection{Gauge redundancy, formally}
+
+\begin{definition}[Gauge redundancy, after Part~I/VI]
+\label{def:gauge}
+A \emph{gauge redundancy} on a configuration space $X$ is the action of a group $G$ whose orbits are to
+be regarded as single physical states: $x$ and $g\cdot x$ describe \emph{the same} physics. The
+physically correct state space is the quotient stack $[X/G]$, not merely the set of orbits $X/G$,
+whenever stabilizers carry physical information (anomalies, quantization conditions, or measure
+factors).
+\end{definition}
+
+\begin{remark}[Gauge redundancy is not physical symmetry]
+\label{rem:gauge-not-sym}
+We reiterate the program's Limitation~5: a gauge redundancy identifies \emph{different descriptions of
+the same} physical content, whereas a physical symmetry maps one physical state to a \emph{genuinely
+different} one. The electromagnetic potential $A\mapsto A+d\lambda$ with field strength $F=dA$
+(and $d^2=0$, so $F$ is unchanged) is the paradigm: $A$ and $A+d\lambda$ are gauge-equivalent
+descriptions of one physical field configuration. Algebro-geometrically this is the statement that the
+physical object is a point of a \emph{stack} of connections modulo gauge, and its automorphisms are the
+residual (constant) gauge transformations.
+\end{remark}
+
+% ============================================================
+\section{Hodge Theory and Kinematic-Space Amplitudes}
+\label{sec:hodge}
+
+We now formalize the machinery that lets Part~II's periods \emph{vary} over a family, which is the
+technical heart of \Cref{thm:gm}.
+
+\begin{definition}[Hodge structure]
+\label{def:hodge}
+A (pure) \emph{Hodge structure} of weight $w$ on a finite-dimensional $\QQ$-vector space $V$ is a
+decomposition $V_\CC = V\otimes_\QQ\CC = \bigoplus_{p+q=w} V^{p,q}$ with $\overline{V^{p,q}}=V^{q,p}$.
+Equivalently it is a decreasing \emph{Hodge filtration} $\Fil$ with
+$V_\CC = F^p\oplus\overline{F^{w-p+1}}$. A \emph{mixed} Hodge structure adds an increasing weight
+filtration $W_\bullet$ with pure Hodge structures on the graded pieces (Deligne).
+\end{definition}
+
+\begin{definition}[Variation of Hodge structure]
+\label{def:vhs}
+A \emph{variation of Hodge structure} (VHS) over a complex base $S$ is a local system $\mathbb V$ of
+$\QQ$-vector spaces on $S$ together with a holomorphic Hodge filtration $\Fil\subset \mathbb
+V\otimes\Ohm_S$ such that
+\begin{enumerate}
+  \item each fiber $(\mathbb V_s,F^\bullet_s)$ is a Hodge structure, and
+  \item \textbf{Griffiths transversality} holds: $\GM F^p \subseteq F^{p-1}\otimes\Omega^1_S$, where
+  $\GM$ is the flat \emph{Gauss--Manin connection} determined by the local system.
+\end{enumerate}
+\end{definition}
+
+\begin{definition}[Period map and Picard--Fuchs system]
+\label{def:pf}
+Let $\pi\colon\mathcal X\to S$ be a smooth projective family and $\omega_s$ a family of holomorphic
+forms with locally constant integration cycles $\gamma(s)\in H_\bullet(\mathcal X_s)$. The
+\emph{period} is $\Pi(s)=\int_{\gamma(s)}\omega_s$. Because the cycles $\gamma(s)$ are flat for $\GM$
+(they are the flat sections) while $[\omega_s]$ is not, the period $\Pi$ is a non-constant function
+satisfying a linear ODE system --- the \emph{Picard--Fuchs system} --- obtained by expressing the
+high-order Gauss--Manin derivatives $[\omega_s],\GMd[\omega_s],\dots,(\GMd)^r[\omega_s]$ in the
+(finite-rank, rank-$r$) de Rham cohomology basis to produce a linear dependence and pairing the result
+with $\gamma(s)$:
+\[
+  \sum_{j=0}^{r} c_j(s)\,(\GMd)^j[\omega_s] = 0
+  \quad\Longrightarrow\quad
+  \mathcal L_{\mathrm{PF}}\,\Pi = 0,\ \ \mathcal L_{\mathrm{PF}}=\sum_{j=0}^r c_j(s)\,\partial^j,
+\]
+a differential operator of order $\le \rk H^\bullet_{\mathrm{dR}}(\mathcal X_s)$. (Note $\GM\Pi=0$ does
+\emph{not} hold: the period is not a flat section; see \Cref{thm:gm}.)
+\end{definition}
+
+\begin{example}[Legendre family of elliptic curves, \status{S}]
+\label{ex:legendre}
+The family $E_\lambda\colon y^2 = x(x-1)(x-\lambda)$ over $S=\PP^1\setminus\{0,1,\infty\}$ has periods
+$\Pi(\lambda)=\oint \frac{dx}{y}$ satisfying the hypergeometric Picard--Fuchs equation
+\[
+  \lambda(1-\lambda)\,\Pi'' + (1-2\lambda)\,\Pi' - \tfrac14\,\Pi = 0,
+\]
+whose solutions are ${}_2F_1(\tfrac12,\tfrac12;1;\lambda)$ and its analytic continuation. The
+discriminant locus $\{0,1,\infty\}$ is exactly where $E_\lambda$ degenerates (a node appears); the
+monodromy of $\Pi$ around these points is the physical branch-cut/threshold data. This is the simplest
+nontrivial instance of ``amplitudes over kinematic space'': the elliptic Feynman-integral sector.
+\end{example}
+
+% ============================================================
+\section{Positive Geometries and Geometric Factorization}
+\label{sec:posgeom}
+
+\begin{definition}[Positive geometry, after Arkani-Hamed--Bai--Lam~\cite{abl}]
+\label{def:posgeom}
+A \emph{positive geometry} is a pair $(X,X_{\ge 0})$ of a complex variety $X$ and a real
+top-dimensional region $X_{\ge 0}\subseteq X(\RR)$ with boundary components $\partial_i X_{\ge 0}$,
+together with a unique \emph{canonical form} $\Omega(X_{\ge 0})$ --- a meromorphic top form with simple
+poles exactly along the boundary --- satisfying the recursive \emph{residue axiom}: for each boundary
+component,
+\[
+  \Res_{\partial_i}\,\Omega(X_{\ge 0}) \;=\; \Omega(\partial_i X_{\ge 0}),
+\]
+i.e.\ the residue along a facet is the canonical form of that facet, itself a positive geometry of one
+lower dimension.
+\end{definition}
+
+\begin{example}[Interval and simplex, \status{S}]
+For the interval $[a,b]\subset\PP^1$ the canonical form is
+$\Omega = \bigl(\frac{1}{x-a}-\frac{1}{x-b}\bigr)dx = \frac{(b-a)\,dx}{(x-a)(x-b)}$, with
+$\Res_{x=a}\Omega = +1 = \Omega(\{a\})$ and $\Res_{x=b}\Omega = -1$. Iterating, the standard simplex
+$\Delta^n$ has canonical form the standard volume form with logarithmic singularities on its facets;
+each residue is the canonical form of a facet simplex. The recursion terminates at vertices (points),
+whose canonical form is the number $\pm 1$.
+\end{example}
+
+\begin{remark}[Physical reading, \status{S}]
+In scattering-amplitude applications (the amplituhedron for planar $\mathcal N=4$ super Yang--Mills,
+and its cousins) the canonical form \emph{is} the amplitude integrand, and the residue axiom
+\emph{is} the physical factorization of the amplitude on a singularity: the residue on a boundary
+component reproduces the product of lower-point amplitudes on the corresponding factorization channel.
+The recursive tree of residues (\Cref{def:restree} below) is thus a geometric model of the full
+singularity structure of the amplitude.
+\end{remark}
+
+\begin{definition}[Residue tree]
+\label{def:restree}
+For a positive geometry $(X,X_{\ge 0})$ the \emph{residue tree} $\mathcal T(X_{\ge 0})$ is the rooted
+tree whose root is decorated by $\Omega(X_{\ge 0})$, whose children are the residue trees of the
+boundary components $\partial_i X_{\ge 0}$, and whose leaves are the $0$-dimensional strata decorated
+by $\pm 1$.
+\end{definition}
+
+The residue tree is the object we compare, in \Cref{thm:posgeom}, with the coaction tree of Part~II's
+motivic amplitude objects.
+
+% ============================================================
+\section{Main Results}
+\label{sec:theorems}
+
+We now state and prove the four theorems announced in \Cref{sec:intro}. Each extends a Part~II
+construction over a geometric family and each carries an explicit status label.
+
+\subsection{T1: Gauss--Manin family realization}
+
+\begin{theorem}[Gauss--Manin transport implements the family realization pipeline; status \status{S}]
+\label{thm:gm}
+Let $\pi\colon\mathcal X\to S$ be a smooth projective family of complex varieties over a smooth connected
+base $S$ (so $\mathcal X$, $S$ are varieties over $\CC$, or complex manifolds), and let
+$\mathcal H_\alpha = R^k\pi^{\mathrm{an}}_\ast\underline{\QQ}$ be the associated Betti local system on the
+analytification $S^{\mathrm{an}}$ (Betti cohomology is a sheaf in the analytic, not the Zariski,
+topology), with its Hodge-theoretic realization the variation of Hodge structure of \Cref{def:vhs}
+carrying the Gauss--Manin connection $\GM$. (The restriction to the complex/analytic setting is needed for
+the Betti and Hodge realizations and for Ehresmann's theorem below.) Then:
+\begin{enumerate}
+  \item The assignment $s\mapsto \Real_{\mathrm{Hodge}}\bigl(\Mot(\mathcal X_s)\bigr)$ is the fiber of
+  $\mathcal H_\alpha$ at $s$. The Betti cycles $\gamma(s)\in H_k(\mathcal X_s;\QQ)$ are the \emph{flat}
+  (locally constant) sections of the \emph{homology} local system
+  $R_k\pi^{\mathrm{an}}_\ast\underline{\QQ}$, dual to the de Rham cohomology bundle
+  $\mathcal H_{\mathrm{dR}}$ carrying $\GM$, while the holomorphic form
+  $[\omega_s]\in F^k$ is in general \emph{not} flat: Griffiths transversality gives
+  $\GM[\omega_s]\in F^{k-1}\otimes\Omega^1_S$, which is nonzero in general. The period
+  $\Pi(s)=\langle\gamma(s),[\omega_s]\rangle=\int_{\gamma(s)}\omega_s$ is the pairing of the flat cycle
+  with the non-flat form, and its variation is
+  \[
+    d\,\Pi \;=\; \int_{\gamma(s)}\GM[\omega_s],
+  \]
+  so $\Pi$ is generally a non-constant function of $s$. Choosing a holomorphic frame $e_1,\dots,e_r$ of
+  $\mathcal H_{\mathrm{dR}}$ with connection matrix $\GM e_i = \sum_j A_{ij}\,e_j$, the vector of periods
+  $\Pi_i=\int_{\gamma}e_i$ satisfies the first-order Gauss--Manin system $d\Pi = A\,\Pi$.
+  \item Consequently, eliminating the frame, the scalar period $\Pi=\int_\gamma\omega$ satisfies the
+  Picard--Fuchs system $\mathcal L_{\mathrm{PF}}\Pi = 0$ (\Cref{def:pf}), a differential equation of order
+  at most $\rk H^k_{\mathrm{dR}}(\mathcal X_s)$.
+  \item Part~II's per-object realization pipeline \eqref{eq:motchain} is the fiber over each $s\in S$
+  of a \emph{family} realization pipeline
+  \[
+  \begin{tikzcd}[column sep=1.5cm]
+    \mathcal X \arrow[r, "\underline{\Mot}"] &
+    \underline{\Mot}(\mathcal X/S) \arrow[r, "\Real_\alpha"] &
+    \mathcal H_\alpha \arrow[r, "\Obs=\int_{\gamma(\cdot)}"] &
+    \Pi(s),\ \mathcal L_{\mathrm{PF}}\Pi=0,
+  \end{tikzcd}
+  \]
+  in which $\Real_\alpha$ produces the VHS $\mathcal H_\alpha$ (with its holomorphic section $[\omega_s]$)
+  and $\Obs$ pairs that section against the flat Betti cycles to output the period functions $\Pi(s)$.
+  Thus ``amplitudes over kinematic space'' are exactly these period functions --- solutions of the
+  Picard--Fuchs system of a VHS over the moduli base $S$ --- not flat sections of the VHS.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+(1) The Gauss--Manin connection is the connection on the relative de Rham cohomology bundle
+$\mathcal H_{\mathrm{dR}} = R^k\pi_\ast\Omega^\bullet_{\mathcal X/S}$ characterized by declaring the
+image of the topological (Betti) local system $R^k\pi_\ast\underline{\QQ}$ to be its flat sections;
+equivalently it is the unique flat connection whose horizontal sections are the locally constant
+cohomology classes (Katz--Oda~\cite{katzoda}). Dually, the integration cycles
+$\gamma(s)\in H_k(\mathcal X_s;\QQ)$ form a flat section of the homology local system because
+$H_k(\mathcal X_s)$ is locally constant in $s$ (Ehresmann: $\pi$ is a proper submersion, hence a locally
+trivial fiber bundle in the analytic topology); thus $\GM^\vee\gamma=0$. By contrast the holomorphic form
+represents a section $[\omega_s]$ of the Hodge sub-bundle $F^k\subseteq\mathcal H_{\mathrm{dR}}$, and
+Griffiths transversality gives $\GM[\omega_s]\in F^{k-1}\otimes\Omega^1_S$, which is nonzero in general:
+$[\omega_s]$ is \emph{not} flat. Differentiating the pairing $\Pi(s)=\langle\gamma(s),[\omega_s]\rangle$ by the Leibniz rule for the flat
+pairing,
+\[
+  d\,\Pi(s) = \underbrace{\langle\GM^\vee\gamma,[\omega_s]\rangle}_{=\,0\ \text{since}\ \GM^\vee\gamma=0}
+            + \langle\gamma,\GM[\omega_s]\rangle
+            = \int_{\gamma(s)}\GM[\omega_s],
+\]
+where the first term vanishes precisely because the Betti cycle $\gamma$ is flat ($\GM^\vee\gamma=0$).
+This is generally nonzero, so $\Pi$ is a non-constant function of $s$. Choosing a holomorphic frame
+$e_1,\dots,e_r$ of $\mathcal H_{\mathrm{dR}}$ with $\GM e_i=\sum_j A_{ij}e_j$, the vector of periods
+$\Pi_i=\int_\gamma e_i$ obeys $d\Pi_i=\int_\gamma\GM e_i=\sum_j A_{ij}\Pi_j$, i.e.\ the first-order
+Gauss--Manin system $d\Pi=A\,\Pi$. (In particular the period is emphatically \emph{not} annihilated by
+$\GM$; the flat sections are the Betti cycles, against which the non-flat form is measured.)
+
+(2) Since $\mathcal H^k_{\mathrm{dR}}(\mathcal X_s)$ is finite-dimensional of rank
+$r=\rk H^k_{\mathrm{dR}}(\mathcal X_s)$, for a chosen vector field $\partial$ on $S$ the $r+1$ classes
+\[
+  [\omega],\ \GMd[\omega],\ \dots,\ (\GMd)^{r}[\omega]
+\]
+lie in an $r$-dimensional space, hence are linearly dependent over the function field of $S$:
+$\sum_{j=0}^{r} c_j(s)\,(\GMd)^{j}[\omega] = 0$. Pairing with the flat cycle $\gamma(s)$ and using
+$\partial^j\Pi=\int_\gamma(\GMd)^j[\omega]$ (which follows from flatness of $\gamma$ as in (1)) yields
+$\sum_j c_j(s)\,\partial^j\Pi = 0$, i.e.\ $\mathcal L_{\mathrm{PF}}\Pi=0$ with
+$\mathcal L_{\mathrm{PF}}=\sum_j c_j(s)\partial^j$ of order $\le r$.
+
+(3) The functor $\underline{\Mot}$ of relative motives, the Hodge realization $\Real_\alpha$ producing
+$\mathcal H_\alpha$, and the observable map $\Obs=\int_{\gamma(\cdot)}$ (pairing the holomorphic section
+against flat Betti cycles) compose to the displayed family pipeline; restricting to a fiber over $s$
+recovers \eqref{eq:motchain} for $X=\mathcal X_s$ by construction of the relative constructions as
+fiberwise ones. Each of the three constructions is standard (Gauss--Manin/VHS theory), so by
+\Cref{def:statusmonoid} the composite is status \status{S}. The identification of the resulting period
+functions $\Pi(s)$ --- solutions of the Picard--Fuchs system --- with ``amplitudes over kinematic space''
+is the physical reading and is the standard content of the differential-equation approach to Feynman
+integrals.
+\end{proof}
+
+\begin{corollary}[Amplitudes obey their Picard--Fuchs equation]
+\label{cor:amp-pf}
+Any physical amplitude that arises as a period of a smooth projective family over kinematic space $S$ is
+annihilated by a Picard--Fuchs operator of order at most the rank of the relevant de Rham cohomology; in
+particular the analytic continuation of the amplitude around a discriminant point of $S$ is controlled by
+the monodromy of $\mathcal H_\alpha$ (branch cuts $=$ monodromy, \status{S}).
+\end{corollary}
+\begin{proof}
+Immediate from \Cref{thm:gm}(2) and the Riemann--Hilbert correspondence relating the Picard--Fuchs
+$\mathcal D$-module to its monodromy representation.
+\end{proof}
+
+\Cref{thm:gm} is the precise sense in which Part~III ``fibers'' Part~II: the per-object period becomes a
+period \emph{function} on the moduli base, constrained by the Picard--Fuchs system, and the previously
+mysterious ``amplitude over kinematic space'' becomes a rigorously constrained object.
+
+\subsection{T2: Stacks are strictly finer than coarse spaces}
+
+\begin{theorem}[Moduli stack is strictly finer than the coarse space; status \status{S}]
+\label{thm:stack}
+Let $G$ be an algebraic group acting on a scheme $X$ over a field $\coeff$, and suppose some point
+$x\in X(\coeff)$ has nontrivial stabilizer $\Stab_G(x)\neq 1$. Then:
+\begin{enumerate}
+  \item \textup{(No hypotheses beyond the above.)} The canonical map $q\colon [X/G]\to X/G$ to the
+  coarse space is not an isomorphism in any neighbourhood of the image of $x$: it is not fully faithful
+  there, because it kills the nontrivial automorphism group $\Aut_{[X/G]}(x)\cong\Stab_G(x)$
+  (\Cref{prop:stab}).
+  \item \textup{(Local structure.)} Assume in addition that $G$ is \emph{smooth reductive}, that
+  $\operatorname{char}\coeff=0$, and that $x$ is a smooth point contained in a $G$-invariant affine open;
+  equivalently, argue after passing to formal completions. Then there is a locally closed
+  $\Stab_G(x)$-invariant affine slice $W\ni x$ and an \'etale (henselian) neighbourhood $U$ of $q(x)$ for
+  which
+  \[
+    [X/G] \times_{X/G} U \;\simeq\; \bigl[\, \Spec(\Ohm^{h}_{W,x}) \,/\, \Stab_G(x)\,\bigr],
+  \]
+  recording exactly the deformation-and-automorphism data that $X/G$ forgets (\'etale slice / Luna-type
+  local structure). Without the reductivity/characteristic hypotheses the corresponding statement still
+  holds after passing to formal completions at $x$.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+(1) The coarse space $X/G$ is by construction a \emph{scheme} (or algebraic space): every point of a
+scheme has trivial automorphism group. The map $q$ sends the object $x$ of $[X/G](\Spec\coeff)$ to its
+image point. On automorphism groups $q$ therefore induces the map
+$\Aut_{[X/G]}(x)\cong\Stab_G(x)\to \Aut_{X/G}(q(x))=1$, which is not injective when $\Stab_G(x)\neq 1$.
+A morphism of stacks that is not injective on some automorphism group is not fully faithful, hence not an
+isomorphism, on any open substack containing $x$.
+
+(2) Under the stated hypotheses ($G$ smooth reductive, $\operatorname{char}\coeff=0$, and $x$ a smooth
+point in a $G$-invariant affine open), Luna's \'etale slice theorem~\cite{luna} provides a locally
+closed $\Stab_G(x)$-invariant affine slice $W\ni x$ transverse to the orbit $G\cdot x$. The
+multiplication map $G\times_{\Stab_G(x)} W \to X$ is \'etale onto a saturated neighbourhood of the
+orbit, and passing to stack quotients gives an \'etale equivalence
+$[G\times_{\Stab_G(x)} W / G]\simeq [W/\Stab_G(x)]$ over a neighbourhood of $x$; taking the local
+(henselian) ring of $W$ at $x$ yields the displayed local model. This is precisely the
+automorphism-plus-deformation data lost by the coarse space, whose local ring at $q(x)$ is the ring of
+$\Stab_G(x)$-invariants $\bigl(\Ohm^h_{W,x}\bigr)^{\Stab_G(x)}$. When the reductivity or
+characteristic-zero hypotheses fail, one replaces the \'etale slice by its formal analogue: the same
+local model holds after completing at $x$, working with the $\Stab_G(x)$-action on the formal
+deformation neighbourhood of $x$.
+\end{proof}
+
+\begin{corollary}[$\overline{\mathcal M}_g$ must be a stack]
+\label{cor:mgbar}
+The Deligne--Mumford moduli of stable genus-$g$ curves $\overline{\mathcal M}_g$ has points (e.g.\
+hyperelliptic curves, or the curve with extra automorphisms) with nontrivial automorphism groups; hence
+by \Cref{thm:stack} it is not faithfully represented by its coarse space. Whenever curves with
+automorphisms contribute physically distinct weightings --- as in the string-theoretic path integral
+over the moduli of worldsheets, where the automorphism group divides the measure --- one must integrate
+over the \emph{stack}, not the coarse space.
+\end{corollary}
+\begin{proof}
+Deligne--Mumford~\cite{delignemumford} construct $\overline{\mathcal M}_g$ as a smooth proper DM stack;
+the existence of automorphism-carrying curves is classical (e.g.\ the genus-$2$ curve $y^2=x^5-x$ has
+automorphism group of order $>1$). Apply \Cref{thm:stack}.
+\end{proof}
+
+\Cref{thm:stack} is the algebro-geometric member of the program's four-fold ``stacks retain gauge
+information'' family: Part~I posits it informally, Part~III proves it geometrically here, Part~V will
+prove a type-theoretic version (groupoid quotient vs.\ set truncation), and Part~VI will prove the
+descent-theoretic version. All four are the same fact at increasing rigor.
+
+\subsection{T3: Positive-geometry residues and the motivic coaction}
+
+\begin{theorem}[Residue tree reproduces a coaction-like decomposition; status \status{H}]
+\label{thm:posgeom}
+Let $(X,X_{\ge 0})$ be a positive geometry with canonical form $\Omega$ and residue tree
+$\mathcal T(X_{\ge 0})$ (\Cref{def:restree}). Then:
+\begin{enumerate}
+  \item (Status \status{S}.) The residue operation defines a coalgebra-like ``geometric coproduct''
+  \[
+    \Delta_{\mathrm{geo}}\,\Omega(X_{\ge 0}) \;=\; \sum_i \Omega(\partial_i X_{\ge 0}) \otimes
+    \bigl[\text{normal data at }\partial_i\bigr],
+  \]
+  and iterating $\Delta_{\mathrm{geo}}$ reproduces the tree $\mathcal T(X_{\ge 0})$; this operation is
+  coassociative up to the ordering of iterated boundaries (the boundary strata form a poset, giving a
+  graded coalgebra structure on the free vector space on strata).
+  \item (Status \status{H}, conjectural for amplituhedron-type geometries.) When $\Omega$ is the
+  integrand of a Feynman/scattering amplitude whose period admits a motivic lift
+  $\amp^{\mathfrak m}$ (Part~II), the tree $\mathcal T(X_{\ge 0})$ is isomorphic, as a graded rooted
+  tree, to the weight-graded coaction tree of $\amp^{\mathfrak m}$ under the motivic coproduct
+  $\Delta(\amp^{\mathfrak m})=\sum_i \amp^{\mathfrak m}_{i,1}\otimes\amp^{\mathfrak m}_{i,2}$; i.e.\
+  geometric factorization on boundaries and motivic coaction on periods are the same decomposition.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+(1) By the residue axiom (\Cref{def:posgeom}), $\Res_{\partial_i}\Omega=\Omega(\partial_i X_{\ge 0})$,
+so the map $\Delta_{\mathrm{geo}}$ is well defined on the free graded vector space $C_\bullet$ spanned by
+the (canonical forms of the) boundary strata, graded by codimension. Coassociativity up to poset
+ordering is the statement that the iterated residue along a codimension-two stratum is independent of the
+order in which the two facets are approached whenever the strata meet transversally --- a standard
+property of iterated residues of forms with logarithmic (simple-pole) singularities (Leray). Hence
+$(C_\bullet,\Delta_{\mathrm{geo}})$ is a graded coalgebra and its cogenerated tree is $\mathcal T(X_{\ge
+0})$. This part is a theorem of positive-geometry theory and is status \status{S}.
+
+(2) This is the conjectural identification and we flag it \status{H}. The evidence is: (a) both sides are
+weight/codimension-graded rooted trees whose leaves are $\QQ$-numbers (residues $=\pm1$ on one side,
+weight-$0$ periods $=$ rationals on the other); (b) for one-loop integrands and for the polygon/associahedron
+geometries the two trees are known to agree, matching the Goncharov coproduct on the associated
+polylogarithms; (c) the ``cosmic Galois''/coaction principle of Brown and the residue recursion of
+Arkani-Hamed--Bai--Lam are both governed by the same weight filtration. A general proof would require a
+functor from the poset of boundary strata of $X_{\ge 0}$ to the comodule of motivic periods intertwining
+$\Delta_{\mathrm{geo}}$ with $\Delta$; constructing this functor for all amplituhedron-type geometries is
+open. We therefore assert (2) as a status-\status{H} candidate theorem, not an established one, and record
+it in \Cref{sec:discussion} as the program's sharpest open problem in this domain.
+\end{proof}
+
+\begin{remark}
+The honest status bookkeeping of \Cref{thm:posgeom} is exactly what the \status{S}/\status{H}/\status{P}
+discipline is for: part~(1) is a genuine theorem, part~(2) is a precise conjecture. Collapsing the two
+would be the kind of overclaim the program is designed to prevent (Limitation~1).
+\end{remark}
+
+\subsection{T4: The derived critical locus as BV on-shell algebra}
+
+\begin{theorem}[Derived critical locus formalizes $R/\Ideal$ at the BV level; status \status{S}]
+\label{thm:dcrit}
+Let $X$ be a smooth scheme and $S\colon X\to\AAf^1$ an action functional (regular function). Let
+$\Crit(S)=\Spec\bigl(\Ohm_X/(dS)\bigr)$ be the classical critical locus and $\dCrit(S)$ the
+\emph{derived} critical locus, i.e.\ the derived zero locus of $dS\in\Gamma(X,\Omega^1_X)$, constructed
+as the derived intersection of the graph of $dS$ with the zero section inside $T^\ast X$:
+\[
+  \dCrit(S) \;=\; X \times^{h}_{T^\ast X}\, X.
+\]
+Then:
+\begin{enumerate}
+  \item The classical truncation is $\pi_0(\dCrit(S)) = \Crit(S)$; in particular
+  $H^0(\Ohm_{\dCrit(S)}) = \Ohm_X/(dS) = R/\Ideal$ with $\Ideal=(dS)$ the ideal of equations of motion.
+  Thus the on-shell observable algebra of \Cref{ex:onshell} is the $H^0$ of the derived object.
+  \item $\dCrit(S)$ carries a canonical $(-1)$-shifted symplectic structure (Pantev--To\"en--Vaqui\'e--Vezzosi),
+  and its structure sheaf, computed via the Koszul resolution of $(dS)$, is the field/antifield sector of
+  the Batalin--Vilkovisky complex: the shifted symplectic form is the BV antibracket, the degree-$0$
+  generators are the fields, and the degree-$(-1)$ (and lower) generators are the antifields. No ghosts
+  (positive cohomological degree) appear, because $X$ is a scheme with no gauge symmetry; ghosts are
+  produced only when $X$ is upgraded to an algebraic \emph{stack} $[X/G]$ resolving a gauge redundancy
+  (see \Cref{rem:ghosts}).
+\end{enumerate}
+Consequently the dictionary entry ``derived critical locus $\leftrightarrow$ perturbative field theory
+around the action'' is upgraded from \status{S/H} to \status{S} for the field/antifield sector.
+\end{theorem}
+
+\begin{proof}
+(1) The section $dS$ of $\Omega^1_X$ has classical zero locus $\Crit(S)=V(dS)$; its coordinate ring is
+$\Ohm_X/(dS)$, which is exactly the on-shell algebra $R/\Ideal$ of \Cref{ex:onshell} for
+$\Ideal=(\partial_i S)$. Derived intersection only refines the vanishing locus by remembering the Koszul
+syzygies; passing to $\pi_0$ (equivalently $H^0$ of the structure complex) discards the higher Koszul
+terms and returns the classical quotient. Hence $\pi_0(\dCrit(S))=\Crit(S)$ and $H^0=R/\Ideal$.
+
+(2) Model $\dCrit(S)$ by the Koszul complex $\bigl(\Ohm_X\otimes \Lambda^\bullet T_X,\, \iota_{dS}\bigr)$,
+the Koszul complex contracting with $dS$; this is the algebra of polyvector fields with differential
+$\iota_{dS}=\{S,-\}$, i.e.\ the field/antifield part of the BV complex, with $\Lambda^p T_X$ concentrated
+in cohomological degree $-p$: degree $0$ carries the fields $\Ohm_X$ and degrees $-1,-2,\dots$ carry the
+antifields $T_X,\Lambda^2 T_X,\dots$. Every generator sits in \emph{nonpositive} degree; there are no
+positive-degree ghosts, consistent with the absence of gauge symmetry for a bare scheme $X$. The
+$(-1)$-shifted cotangent identification $\dCrit(S)=T^\ast[-1]X|_{dS}$ endows it with the canonical
+$(-1)$-shifted symplectic form of PTVV~\cite{ptvv}; unwinding the pairing on polyvector fields gives the
+odd Poisson bracket, which is the BV antibracket. All ingredients (Koszul resolution, PTVV shifted
+symplectic structures, the identification of the field/antifield BV complex with functions on the
+$(-1)$-shifted cotangent of the critical locus) are established mathematics; see also Costello--Gwilliam's
+factorization-algebra formulation~\cite{costellogwilliam}. Hence the upgrade to status \status{S}.
+\end{proof}
+
+\begin{remark}[Where ghosts come from: schemes give antifields, stacks give ghosts]
+\label{rem:ghosts}
+It is important not to overstate \Cref{thm:dcrit}. For a bare smooth \emph{scheme} $X$ the Koszul complex
+$\Lambda^\bullet T_X$ lives entirely in nonpositive cohomological degrees, so the derived critical locus
+supplies only the \emph{field/antifield} sector (degrees $0$ and $\le -1$) of the BV complex --- there is
+no gauge symmetry and hence no ghosts. Ghosts (positive cohomological degree) arise precisely when one
+resolves a \emph{gauge redundancy}: replacing $X$ by an algebraic stack $[X/G]$ introduces, via the
+Chevalley--Eilenberg differential of the Lie algebra of $G$, the positive-degree ghost generators
+$\mathfrak g[1]$ dual to the gauge directions. Thus, in a slogan, \emph{derived geometry supplies the
+antifields, stacky geometry supplies the ghosts}; the full BV--BRST complex of a gauge theory is the
+structure sheaf of the derived critical locus \emph{of the stack} $[X/G]$. This is exactly the point at
+which \Cref{thm:stack} (stacks retain gauge data) and \Cref{thm:dcrit} (derived critical loci) meet.
+\end{remark}
+
+\begin{remark}[Why the upgrade matters]
+The primary source lists ``derived critical locus $\leftrightarrow$ BV/BRST field space'' as \status{S/H}
+because, as a bare dictionary slogan, the physical reading was heuristic. \Cref{thm:dcrit} shows the
+field/antifield part of the slogan is in fact a theorem of derived algebraic geometry: the field/antifield
+BV complex is \emph{literally} the structure sheaf of the derived critical locus, and (by
+\Cref{rem:ghosts}) the ghost sector is recovered by the same construction applied to the gauge stack. This
+is a model of what the whole program aspires to --- converting heuristic dictionary entries into theorems
+where the mathematics permits --- and it is the cleanest such upgrade in the algebraic-geometry domain.
+\end{remark}
+
+% ============================================================
+\section{The Family Realization Pipeline}
+\label{sec:family}
+
+We assemble the theorems into the promised generalization of Part~I's pipeline from a single object to a
+moduli-indexed family, and we track statuses with \Cref{def:statusmonoid}.
+
+\begin{definition}[Family realization pipeline]
+\label{def:familypipeline}
+A \emph{family realization pipeline} over a base scheme $S$ is the data
+\[
+  \bigl(\pi\colon\mathcal X\to S,\ \underline{\Mot},\ \Real_\alpha,\ \GM,\ \Obs\bigr)
+\]
+such that $\Real_\alpha\circ\underline{\Mot}$ produces a VHS $\mathcal H_\alpha$ on $S$ with Gauss--Manin
+connection $\GM$ and holomorphic section $[\omega_s]$, and the observable
+$\Obs=\int_{\gamma(\cdot)}$ pairs that section against the flat Betti cycles $\gamma(s)$. The output is a
+map
+\[
+  \Obs_\alpha^{S}\colon\ \{\text{families over }S\}\ \longrightarrow\ \mathrm{Sol}(\mathcal L_{\mathrm{PF}}),
+  \qquad \Obs_\alpha^S(\mathcal X) = \Pi(s)\ \text{with}\ \mathcal L_{\mathrm{PF}}\Pi=0,
+\]
+where $\mathrm{Sol}(\mathcal L_{\mathrm{PF}})$ is the (finite-dimensional) local solution space of the
+Picard--Fuchs system of $\mathcal H_\alpha$. (The dual statement: integrating a \emph{holomorphic
+cohomology frame} $e_1,\dots,e_r$ against a \emph{single} flat cycle $\gamma$ yields a period vector that
+is a horizontal section of the connection dual to $\GM$; integrating one non-flat form against a flat
+homology frame yields the non-horizontal, Picard--Fuchs-constrained period functions above.)
+\end{definition}
+
+\begin{proposition}[The family pipeline reduces fiberwise to Part~I's pipeline; status \status{S}]
+\label{prop:reduce}
+For each $s\in S$, evaluating the period function $\Obs_\alpha^S(\mathcal X)=\Pi$ at $s$ recovers Part~I's
+$\Obs_\alpha(\mathcal X_s) = \Obs(\Real_\alpha(\Phi(\mathcal X_s)))$ with $\Phi=\Mot$. Hence the family
+pipeline is a genuine extension: it agrees with Part~I/II fiberwise and adds globally the Picard--Fuchs
+constraint $\mathcal L_{\mathrm{PF}}\Pi=0$ (equivalently the first-order Gauss--Manin system on the period
+vector).
+\end{proposition}
+\begin{proof}
+Immediate from \Cref{thm:gm}(2)--(3): the relative constructions $\underline{\Mot}$, $\Real_\alpha$,
+$\Obs$ are fiberwise the absolute ones, and evaluation
+$\mathrm{Sol}(\mathcal L_{\mathrm{PF}})\to \CC$, $\Pi\mapsto\Pi(s)$, gives back the single-object
+observable at $s$.
+\end{proof}
+
+\begin{proposition}[Status of the family pipeline]
+\label{prop:familystatus}
+The family realization pipeline is status \status{S} whenever $\pi$ is smooth projective and the
+realization channel $\alpha$ is one of $\{$Betti, de Rham, Hodge$\}$; it drops to \status{S/H} for the
+\'etale channel over a non-closed base field (arithmetic monodromy is only heuristically an
+``observable''), and to \status{H/P} if one further posits a cosmic-Galois action on the period-solution
+space $\mathrm{Sol}(\mathcal L_{\mathrm{PF}})$ (a Part~II \status{H/P} entry).
+\end{proposition}
+\begin{proof}
+By \Cref{def:statusmonoid} the status of the composite is the $\wedge$-join of the component statuses.
+Gauss--Manin/VHS theory over $\CC$ is \status{S}; the \'etale realization's identification with a
+physical observable is \status{S/H} (arithmetic, not directly measured); the cosmic-Galois covariance is
+\status{H/P} (Part~II, T5). Joining gives the stated results.
+\end{proof}
+
+\Cref{prop:familystatus} is exactly the epistemic bookkeeping the program demands: it names precisely
+which realization channels keep the pipeline standard and which push it into heuristic or speculative
+territory.
+
+% ============================================================
+\section{Worked Examples}
+\label{sec:examples}
+
+\subsection{The Legendre family as a family pipeline}
+
+Combining \Cref{ex:legendre} with \Cref{def:familypipeline}: for $\pi\colon\mathcal E\to
+S=\PP^1\setminus\{0,1,\infty\}$ the Legendre family, the VHS $\mathcal H = R^1\pi_\ast\underline{\QQ}$
+has rank $2$, the periods $\Pi(\lambda)$ satisfy the hypergeometric Picard--Fuchs operator, and the
+monodromy representation $\pi_1(S)\to SL_2(\ZZ)$ around $\{0,1,\infty\}$ is the branch-cut data. This is a
+complete status-\status{S} instance of the entire Part~III machinery: a moduli base, a VHS, a
+Picard--Fuchs equation, and monodromy as physical analytic continuation.
+
+\subsection{\texorpdfstring{A quotient stack: $[\AAf^1/\mathbb G_m]$}{A quotient stack of the affine line by the multiplicative group}}
+
+Let $\mathbb G_m$ act on $\AAf^1$ by scaling. The GIT/coarse quotient is
+$\Spec\bigl(\coeff[x]^{\mathbb G_m}\bigr)=\Spec\coeff$, a \emph{single} point (the only invariant
+functions are the constants, and the only closed orbit is the origin), so the coarse space records
+nothing beyond a point. The stack $[\AAf^1/\mathbb G_m]$, by contrast, has two points: the open orbit,
+whose objects have trivial automorphisms, and the origin, whose automorphism group is
+$\Aut(0)\cong\mathbb G_m$ (by \Cref{prop:stab}, $\Stab_{\mathbb G_m}(0)=\mathbb G_m$). This is the
+algebraic model of a $U(1)$ gauge theory at a symmetric point: the residual gauge group at the origin is
+retained by the stack and forgotten by the coarse space, exactly as \Cref{thm:stack} predicts.
+
+\subsection{A derived critical locus: the free scalar}
+
+For $X=\AAf^1$ with coordinate $\phi$ and action $S(\phi)=\tfrac{1}{2}m^2\phi^2$, we have $dS=m^2\phi\,
+d\phi$, $\Crit(S)=\{ \phi=0\}$, and $R/\Ideal = \coeff[\phi]/(\phi)=\coeff$: the unique on-shell state is
+$\phi=0$. The derived critical locus resolves the (here already reduced) intersection by the Koszul
+complex $\coeff[\phi]\xleftarrow{\ \cdot m^2\phi\ }\coeff[\phi]\,\xi$ with $\xi$ the \emph{antifield} in
+degree $-1$; the $(-1)$-shifted symplectic form pairs $\phi$ with $\xi$, giving the BV antibracket
+$\{\phi,\xi\}=1$. There are no ghosts, since the free scalar has no gauge symmetry (consistent with
+\Cref{rem:ghosts}). This is the smallest nontrivial illustration of \Cref{thm:dcrit}.
+
+% ============================================================
+\section{Formalization: Haskell and Lean}
+\label{sec:code}
+
+We accompany the paper with executable \textsf{Haskell} encodings of the four load-bearing structures
+(scheme as functor of points, quotient stack, variation of Hodge structure, positive geometry) and a
+best-effort \textsf{Lean~4} sketch of the same type signatures. The Haskell modules compile with GHC and
+their \texttt{main} prints demonstrations of \Cref{prop:stab,thm:posgeom}(1), and the residue-tree
+construction. Full sources are in
+\texttt{src/\allowbreak algebraic-\allowbreak geometry-\allowbreak physical-\allowbreak possibility/}
+and
+\texttt{lean/\allowbreak algebraic-\allowbreak geometry-\allowbreak physical-\allowbreak possibility/}.
+
+\subsection{Scheme as functor of points}
+
+Following \Cref{rem:fop} we model a scheme by its functor of points $\CRing\to\Set$, and the on-shell
+algebra $R/\Ideal$ by a coordinate ring with a distinguished constraint ideal:
+\begin{verbatim}
+-- A commutative ring presented by generators and a constraint ideal.
+data CoordRing = CoordRing { generators :: [String], relations :: [Poly] }
+
+-- A scheme exposed via its functor of points R |-> Hom(Spec R, X).
+newtype Scheme = Scheme { pointsOver :: CoordRing -> [RPoint] }
+
+-- The on-shell algebra R/I: functions modulo the ideal of constraints.
+-- (idealGens is the record accessor for an Ideal's generating polynomials.)
+onShell :: CoordRing -> Ideal -> CoordRing
+onShell r i = r { relations = relations r ++ idealGens i }
+\end{verbatim}
+
+\subsection[Quotient stack with stabilizer data]{Quotient stack with stabilizer data (\Cref{prop:stab})}
+
+\begin{verbatim}
+-- A finite group action, enough to compute stabilizers concretely.
+data GAction g x = GAction { act :: g -> x -> x, elements :: [g] }
+
+-- Stabilizer of a point: {g | g . x == x}. This is Aut_{[X/G]}(x).
+stabilizer :: (Eq x) => GAction g x -> x -> [g]
+stabilizer ga x = [ g | g <- elements ga, act ga g x == x ]
+
+-- A quotient stack remembers, for each point, its automorphism group.
+data QuotientStack g x = QuotientStack
+  { action    :: GAction g x
+  , autGroup  :: x -> [g]        -- x |-> Stab_G(x) = Aut_{[X/G]}(x)
+  }
+\end{verbatim}
+
+The demonstration in \texttt{Main.hs} builds $[\ZZ/4 \curvearrowright \ZZ/4]$ (rotation of a square) and
+prints the automorphism group at the fixed point, exhibiting \Cref{prop:stab} concretely: the coarse
+quotient forgets it, the stack does not.
+
+\subsection{Variation of Hodge structure with Gauss--Manin connection}
+
+\begin{verbatim}
+-- A VHS over a base: a fiber vector space, a Hodge filtration, and a
+-- flat (Gauss-Manin) connection whose FLAT SECTIONS are the Betti cycles
+-- (a basis against which the non-flat holomorphic form is measured).
+data VHS base = VHS
+  { fiber        :: base -> [Double]      -- local system fiber
+  , hodgeFiltr   :: base -> [[Double]]    -- F^p, decreasing filtration
+  , gaussManin   :: Connection base       -- flat connection nabla
+  }
+
+-- Derive the Picard-Fuchs operator by expressing the iterated
+-- Gauss-Manin derivatives (nabla^j [omega]) in the finite-rank
+-- de Rham basis and reading off the linear dependence. It
+-- ANNIHILATES the period function Pi(s) -- the pairing of a flat
+-- cycle with the NON-flat form -- which is not a flat section.
+derivePicardFuchs :: VHS base -> ODE
+derivePicardFuchs = linDep . gmDerivatives
+\end{verbatim}
+
+\subsection{Positive geometry and the recursive residue tree}
+
+\begin{verbatim}
+-- A positive geometry: a region, its canonical form, and its boundary
+-- strata (themselves positive geometries) -- the recursion of Def 7.1.
+data PositiveGeometry = PositiveGeometry
+  { canonicalForm :: DiffForm
+  , boundaries    :: [PositiveGeometry]
+  }
+
+-- The residue tree of Def 7.4 / Theorem 8.5(1): root = canonical form,
+-- children = residue trees of the boundary strata.
+data Tree a = Node a [Tree a]
+
+residueTree :: PositiveGeometry -> Tree DiffForm
+residueTree pg = Node (canonicalForm pg)
+                      (map residueTree (boundaries pg))
+\end{verbatim}
+
+\subsection{Lean sketch}
+
+The \textsf{Lean~4} file records idiomatic type signatures for the same structures (scheme via a functor
+of points, quotient stack with a stabilizer field, VHS with Griffiths transversality, positive geometry
+with the residue axiom) and states \Cref{thm:stack} as a signature with a \texttt{sorry} placeholder. It
+is a best-effort sketch, not build-gated:
+\begin{verbatim}
+structure QuotientStack (X G : Type) [Group G] [MulAction G X] where
+  autGroup : X -> Subgroup G            -- x |-> Stab_G(x) = Aut_{[X/G]}(x)
+  coarseMap : X -> Quotient (MulAction.orbitRel G X)
+
+-- T2: a nontrivial stabilizer forces the coarse map to lose information.
+theorem stack_finer_than_coarse
+    {X G : Type} [Group G] [MulAction G X] (x : X)
+    (h : MulAction.stabilizer G x /= (bot : Subgroup G)) :
+    True := by trivial   -- best-effort placeholder; see paper Thm 8.3
+\end{verbatim}
+
+% ============================================================
+\section{Discussion}
+\label{sec:discussion}
+
+\subsection{How Part~III respects the standing limitations}
+\label{sec:limitations}
+
+The program carries five standing limitations from Part~I; we discharge each for the
+algebraic-geometry domain.
+
+\begin{enumerate}
+  \item \emph{Not every analogy is a physical theory.} We enforce this with the status labels of
+  \Cref{tab:dict1,tab:dict2} and, sharply, with \Cref{thm:posgeom}: its part~(1) is \status{S} and its
+  part~(2) is \status{H}, and we refuse to collapse them.
+  \item \emph{Motives are not literally ``the functions of'' an object.} We used $\Mot$ only through its
+  \emph{realizations} $\Real_\alpha$ (Hodge, Betti, de Rham), which are standard functors; the
+  ``functional essence'' reading remains a Part~II \status{H} slogan and is never invoked as a premise in
+  a proof here.
+  \item \emph{No single universal functor $\mathrm{Math}\to\mathrm{Phys}$.} Our pipeline is
+  domain-local: it is a functor \emph{on the algebraic-geometry domain} $\Math_{\mathsf{AG}}$, fibered
+  over a base $S$, not a global functor. \Cref{def:familypipeline} is explicitly indexed by a family and
+  a channel $\alpha$.
+  \item \emph{Not every observable is a period; elliptic/modular/non-Tate structures intervene.}
+  \Cref{ex:legendre} already exhibits an \emph{elliptic} period, and \Cref{thm:posgeom}(2) is flagged
+  \status{H} precisely because non-Tate geometries obstruct a naive polylogarithmic coaction (Part~II,
+  T4). Corollary~\ref{cor:amp-pf} bounds only the \emph{order} of the Picard--Fuchs operator, not the
+  transcendental type of its solutions.
+  \item \emph{Gauge redundancy $\neq$ physical symmetry.} \Cref{rem:gauge-not-sym} states this
+  explicitly; \Cref{thm:stack} makes it geometric (stabilizers are gauge automorphisms, retained by the
+  stack, not new physical states).
+\end{enumerate}
+
+\subsection{Open problems handed forward}
+\label{sec:open}
+
+\begin{itemize}
+  \item \textbf{Positive geometry $=$ motivic coaction (\Cref{thm:posgeom}(2)).} The sharpest open
+  problem of this domain: construct, for all amplituhedron-type geometries, a functor from the poset of
+  boundary strata to the comodule of motivic periods intertwining $\Delta_{\mathrm{geo}}$ with the
+  motivic coproduct $\Delta$. Partial results exist for one-loop integrands and polygon/associahedron
+  geometries; the general case is open (``Hopf algebra of the amplituhedron'').
+  \item \textbf{Stacky path integrals.} Making \Cref{cor:mgbar} quantitative --- the precise measure on
+  $\overline{\mathcal M}_g$ weighted by $1/|\!\Aut|$ --- connects Part~III to Part~IV's TQFT functors and
+  Part~VI's stacks-and-descent treatment.
+  \item \textbf{Derived enhancement of the whole dictionary.} \Cref{thm:dcrit} upgrades one row to
+  \status{S} via derived geometry; systematically deriving the tangent/cotangent-complex rows of
+  \Cref{tab:dict2} (BV/BRST for gauge theories) is a natural next step toward Part~VI.
+\end{itemize}
+
+\subsection{How Part~III seeds Part~IV}
+
+Part~IV (algebraic topology: conserved global information) takes the varieties and moduli produced here
+and studies their \emph{topological invariants} stable under continuous deformation: the (co)homology
+$H_\bullet(X)$ underlying the Betti realization of \Cref{thm:gm}, the characteristic classes of the
+bundles in \Cref{tab:dict1}, and the bordism/TQFT functors that make realization functorial. In
+particular, the monodromy representation of \Cref{cor:amp-pf} is a topological (local-system) datum, and
+the automorphism data of \Cref{thm:stack} is what Part~IV's groupoid-cardinality/TQFT weightings act on.
+Part~III thus supplies the geometric substrate; Part~IV supplies its topology.
+
+% ============================================================
+\section{Conclusion}
+\label{sec:conclusion}
+
+We have formalized the algebraic-geometry layer of the Math$\to$Physics Representation Library as the
+\emph{geometry of physical possibility}, preserving the program's \status{S}/\status{H}/\status{P}
+status discipline throughout. The central technical contribution is the extension of Part~II's
+per-object realization pipeline to a \emph{family} pipeline fibered over a moduli base: Gauss--Manin
+transport realizes periods as the pairing of flat Betti cycles with the non-flat holomorphic form, giving
+period functions constrained by Picard--Fuchs equations (\Cref{thm:gm}), moduli stacks retain the gauge
+automorphisms that coarse spaces forget (\Cref{thm:stack}), positive
+geometries encode factorization through recursive residues that conjecturally match the motivic coaction
+(\Cref{thm:posgeom}), and derived critical loci realize the on-shell algebra $R/\Ideal$ at the BV level,
+upgrading a heuristic dictionary entry to a theorem (\Cref{thm:dcrit}).
+
+In the program's compressed slogans:
+\begin{quote}
+mathematics is the syntax of physical representation;\\
+motives are functional semantics;\\
+periods are numerical measurements;\\
+coalgebras are decomposition laws.
+\end{quote}
+Part~III adds a fifth clause: \emph{geometry is the space in which those measurements vary}. The moduli
+space is the stage, its singularities are the thresholds, its compactification supplies the asymptotic
+sectors, and its stackiness is the gauge redundancy --- a single algebro-geometric object carrying, in
+its points, its automorphisms, and its variation of Hodge structure, the entire apparatus of physical
+possibility. Part~IV will endow this stage with its conserved topological invariants.
+
+% ============================================================
+\begin{thebibliography}{99}
+
+\bibitem{primary}
+Anonymous Draft,
+\emph{A Representation-Stack Library for Mathematical Structures in Physical Representation: Motives,
+Periods, Coalgebras, Gauge Redundancy, and Quantum-Informational Availability}.
+Primary source of the Math$\to$Physics Representation Library program, 2024.
+
+\bibitem{hartshorne}
+R.~Hartshorne,
+\emph{Algebraic Geometry}.
+Graduate Texts in Mathematics \textbf{52}, Springer-Verlag, New York, 1977.
+
+\bibitem{mumfordgit}
+D.~Mumford, J.~Fogarty, and F.~Kirwan,
+\emph{Geometric Invariant Theory}, 3rd ed.
+Ergebnisse der Mathematik und ihrer Grenzgebiete, Springer, Berlin, 1994.
+
+\bibitem{delignemumford}
+P.~Deligne and D.~Mumford,
+``The irreducibility of the space of curves of given genus,''
+\emph{Publications Math\'ematiques de l'IH\'ES} \textbf{36} (1969), 75--109.
+
+\bibitem{vistoli}
+A.~Vistoli,
+``Notes on Grothendieck topologies, fibered categories and descent theory,''
+arXiv:math/0412512 (2004).
+
+\bibitem{abl}
+N.~Arkani-Hamed, Y.~Bai, and T.~Lam,
+``Positive geometries and canonical forms,''
+\emph{Journal of High Energy Physics} \textbf{11} (2017) 039; arXiv:1703.04541.
+
+\bibitem{amplituhedron}
+N.~Arkani-Hamed and J.~Trnka,
+``The Amplituhedron,''
+\emph{Journal of High Energy Physics} \textbf{10} (2014) 030; arXiv:1312.2007.
+
+\bibitem{costellogwilliam}
+K.~Costello and O.~Gwilliam,
+\emph{Factorization Algebras in Quantum Field Theory}, Vol.~1.
+New Mathematical Monographs \textbf{31}, Cambridge University Press, 2016.
+
+\bibitem{ptvv}
+T.~Pantev, B.~To\"en, M.~Vaqui\'e, and G.~Vezzosi,
+``Shifted symplectic structures,''
+\emph{Publications Math\'ematiques de l'IH\'ES} \textbf{117} (2013), 271--328; arXiv:1111.3209.
+
+\bibitem{kontsevichzagier}
+M.~Kontsevich and D.~Zagier,
+``Periods,''
+in \emph{Mathematics Unlimited --- 2001 and Beyond}, Springer, Berlin, 2001, 771--808.
+
+\bibitem{voisin}
+C.~Voisin,
+\emph{Hodge Theory and Complex Algebraic Geometry I, II}.
+Cambridge Studies in Advanced Mathematics \textbf{76, 77}, Cambridge University Press, 2002--2003.
+
+\bibitem{griffiths}
+P.~Griffiths,
+``Periods of integrals on algebraic manifolds, I \& II,''
+\emph{American Journal of Mathematics} \textbf{90} (1968), 568--626, 805--865.
+
+\bibitem{katzoda}
+N.~Katz and T.~Oda,
+``On the differentiation of de Rham cohomology classes with respect to parameters,''
+\emph{Journal of Mathematics of Kyoto University} \textbf{8} (1968), 199--213.
+
+\bibitem{luna}
+D.~Luna,
+``Slices \'etales,''
+\emph{Bulletin de la Soci\'et\'e Math\'ematique de France, M\'emoire} \textbf{33} (1973), 81--105.
+
+\bibitem{brown}
+F.~Brown,
+``Notes on motivic periods,''
+\emph{Communications in Number Theory and Physics} \textbf{11} (2017), 557--655; arXiv:1512.06409.
+
+\bibitem{goncharov}
+A.~B.~Goncharov, ``Multiple polylogarithms and mixed Tate motives,'' arXiv:math/0103059 (2001);
+see also \emph{Duke Mathematical Journal} \textbf{128} (2005), no.~2, 209--284.
+
+\bibitem{part1}
+M.~Long and The YonedaAI Collaboration,
+\emph{Foundations: The Representation Stack and Realization Pipeline}.
+Part~I of \emph{A Math$\to$Physics Representation Library}, YonedaAI Research Collective, 2026.
+
+\bibitem{part2}
+M.~Long and The YonedaAI Collaboration,
+\emph{Motives, Periods, and Amplitudes: The Coalgebraic Anatomy of Observables}.
+Part~II of \emph{A Math$\to$Physics Representation Library}, YonedaAI Research Collective, 2026.
+
+\end{thebibliography}
+
+\end{document}
