@@ -181,8 +181,8 @@ in full, formalize a \emph{conserved global information functor}, and carry the
 $\Sfont/\Hfont/\Pfont$ epistemic status discipline of the parent program
 throughout. Companion Haskell code (compiling under GHC) and a best-effort Lean
 sketch encode chain complexes, homology, characteristic classes, and the TQFT
-axioms. Part~IV is the point at which category theory first appears as the
-ambient grammar; it thereby seeds Part~V.
+axioms. Part~IV is where category theory first appears as the
+ambient grammar, and it seeds Part~V.
 \end{abstract}
 
 \tableofcontents
@@ -491,9 +491,9 @@ $f_*\colon H_n(X)\to H_n(Y)$. Functoriality of $(-)_\#$ is immediate from
 $(g\circ f)\circ\sigma=g\circ(f\circ\sigma)$ and passes to homology.
 \end{proof}
 
-The physical content of Part~IV rests on the fact that $H_n$ is not merely
-functorial but \emph{homotopy invariant}: it cannot distinguish continuously
-deformable maps. This is precisely ``conservation under deformation.''
+The physical content of Part~IV depends on more than functoriality. Because
+$H_n$ is \emph{homotopy invariant}, it cannot distinguish continuously
+deformable maps, and this is what we mean by conservation under deformation.
 
 \begin{definition}[Chain homotopy]
 \label{def:chain-homotopy}
@@ -918,11 +918,11 @@ model we hold other, more heuristic entries against.
 \section{Topological quantum field theory: functorial realization}
 \label{sec:tqft}
 
-We now reach the conceptual center of Part~IV. A TQFT is a realization pipeline
-that is \emph{itself a functor} over a category of cobordisms; it is the first
+A TQFT sits at the conceptual center of Part~IV: it is a realization pipeline
+that is \emph{itself a functor} over a category of cobordisms. It is the first
 status-$\Sfont$ instance of the Part~I pipeline in which $\Real_\alpha$ is a
-genuine functor, not a heuristic translation rule. This is precisely why Part~IV
-is where category theory enters the ladder as ambient grammar.
+genuine functor rather than a heuristic translation rule, and for that reason
+Part~IV is where category theory enters the ladder as ambient grammar.
 
 \subsection{The bordism category}
 
@@ -1092,8 +1092,8 @@ channel:
 \label{sec:dw}
 
 Dijkgraaf--Witten (DW) theory is a concrete, computable TQFT built from a finite
-group and a group cocycle; it is the ideal illustration of the Locality/descent
-axiom, and of the coboundary $=$ gauge reading of the dictionary.
+group and a group cocycle. It illustrates the Locality/descent axiom cleanly,
+together with the coboundary $=$ gauge reading of the dictionary.
 
 \begin{definition}[Group cohomology and DW data]
 \label{def:dw-data}
@@ -1180,8 +1180,8 @@ invariant recovered directly from $H^1$.
 \label{sec:bordism}
 
 The final layer of Part~IV classifies \emph{invertible} topological field
-theories --- the mathematical home of anomalies and symmetry-protected
-topological (SPT) phases --- by bordism-theoretic invariants.
+theories, the mathematical home of anomalies and symmetry-protected
+topological (SPT) phases, by bordism-theoretic invariants.
 
 \begin{definition}[Bordism group]
 \label{def:bordism}
@@ -1360,7 +1360,7 @@ Part~III supplies the geometric ``spaces of physical possibility'' (varieties,
 moduli, positive geometries). Part~IV attaches to each such space its conserved
 global information: (co)homology, characteristic classes, and (via
 compactification and degeneration) a bordism class. The boundary stratification of a
-positive geometry --- ``boundaries of boundaries'' --- is literally a chain complex
+positive geometry (its ``boundaries of boundaries'') is literally a chain complex
 (\Cref{def:chain}), and its homology measures which boundary charges are conserved.
 The variation-of-Hodge-structure and Gauss--Manin data of Part~III are the smooth
 (de~Rham) realization channel of the same cohomology treated here abstractly, so
@@ -1429,14 +1429,14 @@ theory as a computable model of the Locality and Equivalence axioms. The bordism
 classification of invertible theories placed anomalies and SPT phases into the same
 descent-theoretic frame.
 
-The decisive structural fact is that Part~IV is where \emph{functoriality becomes
+The structural point of Part~IV is that \emph{functoriality becomes
 achievable in a genuinely topological, status-$\Sfont$ setting}. Every later
 appeal to ``the realization functor'' in the ladder is anchored by the concrete
 functor $Z\colon\Bord_n\to\Vect$ constructed here. This is precisely the bridge to
 Part~V, which abstracts functoriality, monoidal structure, and duality into the
 universal grammar of categories and homotopy type theory. In the four-slogan
-compression of the parent program --- mathematics is syntax, motives are semantics,
-periods are measurements, coalgebras are decomposition laws --- Part~IV supplies the
+compression of the parent program (mathematics is syntax, motives are semantics,
+periods are measurements, coalgebras are decomposition laws), Part~IV supplies the
 missing structural clause: \emph{topology is conservation, and functoriality is its
 law of composition}.
 

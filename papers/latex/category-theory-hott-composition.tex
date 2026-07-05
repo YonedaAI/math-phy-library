@@ -130,8 +130,7 @@ structure-preserving translations and their uniform deformations. We then treat
 homotopy type theory (HoTT) as the theory of \emph{identity proper}: identity
 types as paths, path induction as the sole generator of transport, and
 Voevodsky's univalence axiom as the principle that equivalent representations
-\emph{are} identified rather than merely related. Four theorems anchor the
-module. (T1) Univalence turns Part~I's Axiom~(Equivalence) from a postulate into
+\emph{are} identified rather than merely related. The module proves four theorems. (T1) Univalence turns Part~I's Axiom~(Equivalence) from a postulate into
 a theorem for every internally definable realization. (T2) The
 Curry--Howard--Lambek correspondence exhibits a single composite functor
 $\mathsf{TypeTheory}\to\mathcal{C}\to\Phys$ interpreting logic, code, and
@@ -144,9 +143,8 @@ $X/\!/G$ is strictly finer than the set quotient $X/G$, reconstructing the
 HoTT and setting up Part~VI's stacks. Throughout we preserve the S/H/P epistemic
 status discipline of the series, provide runnable Haskell encodings of the
 category/functor/composition structures, and sketch an idiomatic Lean
-formalization. Category theory and HoTT are thus the compositional glue of the
-whole library: they are the module in which the laws of composition and identity
-that bind Parts~I--VI are made explicit.
+formalization. Category theory and HoTT are therefore where the laws of composition and
+identity that bind Parts~I--VI are made explicit.
 \end{abstract}
 
 \tableofcontents
@@ -230,7 +228,7 @@ of a category (\Cref{thm:pipeline-functor}). This turns Part~I's informal
 functors, natural transformations, functor categories, and monoidal and
 dagger-compact structure, with the interchange law and an Eckmann--Hilton
 argument (\Cref{prop:eckmann-hilton}) that already exhibits the interaction of
-two compositions with a shared identity---the thematic centre of the module.
+two compositions with a shared identity, the thematic centre of the module.
 
 \item \textbf{Univalence discharges the Equivalence axiom}
 (\Cref{thm:univalence}, T1). We prove that any internally definable realization
@@ -266,7 +264,7 @@ We reproduce the series-wide limitations in the form relevant to this module.
 Category theory and HoTT are \emph{status~S mathematics}; their status becomes
 $\mathrm{S/H}$ or $\mathrm{H}$ only when we read a specific categorical or
 type-theoretic construction as a claim \emph{about physics}. In particular: (i)
-we do \emph{not} claim a single universal functor $\Math\to\Phys$---the
+we do \emph{not} claim a single universal functor $\Math\to\Phys$, since the
 representation approach is deliberately domain-indexed
 (\cref{sec:framework}); (ii) reading a type $A$ as a ``space of physical
 possibilities'' is a heuristic semantic layer (status~$\mathrm{H}$), flagged as
@@ -489,9 +487,9 @@ transformations along a composite of functors.
 
 In the functor $2$-category $\Cat$, objects are categories, $1$-morphisms are
 functors, and $2$-morphisms are natural transformations. These $2$-morphisms
-carry two composition laws. Their compatibility is the single most important
-coherence in the module, because ``composition and identity'' now appears
-twice---two compositions sharing one family of identities.
+carry two composition laws. Their compatibility is the central
+coherence of the module, because ``composition and identity'' now appears
+twice: two compositions sharing one family of identities.
 
 \begin{proposition}[Interchange law]
 \label{prop:interchange}
@@ -579,7 +577,7 @@ reflect isomorphisms.
 
 Physically (status~$\mathrm{S/H}$) the Yoneda lemma is the statement that a
 system is completely determined by the totality of its responses to all probes:
-knowing $\Hom(-,A)$---all ways of mapping into $A$---determines $A$ up to
+knowing $\Hom(-,A)$ (all ways of mapping into $A$) determines $A$ up to
 isomorphism. This is the categorical form of an operational/measurement-based
 identity criterion and reappears as the ``univalence for representables'' motif
 in \cref{sec:hott}.
@@ -588,7 +586,7 @@ in \cref{sec:hott}.
 \section{Monoidal and dagger-compact structure}
 \label{sec:monoidal}
 
-Parallel composition of systems---putting two experiments side by side---is not
+Parallel composition of systems, putting two experiments side by side, is not
 captured by $\circ$ alone. It is captured by a tensor product, and the reversal
 of processes by a dagger. These structures make $\FdHilb$ into the ambient
 category of finite quantum mechanics and give the string-diagram calculus used
@@ -610,7 +608,7 @@ argument and satisfies the interchange law $(g\otimes g')\circ(f\otimes
 f')=(g\circ f)\otimes(g'\circ f')$: sequential and parallel composition of
 processes commute, which is the algebra of quantum circuits. Physically
 (status~$\mathrm{S}$) $A\otimes B$ is the composite system, $I$ is the trivial
-system, and $\sigma$ is the swap---bosonic-like exchange when it squares to the
+system, and $\sigma$ is the swap: bosonic-like exchange when it squares to the
 identity, anyonic braiding when it does not.
 
 \begin{definition}[Compact closed and dagger-compact category]
@@ -784,7 +782,7 @@ winding number/topological charge.
 \section{Results: the four theorems}
 \label{sec:results}
 
-We now prove the four theorems that give this module its physical payload. T1 and
+We now prove the module's four main theorems. T1 and
 T2 concern identity and translation; T3 and T4 concern quantum information and
 gauge, feeding Part~VI.
 
@@ -1082,7 +1080,7 @@ newtype NatTrans d f g = NatTrans \char123{} component :: forall a. d (f a) (g a
 \end{quote}
 Here \texttt{NatTrans} is parameterized by the \emph{target category}
 \texttt{d}, so a natural transformation's components are morphisms in
-\texttt{d}---not hardcoded Haskell functions---which keeps the encoding honest
+\texttt{d}, not hardcoded Haskell functions, which keeps the encoding honest
 for non-\texttt{Hask} targets such as $\FdHilb$ or $\Bord_n$.
 
 \texttt{Main.hs} checks numerically that \texttt{compose identity f == f == compose
@@ -1109,8 +1107,8 @@ not build-gated.
 \label{sec:discussion}
 
 \paragraph{Composition in the ladder.}
-Parts~I--IV produced translations---abstraction, realization, observation, TQFT,
-homology---each of which is a functor. \Cref{thm:pipeline-functor} shows the
+Parts~I--IV produced translations (abstraction, realization, observation, TQFT,
+homology), each of which is a functor. \Cref{thm:pipeline-functor} shows the
 library was always a diagram in $\Cat$; Part~V simply names the ambient grammar.
 The associativity and unit laws \eqref{eq:assoc}--\eqref{eq:unit} are the reason
 the pipeline may be assembled from stages at all, and \Cref{cor:composition}
@@ -1120,8 +1118,8 @@ shows the same law governs logical, computational, and physical composition.
 Part~I \emph{postulated} that equivalent representations carry the same physical
 content (Axiom~Equivalence). \Cref{thm:univalence} \emph{derives} it for every
 internally definable realization, and \Cref{rem:gauge-invariance} reads the
-residue---realizations that fail it---as exactly the gauge-dependent quantities.
-This is the module's central payoff: identity of structures, formalized by
+residue (realizations that fail it) as exactly the gauge-dependent quantities.
+This is the central result of the module: identity of structures, formalized by
 univalence, is the correct home for the ``same physics, different description''
 principle that recurs through the series.
 
@@ -1131,7 +1129,7 @@ principle that recurs through the series.
 truncation hierarchy. Both are the categorical/type-theoretic inputs Part~VI
 turns into stacks (groupoid-valued sheaves) and quantum error-correcting codes.
 \Cref{cor:four-proofs} records that the stabilizer-retention fact will then have
-four proofs at increasing rigor---the synthesis paper's ``closure theorem.''
+four proofs at increasing rigor, the synthesis paper's ``closure theorem.''
 
 \paragraph{Limitations.}
 Category theory and HoTT are status~S mathematics; their \emph{physical} readings
@@ -1152,7 +1150,7 @@ $\mathrm{S/H}$.
 \section{Conclusion}
 \label{sec:conclusion}
 
-Part~V isolates the compositional glue of the representation library. Category
+Part~V isolates the compositional core of the representation library. Category
 theory supplies the laws of \emph{composition}: associativity, units,
 functoriality, naturality, the interchange law, and (via Eckmann--Hilton) the
 first constraint linking two compositions through a shared identity. HoTT

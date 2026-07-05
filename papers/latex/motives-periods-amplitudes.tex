@@ -143,7 +143,7 @@ Chicago, IL \\
 \begin{abstract}
 This is Part II of the modular series \emph{A Math$\rightarrow$Physics Representation Library}, whose governing thesis is that a large class of physical quantities are not merely \emph{described by} mathematics but are \emph{realized} from structured mathematical information along an explicit pipeline
 $M \xmapsto{\Phi} \Phi(M) \xmapsto{\Real_\alpha} \text{phys.\ rep.} \xmapsto{\Obs} \text{meas.}$
-Part I built the ambient \emph{representation stack} and left the realization channels $\Real_\alpha$ and the decomposition operation as abstract data. This paper supplies their first fully concrete instantiation. We formalize motives $\Mot(X)$ as the \emph{functional essence} of a mathematical object (a status-\Hlab{} semantic layer, carefully distinguished from Grothendieck's standard definition), we make the realization channels the named cohomological functors $\Real_\alpha$ for $\alpha \in \{\Betti,\dR,\Hdg,\et\}$, and we make the observable the period map $\per$. The central object is the \emph{motivic amplitude object} $\Amm$ with $\Am = \per(\Amm)$, equipped with a coaction $\coA(\Amm) = \sum_i \Amm_{i,1}\otimes \Amm_{i,2}$ and a cobracket $\cobr\colon \Lie \to \Lambda^2\Lie$. We prove: (T1) a \emph{Conditional Amplitude Decomposition} theorem stating that a realization channel, realized as a homomorphism of the motivic-Galois Hopf algebras, transports the coaction into a decomposition of the realized amplitude; (T2) that the weight-graded primitives cogenerate the Goncharov Lie coalgebra $\LG(F)$, with weight-one primitives identified with $F^\times\otimes\Qbb$; (T3) multiplicativity of the period pairing under direct sum and tensor product; (T4) a \emph{Non-Tate Obstruction} limitation theorem showing that elliptic and other non-Tate motivic lifts escape the polylogarithmic anatomy; and (T5) a conditional (status \Hlab/\Plab) compatibility statement for the cosmic Galois action. Throughout we retain the S/H/P epistemic-status discipline of Part I, and we exhibit the coalgebraic anatomy as the concrete arithmetic mechanism behind cuts, discontinuities, factorization, and residues. We accompany the theory with a compiling Haskell formalization of the coalgebra/coproduct structure and an idiomatic Lean sketch of the period/amplitude/coalgebra types.
+Part I built the ambient \emph{representation stack} and left the realization channels $\Real_\alpha$ and the decomposition operation as abstract data. This paper supplies their first concrete instantiation. We formalize motives $\Mot(X)$ as the \emph{functional essence} of a mathematical object (a status-\Hlab{} semantic layer, carefully distinguished from Grothendieck's standard definition), we make the realization channels the named cohomological functors $\Real_\alpha$ for $\alpha \in \{\Betti,\dR,\Hdg,\et\}$, and we make the observable the period map $\per$. The central object is the \emph{motivic amplitude object} $\Amm$ with $\Am = \per(\Amm)$, equipped with a coaction $\coA(\Amm) = \sum_i \Amm_{i,1}\otimes \Amm_{i,2}$ and a cobracket $\cobr\colon \Lie \to \Lambda^2\Lie$. We prove: (T1) a \emph{Conditional Amplitude Decomposition} theorem stating that a realization channel, realized as a homomorphism of the motivic-Galois Hopf algebras, transports the coaction into a decomposition of the realized amplitude; (T2) that the weight-graded primitives cogenerate the Goncharov Lie coalgebra $\LG(F)$, with weight-one primitives identified with $F^\times\otimes\Qbb$; (T3) multiplicativity of the period pairing under direct sum and tensor product; (T4) a \emph{Non-Tate Obstruction} limitation theorem showing that elliptic and other non-Tate motivic lifts escape the polylogarithmic anatomy; and (T5) a conditional (status \Hlab/\Plab) compatibility statement for the cosmic Galois action. Throughout we retain the S/H/P epistemic-status discipline of Part I, and we exhibit the coalgebraic anatomy as the concrete arithmetic mechanism behind cuts, discontinuities, factorization, and residues. We accompany the theory with a compiling Haskell formalization of the coalgebra/coproduct structure and an idiomatic Lean sketch of the period/amplitude/coalgebra types.
 \end{abstract}
 
 \tableofcontents
@@ -158,9 +158,9 @@ The series \emph{A Math$\rightarrow$Physics Representation Library} formalizes t
 mathematics functions as the \emph{syntax} of physical representation: physical
 observables are obtained as realizations of structured mathematical information. The
 program is deliberately \emph{modular}. Rather than positing a single universal functor
-from all of mathematics to all of physics --- which we argue in \Cref{sec:discussion}
-is unlikely to be well defined --- we build a ladder of domain-indexed modules, each of
-which is defensible on its own and each of which composes with its neighbours to add an
+from all of mathematics to all of physics (which we argue in \Cref{sec:discussion}
+is unlikely to be well defined), we build a ladder of domain-indexed modules. Each
+module is defensible on its own, and each composes with its neighbours to add an
 emergent structural property.
 
 Part I introduced the ambient formalism: a category $\Dom$ of mathematical domains,
@@ -195,8 +195,8 @@ refinement
 \qquad
 \cobr\colon \Lie\to\Lambda^2\Lie.\;}
 \end{equation}
-Here $\Amm$ is a \emph{motivic amplitude object} --- a pre-numerical object living in a
-category or comodule of motivic periods --- $\Am$ is the physical amplitude obtained by
+Here $\Amm$ is a \emph{motivic amplitude object} (a pre-numerical object living in a
+category or comodule of motivic periods), $\Am$ is the physical amplitude obtained by
 taking periods, $\coA$ is the coaction that exposes the amplitude's internal anatomy, and
 $\cobr$ is the cobracket that isolates its primitive antisymmetric pieces.
 
@@ -205,11 +205,11 @@ $\cobr$ is the cobracket that isolates its primitive antisymmetric pieces.
 In the language of the modular ladder, each level adds an emergent property that its
 predecessor could only gesture at. Part I could speak of ``realization channels $\Real_\alpha$''
 only in the abstract. Part II makes those channels \emph{concrete and numerically
-checkable}: Betti/de Rham/Hodge/\'etale realizations are honest functors with honest
-comparison isomorphisms, and periods are honest numbers one can compute. More importantly,
-Part II endows observables with an \emph{internal coalgebraic anatomy}: the coaction and
+checkable}: the Betti, de Rham, Hodge, and \'etale realizations are genuine functors with
+explicit comparison isomorphisms, and periods are numbers one can compute. Part II also
+endows observables with an \emph{internal coalgebraic anatomy}: the coaction and
 cobracket decompose an amplitude into primitive informational pieces. Where Part I's
-Decomposition Axiom merely asserted that ``compositional observables admit a decomposition
+Decomposition Axiom asserted only that ``compositional observables admit a decomposition
 operation,'' Part II identifies that operation with the Goncharov coproduct and its
 cobracket, and proves structural theorems about it. This is the sense in which
 \emph{coalgebras are the decomposition laws of physics}.
@@ -254,8 +254,8 @@ mathematical definition.
 channel, identifying $\Phi,\Real_\alpha,\Obs$ with the motive, the cohomological
 realizations, and the period map (\Cref{sec:motives}, \Cref{sec:periods}).
 \item A self-contained proof of the \emph{Conditional Amplitude Decomposition} theorem
-(\Cref{thm:cad}), stating that a realization channel --- realized as a homomorphism of the
-motivic-Galois Hopf algebras induced by a Tannakian realization functor --- transports the
+(\Cref{thm:cad}), stating that a realization channel (realized as a homomorphism of the
+motivic-Galois Hopf algebras induced by a Tannakian realization functor) transports the
 coaction on $\Amm$ to a decomposition of the realized amplitude, together with an explicit
 statement of where the S/H/P labels bite.
 \item A structure theorem for the Goncharov Lie coalgebra (\Cref{thm:goncharov-gen}): the
@@ -276,7 +276,7 @@ type-signature sketch (\Cref{sec:formalization}).
 the Conditional Amplitude Decomposition theorem.
 \Cref{sec:goncharov} constructs the Goncharov Lie coalgebra and proves the generation
 theorem.
-\Cref{sec:cuts} gives the physics dictionary --- coproducts, cuts, factorization, residues,
+\Cref{sec:cuts} gives the physics dictionary: coproducts, cuts, factorization, residues,
 positive geometries, and the Connes--Kreimer Hopf algebra.
 \Cref{sec:nontate} proves the Non-Tate Obstruction theorem and states the conditional cosmic
 Galois compatibility.
@@ -639,7 +639,7 @@ Because $\Zmot$ is connected and graded, the \emph{reduced coproduct}
 \end{equation}
 is well defined and lands in $\bar\Zmot\otimes\bar\Zmot$: connectedness forces every term of
 $\coA(x)$ other than $x\otimes 1$ and $1\otimes x$ to have both tensor factors of positive
-weight. (This is the point at which a general external comodule would fail --- there is no
+weight. (This is the point at which a general external comodule would fail: there is no
 canonical $1\otimes\id$ term for a bare comodule; the connected-graded-Hopf-algebra hypothesis
 supplies it.) The reduced coproduct is the physically meaningful part; its symmetrization and
 antisymmetrization give the coproduct and cobracket viewpoints.
@@ -777,8 +777,8 @@ node has finitely many children (the coaction sum is finite) and depth is bounde
 
 \subsection{Construction}
 
-We now construct the central object of Source~2 of the knowledge base --- the Goncharov
-Lie coalgebra of a field --- and prove its generation theorem.
+We now construct the central object of Source~2 of the knowledge base, the Goncharov
+Lie coalgebra of a field, and prove its generation theorem.
 
 \begin{definition}[Goncharov Lie coalgebra]
 \label{def:GLC}
@@ -805,7 +805,7 @@ the iterated integral $I(a_0;a_1,\dots,a_N;a_{N+1})$:
 \left(\prod_{p=0}^{k} I(a_{i_p};a_{i_p+1},\dots,a_{i_{p+1}-1};a_{i_{p+1}})\right)\\
 {}\otimes I(a_0;a_{i_1},\dots,a_{i_k};a_{N+1}),
 \end{multline}
-whose combinatorics --- sub-sequences of interpolation points --- is the arithmetic
+whose combinatorics (sub-sequences of interpolation points) is the arithmetic
 mechanism behind ``cuts'' in the physics dictionary of \Cref{sec:cuts}.
 
 \subsection{The cogeneration theorem}
@@ -918,8 +918,8 @@ monodromy & analytic continuation across a cut & \Slab \\
 
 \subsection{Cuts and discontinuities}
 
-The physical content of the cobracket is that a single cut of an amplitude --- putting an
-internal propagator on shell, or taking a discontinuity across a branch point --- is
+The physical content of the cobracket is that a single cut of an amplitude (putting an
+internal propagator on shell, or taking a discontinuity across a branch point) is
 computed by the first entry of the coaction.
 
 \begin{proposition}[Discontinuity computes the first coaction slot]
@@ -951,8 +951,8 @@ discontinuities as iterated first-slots.
 
 At kinematic boundaries where an amplitude factorizes, the geometry underlying the period
 degenerates. In the positive-geometry description \cite{ArkaniHamed}, an amplitude is the
-canonical form of a positive geometry $(X,X_{\ge 0})$, and its boundary strata --- the faces
-of $X_{\ge 0}$ --- are themselves positive geometries whose canonical forms are the
+canonical form of a positive geometry $(X,X_{\ge 0})$, and its boundary strata (the faces
+of $X_{\ge 0}$) are themselves positive geometries whose canonical forms are the
 factorized (residue) amplitudes.
 
 \begin{example}[Boundary strata as coaction, status \Slab/\Hlab]
@@ -981,7 +981,7 @@ antipode $S$ implements the combinatorics of the renormalization $R$-operation
 (BPHZ forest formula). This is the coalgebra of \emph{subdivergence bookkeeping}: where the
 Goncharov coproduct decomposes the \emph{value} of an integral, the Connes--Kreimer coproduct
 decomposes the \emph{graph}. The two are compatible via the period map, and their interaction
---- the ``cosmic Galois'' action on renormalization --- is developed in \Cref{sec:nontate}
+(the ``cosmic Galois'' action on renormalization) is developed in \Cref{sec:nontate}
 and, in the Hopf-algebraic renormalization direction, in Part~VI of the series.
 
 \begin{figure}[ht]
@@ -1280,7 +1280,7 @@ physical readings are labelled \Hlab.
 boxed \Cref{rem:not-functions}; the functional-essence reading is status \Hlab{} throughout.
 \item \emph{No single universal functor $\Math\to\Phys$.} Part II defines only the motivic
 channel $\Real_\alpha$, $\alpha\in\{\Betti,\dR,\Hdg,\et\}$, over the domain of motivic period
-theory --- a local, domain-indexed construction, not a global functor.
+theory, a local, domain-indexed construction rather than a global functor.
 \item \emph{Not every observable is a period.} Made precise as the Non-Tate Obstruction
 theorem (\Cref{thm:nontate}): elliptic and modular amplitudes require larger coalgebras.
 \item \emph{Gauge redundancy $\ne$ physical symmetry.} Deferred to Part~VI, but foreshadowed in
@@ -1333,7 +1333,7 @@ last two slogans into theorems.
 \label{sec:conclusion}
 
 We have given the motivic channel of the \emph{Math$\rightarrow$Physics Representation Library}
-its first fully concrete instantiation. Motives supply the pre-numerical functional essence
+its first concrete instantiation. Motives supply the pre-numerical functional essence
 (status \Hlab, carefully distinguished from the mathematical definition); the four
 cohomological realizations supply Part I's abstract channels $\Real_\alpha$; and the period
 map supplies the observable. On this foundation the master formula $\Am=\per(\Amm)$ with its
@@ -1343,16 +1343,16 @@ multiplicative (\Cref{thm:period-mult}), the coaction transports through realiza
 (\Cref{thm:cad}), the Goncharov Lie coalgebra is cogenerated by its weight-one logarithmic
 primitives (\Cref{thm:goncharov-gen}), amplitude discontinuities are read off the first
 coaction slot (\Cref{prop:disc}), and the whole polylogarithmic anatomy has a sharp boundary
-at the elliptic threshold (\Cref{thm:nontate}). The most speculative extension --- the cosmic
-Galois symmetry (\Cref{prop:cosmic}) --- is flagged as such and handed forward.
+at the elliptic threshold (\Cref{thm:nontate}). The most speculative extension, the cosmic
+Galois symmetry (\Cref{prop:cosmic}), is flagged as such and handed forward.
 
 The emergent property Part II adds to the ladder is the \emph{internal coalgebraic anatomy of
-observables}: the discovery that a physical amplitude is not an atom but carries a canonical
-decomposition into primitive informational pieces, governed by a Lie coalgebra. In the next
-module this anatomy is set in motion over the moduli spaces of algebraic geometry; in the
-capstone module the same Hopf-coalgebraic grammar returns as the bookkeeping of gauge
-redundancy and renormalization. Coalgebras, in short, are the grammar by which physics takes
-its observables apart.
+observables}: the observation that a physical amplitude carries a canonical decomposition
+into primitive informational pieces, governed by a Lie coalgebra, rather than standing as an
+indecomposable whole. In the next module this anatomy is set in motion over the moduli spaces
+of algebraic geometry; in the capstone module the same Hopf-coalgebraic grammar returns as the
+bookkeeping of gauge redundancy and renormalization. Across the modules, the same coalgebraic
+operations take an observable apart into its primitive pieces.
 
 % =====================================================================
 \begin{thebibliography}{99}

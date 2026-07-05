@@ -124,12 +124,12 @@ category $\Phys$ of physical representation objects (state spaces, observable
 algebras, process categories, gauge moduli, quantum code spaces, measurement
 outcomes). The central data structure is the \emph{representation entry}
 $E = (M,P,\tau,\sigma)$: a mathematical object $M$, a proposed physical
-representation $P$, a translation datum $\tau$, and---crucially---an
+representation $P$, a translation datum $\tau$, and an
 \emph{epistemic status label} $\sigma \in \{\Sstat,\Hstat,\Pstat\}$
 (standard / heuristic / speculative). Entries organize into a
 \emph{representation prestack} $\Repphys : \Dom^{\op} \to \Gpd$, which becomes a
 \emph{representation stack} exactly when local entries glue up to coherent
-gauge equivalence. The engine that turns structure into number is the
+gauge equivalence. Structure becomes number through the
 \emph{realization pipeline}
 $\Obs_\alpha(M) = \Obs\bigl(\Real_\alpha(\Phi(M))\bigr)$, governed by four
 axioms: Realization, Equivalence, Locality/descent, and Decomposition. Our
@@ -216,9 +216,9 @@ adds an emergent property that the composition makes available.}
 \label{tab:ladder}
 \end{table}
 
-A structural fact worth stating at the outset: the ladder is \emph{circular}.
-Part~I \emph{posits} that representation entries behave like a stack---local
-data gluing not on the nose but up to equivalence. Part~VI \emph{proves} what a
+The ladder is, by design, \emph{circular}.
+Part~I \emph{posits} that representation entries behave like a stack: local
+data glue not on the nose but up to equivalence. Part~VI \emph{proves} what a
 stack actually is (a fibered category satisfying descent) and shows that
 $\Repphys$ is stack-like exactly when compatible local entries glue up to gauge
 equivalence. Thus Part~VI supplies the rigorous foundation for Part~I's opening
@@ -407,7 +407,7 @@ mathematical viewpoints that together determine the global one.
 \section{The Representation Stack}
 \label{sec:stack}
 
-We now give the four definitions at the heart of the formalism. They are stated
+We now give the four central definitions of the formalism. They are stated
 so as to be independent of the higher-categorical subtleties; \Cref{sec:results}
 supplies the theorems that make them useful, and Part~VI supplies the full
 descent-theoretic underpinning.
@@ -1146,7 +1146,7 @@ Operad theory & Interaction vertices / compositional laws \\
 \section{Setting up Parts II--VI}
 \label{sec:parts}
 
-The foundational payoff of Part~I is that Parts~II--VI are, formally, successive
+The upshot of Part~I is that Parts~II--VI are, formally, successive
 concrete instantiations of the \emph{same} three slots: the domain-indexed
 structure category $\Math_d$, the realization channel $\Real_\alpha$, and the
 decomposition operation of \Cref{ax:decomp}. We record the instantiations
@@ -1421,8 +1421,8 @@ The prestack/stack language follows Giraud and Vistoli; the descent criterion of
 Curry--Howard--Lambek correspondence underwrites the Haskell/Lean bridge of
 \Cref{sec:code}. What is new here is not any single one of these ingredients but
 their organization into a status-labeled, domain-indexed prestack with an
-explicit realization pipeline---and the status calculus of \Cref{thm:status},
-which is original to this program.
+explicit realization pipeline, together with the status calculus of
+\Cref{thm:status}, which is original to this program.
 
 % ==================================================================
 \section{Conclusion}

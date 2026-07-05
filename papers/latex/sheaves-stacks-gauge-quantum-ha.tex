@@ -130,7 +130,7 @@ Chicago, IL \\
 \maketitle
 
 \begin{abstract}
-This is Part VI --- the capstone module --- of the seven-part modular series
+This is Part VI, the capstone module, of the seven-part modular series
 \emph{A \MtoP{} Representation Library}. We formalize four intertwined
 mathematical domains as physical-representation modules: (i) \textbf{sheaves} as the
 theory of compatible local data glued along a Grothendieck topology; (ii)
@@ -175,9 +175,8 @@ sheaf/stack/stabilizer-code structures.
 \subsection{The modular series and where Part VI sits}
 
 The series \emph{A \MtoP{} Representation Library} advances a single
-organizing thesis: many physical quantities are not merely \emph{described by}
-mathematics but are \emph{obtained as realizations} of structured mathematical
-information. The program is deliberately \textbf{modular}: rather than assert a single
+organizing thesis: many physical quantities are \emph{obtained as realizations}
+of structured mathematical information rather than merely \emph{described by} it. The program is deliberately \textbf{modular}: rather than assert a single
 grand functor $\Math\to\Phys$, it builds a hierarchy of six standalone, formally
 verifiable modules, each introducing one mathematical domain as a
 physical-representation faculty and composing on the previous ones, followed by a
@@ -202,11 +201,11 @@ $}
 The present paper is \textbf{Part VI}, the capstone before synthesis. Its job is
 threefold. First, it introduces the mathematics of \emph{descent}: presheaves,
 sheaves, fibered categories, and stacks. Second, it uses that machinery to make
-rigorous the two constructions that the whole series has been circling --- the
+rigorous the two constructions that the whole series has been circling: the
 \emph{quotient stack} $\quot{X}{G}$ as the mathematical home of gauge redundancy, and
 the \emph{stackification} that converts a prestack into a stack. Third, it exhibits
-the deepest cross-module bridge in the series: gauge redundancy in physics and
-fault-tolerant encoding in quantum information are two readings of one structure ---
+the principal cross-module bridge in the series: gauge redundancy in physics and
+fault-tolerant encoding in quantum information are two readings of one structure,
 \emph{many physical representatives, one logical/observable content, with explicit
 data recording the redundancy}.
 
@@ -448,8 +447,8 @@ Vistoli~\cite{Vistoli}. We upgrade it to
 groupoid coefficients in \Cref{thm:stackification}.
 \end{proof}
 
-The physical content of \Cref{prop:sheafification}: \emph{descent} --- reconstructing a
-coordinate-independent global field from compatible local measurements --- is the
+The physical content of \Cref{prop:sheafification}: \emph{descent}, reconstructing a
+coordinate-independent global field from compatible local measurements, is the
 universal solution to the gluing problem. This is the set-valued shadow of the
 stack-valued statement we need for gauge fields, to which we now turn.
 
@@ -461,7 +460,7 @@ A sheaf glues compatible local \emph{data}. But a gauge field's local descriptio
 related not by \emph{equality} on overlaps but by \emph{gauge transformations}: on
 $U_{ij}$ the two restrictions differ by an element of the gauge group, and these
 transition data must satisfy a cocycle condition on triple overlaps. Recording this
-requires upgrading from set-valued to groupoid-valued data --- a \emph{stack}.
+requires upgrading from set-valued to groupoid-valued data: a \emph{stack}.
 
 \subsection{Fibered categories and descent}
 
@@ -633,7 +632,7 @@ $\Hom(-,\mathrm{B}G)$ is the groupoid of gauge fields.
 
 We now discharge Part I's forward reference. Part I posited a \emph{representation
 prestack} $\Repp:\Dom^{\op}\to\Grpd$ assigning to each mathematical domain the
-groupoid of its physical representations, and asserted --- by analogy --- that this
+groupoid of its physical representations, and asserted, by analogy, that this
 should be a \emph{stack} (local representations glue up to gauge equivalence). Part I
 did not prove this. Here we do, via stackification.
 
@@ -723,8 +722,8 @@ series' modeling hypothesis, and we flag it as such.
 \section{Quantum high-availability encodings}
 \label{sec:qha}
 
-We now cross from geometry to quantum information. The same slogan --- many physical
-representatives, one logical content, plus explicit redundancy data --- becomes the
+We now cross from geometry to quantum information. The same slogan (many physical
+representatives, one logical content, plus explicit redundancy data) becomes the
 theory of quantum error-correcting codes. We make the analogy precise and then, in
 \Cref{sec:surface}, exhibit a case where it is a literal (status \Ss) identity.
 
@@ -754,8 +753,8 @@ logical measurement; $\mathcal E$ plays the role of the gauge groupoid of
 \Hphys\ \simeq\ (\Hlog\otimes\Hgauge)\ \oplus\ \Herr,
 \label{eq:subsystem}
 \end{equation}
-where $\Hgauge$ carries \emph{gauge qubits} --- redundant degrees of freedom that may be
-changed freely without affecting logical content --- and $\Herr$ is the error sector
+where $\Hgauge$ carries \emph{gauge qubits} (redundant degrees of freedom that may be
+changed freely without affecting logical content) and $\Herr$ is the error sector
 detected by syndrome measurement. We stress the distinction between the two ways
 redundancy is realized. In a genuine \emph{subsystem} (Bacon--Shor--type) or
 operator-algebra code the gauge factor is nontrivial, $\dim\Hgauge>1$, and gauge
@@ -862,7 +861,7 @@ center (edge modes); this is the setting of \Cref{sec:holographic}.
 \label{sec:surface}
 
 The analogy of \Cref{sec:qha} becomes a theorem for topological codes. Here the
-logical content is a \emph{homology group} of the code surface --- Part IV's dictionary
+logical content is a \emph{homology group} of the code surface: Part IV's dictionary
 entry ``homology $H_n(X)$ $\leftrightarrow$ conserved extended structures'' realized
 literally, not analogically. This is the strongest status-\Ss\ bridge in the series.
 
@@ -983,8 +982,8 @@ study and the reason Part VI has the most cross-references of any module.
 
 The second reused backbone is coalgebraic. Part II introduced the Goncharov~\cite{Goncharov} Lie
 coalgebra and the coaction \eqref{eq:master-coaction} as the ``anatomy'' of amplitudes.
-Part VI uses the \emph{same} formal operation --- a graded connected Hopf-algebra
-coproduct --- on a different combinatorial datatype (Feynman graphs / rooted trees),
+Part VI uses the \emph{same} formal operation (a graded connected Hopf-algebra
+coproduct) on a different combinatorial datatype (Feynman graphs / rooted trees),
 where the antipode computes renormalization counterterms.
 
 \begin{definition}[Hopf algebra of rooted trees]
@@ -1130,7 +1129,7 @@ strongly supported but subject to finite-$N$/gauge-invariance caveats: status \S
 heuristic: status \Hh.
 \end{itemize}
 We therefore report the bridge as a spectrum from theorem (surface codes) to heuristic
-(fully general), rather than as a single claim --- exactly the discipline the series'
+(fully general), rather than as a single claim, exactly the discipline the series'
 status system was designed to enforce.
 
 % =====================================================================
@@ -1280,7 +1279,7 @@ descriptions; a stack is the mathematical object that remembers local descriptio
 gluing, and redundancy symmetries; quantum high availability is logical information
 protected by encoding it across redundant physical degrees of freedom.
 \end{quote}
-Gauge redundancy is to physics what fault-tolerant encoding is to quantum information ---
+Gauge redundancy is to physics what fault-tolerant encoding is to quantum information:
 proven for surface codes, conjectured in general, and now formalized as the capstone
 module of the representation library. The synthesis paper (Part VII) will assemble the
 closure theorem (\Cref{cor:closure}) with the four master formulas and the status-label
