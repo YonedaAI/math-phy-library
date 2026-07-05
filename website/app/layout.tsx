@@ -38,7 +38,7 @@ export const metadata: Metadata = {
     template: `%s | ${SERIES_TITLE}`,
   },
   description:
-    'Six mathematical faculties — motives, algebraic geometry, algebraic topology, category theory & HoTT, and sheaves/stacks — formalized as physical-representation modules composing hierarchically into a modular synthesis.',
+    'Six mathematical faculties (motives, algebraic geometry, algebraic topology, category theory & HoTT, and sheaves/stacks) formalized as physical-representation modules that compose into a modular synthesis.',
   openGraph: {
     type: 'website',
     siteName: SERIES_TITLE,

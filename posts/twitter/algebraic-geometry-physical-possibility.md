@@ -8,16 +8,16 @@ created: 2026-07-04
 ---
 
 1/4
-What IS the space of everything a physical system could possibly be? Part III of our modular math→physics series argues it's literally an algebraic variety — and the fancier the geometry, the more physical nuance you keep. 🧵
+What's the space of every state a physical system could occupy? Part III of the modular math→physics series argues it's an algebraic variety, and richer geometry keeps more of the physics.
 
 2/4
-A classical solution space = affine variety. Add infinitesimal deformations = scheme. A space of physically distinct configurations = moduli space. Keep gauge symmetry on the books instead of quotienting it away = moduli STACK.
+Classical solution space = affine variety. Add infinitesimal deformations and you get a scheme. Physically distinct configurations = moduli space. Keep the gauge symmetry instead of quotienting it away and you get a moduli stack.
 
 3/4
-We prove a moduli stack [X/G] is strictly richer than its coarse quotient exactly when configurations have nontrivial stabilizers — rigorous proof that "stacks remember gauge redundancy." Plus: Gauss–Manin transport realizes periods over whole families.
+We prove [X/G] is strictly finer than its coarse quotient exactly when configurations have nontrivial stabilizers. That's the precise sense in which stacks remember gauge redundancy. Gauss-Manin transport then realizes periods over whole families.
 
 4/4
-Part III of 7, modular series, building on Parts I–II. Peer-reviewed, code-reviewed, Haskell+Lean verified.
+Part III of 7, modular series, building on Parts I and II. Peer-reviewed, code-reviewed, Haskell+Lean verified.
 
 https://math-phy-library.vercel.app/papers/algebraic-geometry-physical-possibility/
 

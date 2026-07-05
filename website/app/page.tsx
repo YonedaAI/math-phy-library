@@ -22,10 +22,10 @@ export default function Home() {
           <span className="hero-eyebrow">math.CT &middot; math-ph &middot; seven-part modular series</span>
           <h1>A Math→Physics Representation Library</h1>
           <p>
-            Six mathematical faculties — motives, algebraic geometry, algebraic topology, category
-            theory &amp; homotopy type theory, and sheaves/stacks/gauge — formalized as
-            physical-representation modules that compose hierarchically, Part I through Part VI,
-            into a single modular synthesis.
+            Six mathematical faculties (motives, algebraic geometry, algebraic topology, category
+            theory &amp; homotopy type theory, and sheaves/stacks/gauge), each formalized as a
+            physical-representation module. The modules compose hierarchically, Part I through
+            Part VI, into a single modular synthesis.
           </p>
           <div className="hero-stats">
             <div className="hero-stat">

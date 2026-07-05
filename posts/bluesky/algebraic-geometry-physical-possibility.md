@@ -7,7 +7,7 @@ status: draft
 created: 2026-07-04
 ---
 
-A moduli STACK keeps gauge symmetry on the books; the coarse quotient throws it away. Part III of our modular series proves exactly when that matters: nontrivial stabilizers.
+A moduli stack remembers gauge symmetry; the coarse quotient forgets it. Part III of our modular series says exactly when that matters: nontrivial stabilizers.
 
 https://math-phy-library.vercel.app/papers/algebraic-geometry-physical-possibility/
 

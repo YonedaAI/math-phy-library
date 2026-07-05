@@ -7,7 +7,7 @@ status: draft
 created: 2026-07-04
 ---
 
-"Gauge redundancy = quantum error correction" isn't a metaphor. Part VI (capstone) of our modular series proves a quotient stack's automorphisms equal the stabilizer group.
+Physicists call gauge redundancy "quantum error correction" loosely. Part VI, our modular capstone, makes it exact: a quotient stack's automorphisms equal the stabilizer group.
 
 https://math-phy-library.vercel.app/papers/sheaves-stacks-gauge-quantum-ha/
 

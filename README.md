@@ -1,8 +1,8 @@
 # A Math→Physics Representation Library
 
-> Six mathematical faculties, formalized as physical-representation **modules** that compose
-> hierarchically into one **modular synthesis** — each rung of the ladder introducing an emergent
-> representational property the level below cannot express.
+> Six mathematical faculties, each formalized as a physical-representation **module**. The modules
+> compose hierarchically into one **modular synthesis**, and every rung of the ladder adds an
+> emergent representational property that the level below cannot express.
 
 **Live site:** https://math-phy-library.vercel.app
 &nbsp;·&nbsp; **Repository:** https://github.com/YonedaAI/math-phy-library
@@ -11,20 +11,20 @@
 
 ## Overview
 
-This project decomposes a single representation-stack manuscript into **six focused papers plus a
-synthesis** (seven in all). Each paper takes one mathematical domain and formalizes it as a
+This project decomposes a single representation-stack manuscript into six focused papers plus a
+synthesis, seven in all. Each paper takes one mathematical domain and formalizes it as a
 *module* in a shared **representation stack** with a common realization pipeline
 
 ```
 Obs_α(M) = Obs( Real_α( Φ(M) ) )
 ```
 
-The modules are not merged into a monolith — they **compose**. The synthesis proves a **closure
-theorem**: the representation stack posited abstractly in Part I is discharged at the Part VI
-capstone via descent-theoretic stackification, with the isotropy keystone
-`Aut(x) ≃ Stab_G(x)` whose physical face is **gauge redundancy ≅ quantum high-availability**.
+The modules stay separate and compose instead of merging into a monolith. The synthesis proves a
+closure theorem: Part I introduces the representation stack abstractly, and the Part VI capstone
+discharges it via descent-theoretic stackification. The isotropy keystone
+`Aut(x) ≃ Stab_G(x)` carries the argument, and its physical face is gauge redundancy ≅ quantum high-availability.
 
-Every paper is peer-reviewed, code-reviewed, and formally verified (see below).
+Every paper has been peer reviewed, code reviewed, and formally verified (see below).
 
 ## Papers
 
@@ -58,23 +58,23 @@ Part VI   Sheaves, Stacks, Gauge Redundancy, Quantum High-Availability
 Synthesis  closure theorem — the ladder closes on itself
 ```
 
-Each arrow names the **emergent property** that appears only after composition.
+Each arrow names the emergent property that appears only after composition.
 
 ## Formal Verification
 
-Each domain paper ships with machine-checked companions:
+Each domain paper comes with machine-checked companions:
 
-- **Haskell** (`src/<topic>/`) — every major theorem has a QuickCheck property and an equational
+- **Haskell** (`src/<topic>/`): every major theorem has a QuickCheck property and an equational
   `Proofs.hs` derivation; all modules compile under `ghc -Wall -Wextra -Werror`, and `Main` exits 0.
-  *(15–34 QuickCheck properties + 8–10 equational proofs per topic, all passing.)*
-- **Lean 4** (`lean/<topic>/`) — best-effort formalization sketches of the core structures and
+  *(15 to 34 QuickCheck properties plus 8 to 10 equational proofs per topic, all passing.)*
+- **Lean 4** (`lean/<topic>/`): best-effort formalization sketches of the core structures and
   theorem signatures; they elaborate standalone.
 
-**Review.** Every paper went through an iterative **peer review** by `agy` (Antigravity CLI, Gemini
-3.1 Pro) — which caught genuine mathematical errors across the series (a `Z₂^{4g}` surface-code
+**Review.** Every paper went through iterative peer review by `agy` (Antigravity CLI, Gemini
+3.1 Pro), which caught genuine mathematical errors across the series: a `Z₂^{4g}` surface-code
 logical-group correction, a Conditional-Amplitude-Decomposition category error, a translation-strength
-inconsistency, and more) — plus a **Codex** (`gpt-5.5`) formatting/code review, with fix loops until
-the reviewers were satisfied. Round-by-round reviews are in `reviews/`.
+inconsistency, and more. Each paper also had a Codex (`gpt-5.5`) formatting and code review, and both
+passes ran in fix loops until the reviewers were satisfied. Round-by-round reviews are in `reviews/`.
 
 ## Repository Layout
 

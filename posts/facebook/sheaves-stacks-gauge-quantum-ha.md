@@ -7,18 +7,16 @@ status: draft
 created: 2026-07-04
 ---
 
-🔗 “Gauge redundancy in physics is like quantum error correction.” You may have heard this slogan before. But is it actually true, or just a nice sounding metaphor?
+You have probably heard someone say gauge redundancy in physics is "like" quantum error correction. It is a nice line. But is it actually true, or just a metaphor that sounds good at a party?
 
-Part VI — the capstone module of our seven paper series — proves it is literally true, not a metaphor.
+Part VI, the capstone module of our seven paper series, shows it is literally true. The whole thing rests on one clean formula: the automorphisms of a quotient stack equal the stabilizer group of the point you quotiented by. Unpacked, that says "many equivalent mathematical descriptions of one physical state" and "many redundant qubits encoding one logical qubit" are the same mathematical structure seen from two angles.
 
-💡 The key is one clean formula: the automorphisms of a quotient stack equal the stabilizer group of the point you quotiented by. In plain terms — “many equivalent math descriptions of one physical state” and “many redundant qubits encoding one logical qubit” are the exact same mathematical structure, just viewed through two different lenses.
+Then we push it. In the surface code, one of the front-runners for building fault tolerant quantum computers, the logical operations turn out to be nontrivial loops in the topology of the code's surface. Again, not an analogy, an actual identity. We also tie the algebra of renormalization in quantum field theory back to the same structure.
 
-🧵 We push this further and prove that in the surface code (a leading approach to building fault tolerant quantum computers), the logical operations are literally nontrivial loops in the topology of the code's surface — not an analogy, an identity. We also connect the algebra of renormalization in quantum field theory to the same underlying structure.
+So a slogan people repeat becomes something you can prove, and it bears directly on how we build fault tolerant quantum computers and think about holography.
 
-🔬 Why it matters: this turns a popular physics slogan into a provable mathematical fact, with direct relevance to how we build fault tolerant quantum computers and understand holography.
+Part VI of a modular seven paper program, the capstone before the final synthesis. Peer reviewed, code reviewed, and checked in Haskell and Lean.
 
-Part VI of a modular seven paper program — the capstone module before the final synthesis. Peer reviewed, code reviewed, and checked in Haskell and Lean.
-
-📄 Read it here: https://math-phy-library.vercel.app/papers/sheaves-stacks-gauge-quantum-ha/
+Read it here: https://math-phy-library.vercel.app/papers/sheaves-stacks-gauge-quantum-ha/
 
 #QuantumErrorCorrection #GaugeTheory #QuantumComputing #MathPhysics

@@ -7,7 +7,7 @@ status: draft
 created: 2026-07-04
 ---
 
-Math doesn't just describe physics — it's REALIZED via a provable pipeline, with a confidence label (Standard/Heuristic/Speculative) per step. Part I of a modular 7-paper series.
+Math doesn't only describe physics; it gets realized through a provable pipeline, each step labeled Standard, Heuristic, or Speculative. Part I of a modular 7-paper series.
 
 https://math-phy-library.vercel.app/papers/foundations-representation-stack/
 
