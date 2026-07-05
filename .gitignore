@@ -6,6 +6,7 @@ website/out/
 .vercel/
 
 # LaTeX build artifacts
+papers/latex/*.pdf
 papers/latex/*.aux
 papers/latex/*.log
 papers/latex/*.out
