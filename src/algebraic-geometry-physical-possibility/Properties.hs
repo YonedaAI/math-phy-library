@@ -37,6 +37,10 @@ module Properties
 import Data.Ratio ((%))
 import System.Exit (exitFailure, exitSuccess)
 import Test.QuickCheck
+-- 'isSuccess' is defined in Test.QuickCheck.Test. Some QuickCheck versions do
+-- not re-export it through the Test.QuickCheck umbrella, so we source it
+-- explicitly (qualified) to guarantee the module typechecks standalone.
+import qualified Test.QuickCheck.Test as QCT
 
 import Scheme
   ( CoordRing(..), Ideal(..), Poly(Poly)
@@ -526,14 +530,14 @@ run :: Testable prop => String -> prop -> IO Bool
 run name prop = do
   putStrLn ("* " ++ name)
   res <- quickCheckResult prop
-  pure (isSuccess res)
+  pure (QCT.isSuccess res)
 
 -- | Run a property at an elevated test count (used for the core laws).
 runN :: Testable prop => Int -> String -> prop -> IO Bool
 runN k name prop = do
   putStrLn ("* " ++ name)
   res <- quickCheckWithResult stdArgs { maxSuccess = k } prop
-  pure (isSuccess res)
+  pure (QCT.isSuccess res)
 
 -- | Run every property; exit nonzero if any fails.
 runAllProperties :: IO ()
